@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TemparatureSliderController : MonoBehaviour
 {
+    [HideInInspector]
     public float TemparatureGage = 70;
     public bool stopSlider;
 
@@ -14,16 +16,28 @@ public class TemparatureSliderController : MonoBehaviour
 
     void Update()
     {
+        if (TemparatureGage < 0)
+        {
+            TemparatureGage = 0;
+        }
+        if (TemparatureGage > 100)
+        {
+            TemparatureGage = 100;
+        }
+        TempGUpDown();
+    }
+     
+    public void TempGUpDown()
+    {
         if (!stopSlider)
         {
             TemparatureGage -= Time.deltaTime * 2;
-            GetComponent<UnityEngine.UI.Slider>().value = (int)TemparatureGage;
         }
         else if (stopSlider)
         {
-            TemparatureGage += Time.deltaTime * 1;
-            GetComponent<UnityEngine.UI.Slider>().value = (int)TemparatureGage;
+            TemparatureGage += Time.deltaTime * 4;
+
         }
+        GetComponent<Slider>().value = (int)TemparatureGage;
     }
-            
 }

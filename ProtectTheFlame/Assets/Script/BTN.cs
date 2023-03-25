@@ -31,7 +31,7 @@ public class BTN : MonoBehaviour
         switch (currentType)
         {
             case BTNType.New:
-                StoryScene();
+                GameManager.StoryScene();
                 break;
             case BTNType.Option:
                 CanvasGroupOn(optionGroup);
@@ -48,35 +48,25 @@ public class BTN : MonoBehaviour
             case BTNType.Pause:
                 CanvasGroupOn(pauseGroup);
                 CanvasGroupOff(playGroup);
-                PauseGame();
+                GameManager.PauseGame();
                 break;
             case BTNType.PauseQuit:
-                StartScene();
-                ResumeGame();
+                GameManager.StartScene();
+                GameManager.ResumeGame();
                 break;
             case BTNType.PauseContinue:
                 CanvasGroupOff(pauseGroup);
                 CanvasGroupOn(playGroup);
-                ResumeGame();
+                GameManager.ResumeGame();
                 break;
             case BTNType.StorySkip:
-                GameScene();
+                GameManager.StartScene();
                 break;
             
         }
     }
-    public void StoryScene()
-    {
-        SceneManager.LoadScene("StoryScene");
-    }
-    public void StartScene()
-    {
-        SceneManager.LoadScene("StartScene");
-    }
-    public void GameScene()
-    {
-        SceneManager.LoadScene("GameScene");
-    }
+    
+    
     public void CanvasGroupOn(CanvasGroup cg)
     {
         cg.alpha = 1;
@@ -89,17 +79,5 @@ public class BTN : MonoBehaviour
         cg.interactable = false;
         cg.blocksRaycasts = false;
     }
-
-    //FlameSliderController flameSlider = GameObject.Find("FlameSlider").GetComponent<FlameSliderController>();
-    //PileSliderController pileSlider = GameObject.Find("PileSlider").GetComponent<PileSliderController>();
-    //TemparatureSliderController temparatureSlider = GameObject.Find("TenparatureSlider").GetComponent<TemparatureSliderController>();
     
-    public void PauseGame()
-    {
-        Time.timeScale = 0;
-    }
-    public void ResumeGame()
-    {
-        Time.timeScale = 1;
-    }
 }

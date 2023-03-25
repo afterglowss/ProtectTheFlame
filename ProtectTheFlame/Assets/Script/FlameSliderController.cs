@@ -1,17 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.iOS;
 using UnityEngine.UI;
 
 
 public class FlameSliderController : MonoBehaviour
 {
-    public float FlameGage=500;
+    [HideInInspector]
+    public float FlameGage = 500f;
     
     void Update()
     {
-        FlameGage -= Time.deltaTime * 10;
-        GetComponent<UnityEngine.UI.Slider>().value = (int)FlameGage;
+        if (FlameGage < 0f)
+        {
+            FlameGage = 0;
+        }
+        else if (FlameGage > 1000f)
+        {
+            FlameGage = 1000;
+        }
+        else
+        {
+            FlameGage -= Time.deltaTime * 10;
+            GetComponent<Slider>().value = (int)FlameGage;
+        }
     }
 }
