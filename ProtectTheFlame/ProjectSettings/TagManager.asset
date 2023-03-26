@@ -9,6 +9,7 @@ TagManager:
   - Table
   - Tent
   - Pile
+  - Screen
   layers:
   - Default
   - TransparentFX

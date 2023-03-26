@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using Yarn.Unity;
 
 public class PlayerController : MonoBehaviour
@@ -17,7 +18,7 @@ public class PlayerController : MonoBehaviour
     Animator anim;
     AudioSource audioSource;
 
-    public bool stopMove = false;
+    bool stopMove = false;
 
     public float moveSpeed = 3.0f;
     Vector2 move = new Vector2();
@@ -29,6 +30,90 @@ public class PlayerController : MonoBehaviour
     bool inTent = false;
 
     float time = 0;
+
+    static int firewoodCnt = 0;
+    static int paperCnt = 0;
+    static int oilCnt = 0;
+    static int screenCnt = 0;
+
+    public TextMeshProUGUI firewoodTxt;
+    public TextMeshProUGUI paperTxt;
+    public TextMeshProUGUI oilTxt;
+    public TextMeshProUGUI screenTxt;
+
+    [YarnFunction("getCnt")]
+    public static int GetCnt(string name)
+    {
+        if (name == "firewood")
+        {
+            return firewoodCnt;
+        }
+        else if (name == "paper")
+        {
+            return paperCnt;
+        }
+        else if (name == "oil")
+        {
+            return oilCnt;
+        }
+        else if (name == "screen")
+        {
+            return screenCnt;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    [YarnCommand("plusCnt")]
+    public static void PlusCnt(string name)
+    {
+        if (name == "firewood")
+        {
+            firewoodCnt++;
+        }
+        else if (name == "paper")
+        {
+            paperCnt++;
+        }
+        else if (name == "oil")
+        {
+            oilCnt++;
+        }
+        else if (name == "screen")
+        {
+            screenCnt++;
+        }
+    }
+    [YarnCommand("minusCnt")]
+    public static void MinusCnt(string name)
+    {
+        if (name == "firewood")
+        {
+            firewoodCnt--;
+        }
+        else if (name == "paper")
+        {
+            paperCnt--;
+        }
+        else if (name == "oil")
+        {
+            oilCnt--;
+        }
+        else if (name == "screen")
+        {
+            screenCnt--;
+        }
+    }
+
+    public void UpdateCnt()
+    {
+        firewoodTxt.text = firewoodCnt.ToString();
+        paperTxt.text = paperCnt.ToString();
+        oilTxt.text = oilCnt.ToString();
+        screenTxt.text = screenCnt.ToString();
+    }
 
     public void Awake()
     {
@@ -42,12 +127,12 @@ public class PlayerController : MonoBehaviour
         tsc = FindObjectOfType<TemparatureSliderController>();
         fsc = FindObjectOfType<FlameSliderController>();
         psc = FindObjectOfType<PileSliderController>();
-
     }
 
     public void Update()
     {
         UpdateState();
+        UpdateCnt();
         if (inFlame == true)
         {
             isFanning();
@@ -80,7 +165,7 @@ public class PlayerController : MonoBehaviour
         {
             dialogueRunner.StartDialogue("Fanning");
         }
-        if (Input.GetKey(KeyCode.Space))            //space 누르고 있는 동안 실행
+        else if (Input.GetKey(KeyCode.Space))            //space 누르고 있는 동안 실행
         {
             anim.SetBool("isFanning", true);
             stopMove = true;
@@ -88,7 +173,7 @@ public class PlayerController : MonoBehaviour
 
             fsc.FlameGage += Time.deltaTime * 40;
         }
-        if (Input.GetKeyUp(KeyCode.Space))          //space 뗀 순간 한번만 실행
+        else if (Input.GetKeyUp(KeyCode.Space))          //space 뗀 순간 한번만 실행
         {
             dialogueRunner.Stop();
             anim.SetBool("isFanning", false);
@@ -112,10 +197,7 @@ public class PlayerController : MonoBehaviour
             if (time > 3f)
             {
                 time = 0;
-                psc.PileGage += 200;
-                fsc.FlameGage += 20;
-                dialogueRunner.Stop();
-                dialogueRunner.StartDialogue("GetFirewood");
+                GetFirewood();
             }
         }
         if (Input.GetKeyUp(KeyCode.Space))
@@ -140,7 +222,7 @@ public class PlayerController : MonoBehaviour
 
             time += Time.deltaTime;
 
-            if (time > 3f)
+            if (time > 5f)
             {
                 time = 0;
                 psc.PileGage += 200;
@@ -157,6 +239,17 @@ public class PlayerController : MonoBehaviour
             time = 0;
         }
     }
+
+    public void GetFirewood()
+    {
+        psc.PileGage += 200;
+        fsc.FlameGage += 20;
+        dialogueRunner.Stop();
+        dialogueRunner.StartDialogue("GetFirewood");
+    }
+
+
+
 
     private void FixedUpdate()
     {
