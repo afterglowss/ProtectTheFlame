@@ -11,10 +11,12 @@ public class PlayerController : MonoBehaviour
     private DialogueRunner dialogueRunner;
     private InMemoryVariableStorage variableStorage;
 
+
+    public static FlameSliderController fsc;
+    public static PileSliderController psc;
+    public static TemparatureSliderController tsc;
+    
     Rigidbody2D rigid;
-    FlameSliderController fsc;
-    PileSliderController psc;
-    TemparatureSliderController tsc;
     Animator anim;
     AudioSource audioSource;
 
@@ -40,6 +42,7 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI paperTxt;
     public TextMeshProUGUI oilTxt;
     public TextMeshProUGUI screenTxt;
+
 
     [YarnFunction("getCnt")]
     public static int GetCnt(string name)
@@ -164,6 +167,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))        //space 누른 순간 한번만 실행
         {
             dialogueRunner.StartDialogue("Fanning");
+            dialogueRunner.Stop();
         }
         else if (Input.GetKey(KeyCode.Space))            //space 누르고 있는 동안 실행
         {
@@ -242,12 +246,16 @@ public class PlayerController : MonoBehaviour
 
     public void GetFirewood()
     {
-        psc.PileGage += 200;
-        fsc.FlameGage += 20;
+        firewoodCnt++;
         dialogueRunner.Stop();
         dialogueRunner.StartDialogue("GetFirewood");
     }
 
+    public static void UseFirewood()
+    {
+        psc.PileGage += 200;
+        fsc.FlameGage += 20;
+    }
 
 
 
