@@ -9,6 +9,7 @@ TagManager:
   - Table
   - Tent
   - Pile
+  - Screen
   layers:
   - Default
   - TransparentFX
@@ -54,4 +55,7 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 3728292221
+    locked: 0
+  - name: Dialogue
+    uniqueID: 4065656007
     locked: 0

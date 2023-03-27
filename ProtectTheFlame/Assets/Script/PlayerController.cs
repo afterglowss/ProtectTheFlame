@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using Yarn.Unity;
 
 public class PlayerController : MonoBehaviour
@@ -10,14 +11,16 @@ public class PlayerController : MonoBehaviour
     private DialogueRunner dialogueRunner;
     private InMemoryVariableStorage variableStorage;
 
+
+    public static FlameSliderController fsc;
+    public static PileSliderController psc;
+    public static TemparatureSliderController tsc;
+    
     Rigidbody2D rigid;
-    FlameSliderController fsc;
-    PileSliderController psc;
-    TemparatureSliderController tsc;
     Animator anim;
     AudioSource audioSource;
 
-    public bool stopMove = false;
+    bool stopMove = false;
 
     public float moveSpeed = 3.0f;
     Vector2 move = new Vector2();
@@ -29,6 +32,91 @@ public class PlayerController : MonoBehaviour
     bool inTent = false;
 
     float time = 0;
+
+    static int firewoodCnt = 0;
+    static int paperCnt = 0;
+    static int oilCnt = 0;
+    static int screenCnt = 0;
+
+    public TextMeshProUGUI firewoodTxt;
+    public TextMeshProUGUI paperTxt;
+    public TextMeshProUGUI oilTxt;
+    public TextMeshProUGUI screenTxt;
+
+
+    [YarnFunction("getCnt")]
+    public static int GetCnt(string name)
+    {
+        if (name == "firewood")
+        {
+            return firewoodCnt;
+        }
+        else if (name == "paper")
+        {
+            return paperCnt;
+        }
+        else if (name == "oil")
+        {
+            return oilCnt;
+        }
+        else if (name == "screen")
+        {
+            return screenCnt;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    [YarnCommand("plusCnt")]
+    public static void PlusCnt(string name)
+    {
+        if (name == "firewood")
+        {
+            firewoodCnt++;
+        }
+        else if (name == "paper")
+        {
+            paperCnt++;
+        }
+        else if (name == "oil")
+        {
+            oilCnt++;
+        }
+        else if (name == "screen")
+        {
+            screenCnt++;
+        }
+    }
+    [YarnCommand("minusCnt")]
+    public static void MinusCnt(string name)
+    {
+        if (name == "firewood")
+        {
+            UseFirewood();
+        }
+        else if (name == "paper")
+        {
+            UsePaper();
+        }
+        else if (name == "oil")
+        {
+            UseOil();
+        }
+        else if (name == "screen")
+        {
+            UseScreen();
+        }
+    }
+
+    public void UpdateCnt()
+    {
+        firewoodTxt.text = firewoodCnt.ToString();
+        paperTxt.text = paperCnt.ToString();
+        oilTxt.text = oilCnt.ToString();
+        screenTxt.text = screenCnt.ToString();
+    }
 
     public void Awake()
     {
@@ -42,12 +130,12 @@ public class PlayerController : MonoBehaviour
         tsc = FindObjectOfType<TemparatureSliderController>();
         fsc = FindObjectOfType<FlameSliderController>();
         psc = FindObjectOfType<PileSliderController>();
-
     }
 
     public void Update()
     {
         UpdateState();
+        UpdateCnt();
         if (inFlame == true)
         {
             isFanning();
@@ -79,8 +167,9 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))        //space 누른 순간 한번만 실행
         {
             dialogueRunner.StartDialogue("Fanning");
+            //dialogueRunner.Stop();
         }
-        if (Input.GetKey(KeyCode.Space))            //space 누르고 있는 동안 실행
+        else if (Input.GetKey(KeyCode.Space))            //space 누르고 있는 동안 실행
         {
             anim.SetBool("isFanning", true);
             stopMove = true;
@@ -88,7 +177,7 @@ public class PlayerController : MonoBehaviour
 
             fsc.FlameGage += Time.deltaTime * 40;
         }
-        if (Input.GetKeyUp(KeyCode.Space))          //space 뗀 순간 한번만 실행
+        else if (Input.GetKeyUp(KeyCode.Space))          //space 뗀 순간 한번만 실행
         {
             dialogueRunner.Stop();
             anim.SetBool("isFanning", false);
@@ -112,10 +201,7 @@ public class PlayerController : MonoBehaviour
             if (time > 3f)
             {
                 time = 0;
-                psc.PileGage += 200;
-                fsc.FlameGage += 20;
-                dialogueRunner.Stop();
-                dialogueRunner.StartDialogue("GetFirewood");
+                GetFirewood();
             }
         }
         if (Input.GetKeyUp(KeyCode.Space))
@@ -140,11 +226,10 @@ public class PlayerController : MonoBehaviour
 
             time += Time.deltaTime;
 
-            if (time > 3f)
+            if (time > 5f)
             {
                 time = 0;
-                psc.PileGage += 200;
-                fsc.FlameGage += 20;
+                GetScreen();
                 dialogueRunner.Stop();
                 dialogueRunner.StartDialogue("GetScreen");
             }
@@ -156,6 +241,45 @@ public class PlayerController : MonoBehaviour
             stopMove = false;
             time = 0;
         }
+    }
+
+    public void GetFirewood()
+    {
+        firewoodCnt++;
+        dialogueRunner.Stop();
+        dialogueRunner.StartDialogue("GetFirewood");
+    }
+
+    public void GetScreen()
+    {
+        screenCnt++;
+        dialogueRunner.Stop();
+        dialogueRunner.StartDialogue("GetScreen");
+    }
+    public static void UseFirewood()    //장작 사용
+    {
+        firewoodCnt--;
+        psc.PileGage += 200;            //장작 게이지 +200
+        fsc.FlameGage += 20;            //불꽃 게이지 +20
+    }
+
+    public static void UsePaper()       //신문지 사용
+    {
+        paperCnt--;
+        fsc.FlameGage += 50;            //불꽃 게이지 +50
+    }
+
+    public static void UseOil()         //기름 사용
+    {
+        oilCnt--;
+        fsc.FlameGage += 100;           //불꽃 게이지 +100
+    }
+
+    public static void UseScreen()      //가림막 사용
+    {
+        screenCnt--;
+        fsc.StopFlameGage = true;       //가림막은 10초 동안 불꽃 게이지 감소를 막아줌
+        
     }
 
     private void FixedUpdate()

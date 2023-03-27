@@ -9,6 +9,7 @@ public class TemparatureSliderController : MonoBehaviour
     public float TemparatureGage = 70;
     public bool stopSlider;
 
+
     private void Start()
     {
         stopSlider = false;

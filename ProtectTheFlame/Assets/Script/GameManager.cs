@@ -2,11 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Yarn.Unity;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
+    BTN btn;
+
+    public Button pauseBtn;
 
     private DialogueRunner dialogueRunner;
     private InMemoryVariableStorage variableStorage;
@@ -25,6 +30,26 @@ public class GameManager : MonoBehaviour
         dialogueRunner = FindObjectOfType<DialogueRunner>();
         variableStorage = FindObjectOfType<InMemoryVariableStorage>();
     }
+
+    public void Update()
+    {
+        if (SceneManager.GetActiveScene().name == "GameScene")
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (pauseBtn.GetComponent<BTN>().optionGroup.alpha == 0)
+                {
+                    pauseBtn.GetComponent<BTN>().OptionGroupOn();
+                }
+                else
+                {
+                    pauseBtn.GetComponent<BTN>().OptionGroupOff();
+                }
+            }
+        }
+    }
+
+
     public static void StoryScene()
     {
         SceneManager.LoadScene("StoryScene");

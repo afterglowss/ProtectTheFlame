@@ -12,10 +12,7 @@ public enum BTNType
     Sound,
     Back,
     Quit,
-    Pause,
-    PauseQuit,
-    PauseContinue,
-    StorySkip
+    GoMain
 }
 
 public class BTN : MonoBehaviour
@@ -23,8 +20,6 @@ public class BTN : MonoBehaviour
     public BTNType currentType;
     public CanvasGroup mainGroup;
     public CanvasGroup optionGroup;
-    public CanvasGroup pauseGroup;
-    public CanvasGroup playGroup;
     
     public void OnBtnClick()
     {
@@ -34,39 +29,34 @@ public class BTN : MonoBehaviour
                 GameManager.StoryScene();
                 break;
             case BTNType.Option:
-                CanvasGroupOn(optionGroup);
-                CanvasGroupOff(mainGroup);
+                OptionGroupOn();
                 break;
             case BTNType.Back:
-                CanvasGroupOff(optionGroup);
-                CanvasGroupOn(mainGroup);
+                OptionGroupOff();
                 break;
             case BTNType.Quit:
                 Application.Quit();
                 Debug.Log("╬ша╬╥А");
                 break;
-            case BTNType.Pause:
-                CanvasGroupOn(pauseGroup);
-                CanvasGroupOff(playGroup);
-                GameManager.PauseGame();
-                break;
-            case BTNType.PauseQuit:
-                GameManager.StartScene();
-                GameManager.ResumeGame();
-                break;
-            case BTNType.PauseContinue:
-                CanvasGroupOff(pauseGroup);
-                CanvasGroupOn(playGroup);
-                GameManager.ResumeGame();
-                break;
-            case BTNType.StorySkip:
+            case BTNType.GoMain:
                 GameManager.StartScene();
                 break;
-            
         }
     }
-    
-    
+
+    public void OptionGroupOn()
+    {
+        CanvasGroupOn(optionGroup);
+        CanvasGroupOff(mainGroup);
+        GameManager.PauseGame();
+    }
+    public void OptionGroupOff()
+    {
+        CanvasGroupOn(mainGroup);
+        CanvasGroupOff(optionGroup);
+        GameManager.ResumeGame();
+    }
+
     public void CanvasGroupOn(CanvasGroup cg)
     {
         cg.alpha = 1;
