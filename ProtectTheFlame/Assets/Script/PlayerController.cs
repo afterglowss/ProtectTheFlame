@@ -94,19 +94,19 @@ public class PlayerController : MonoBehaviour
     {
         if (name == "firewood")
         {
-            firewoodCnt--;
+            UseFirewood();
         }
         else if (name == "paper")
         {
-            paperCnt--;
+            UsePaper();
         }
         else if (name == "oil")
         {
-            oilCnt--;
+            UseOil();
         }
         else if (name == "screen")
         {
-            screenCnt--;
+            UseScreen();
         }
     }
 
@@ -167,7 +167,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))        //space 누른 순간 한번만 실행
         {
             dialogueRunner.StartDialogue("Fanning");
-            dialogueRunner.Stop();
+            //dialogueRunner.Stop();
         }
         else if (Input.GetKey(KeyCode.Space))            //space 누르고 있는 동안 실행
         {
@@ -229,8 +229,7 @@ public class PlayerController : MonoBehaviour
             if (time > 5f)
             {
                 time = 0;
-                psc.PileGage += 200;
-                fsc.FlameGage += 20;
+                GetScreen();
                 dialogueRunner.Stop();
                 dialogueRunner.StartDialogue("GetScreen");
             }
@@ -251,13 +250,37 @@ public class PlayerController : MonoBehaviour
         dialogueRunner.StartDialogue("GetFirewood");
     }
 
-    public static void UseFirewood()
+    public void GetScreen()
     {
-        psc.PileGage += 200;
-        fsc.FlameGage += 20;
+        screenCnt++;
+        dialogueRunner.Stop();
+        dialogueRunner.StartDialogue("GetScreen");
+    }
+    public static void UseFirewood()    //장작 사용
+    {
+        firewoodCnt--;
+        psc.PileGage += 200;            //장작 게이지 +200
+        fsc.FlameGage += 20;            //불꽃 게이지 +20
     }
 
+    public static void UsePaper()       //신문지 사용
+    {
+        paperCnt--;
+        fsc.FlameGage += 50;            //불꽃 게이지 +50
+    }
 
+    public static void UseOil()         //기름 사용
+    {
+        oilCnt--;
+        fsc.FlameGage += 100;           //불꽃 게이지 +100
+    }
+
+    public static void UseScreen()      //가림막 사용
+    {
+        screenCnt--;
+        fsc.StopFlameGage = true;       //가림막은 10초 동안 불꽃 게이지 감소를 막아줌
+        
+    }
 
     private void FixedUpdate()
     {
