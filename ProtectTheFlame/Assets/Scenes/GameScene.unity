@@ -6364,6 +6364,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1082966508}
+  - component: {fileID: 1082966509}
   - component: {fileID: 1082966507}
   - component: {fileID: 1082966506}
   - component: {fileID: 1082966505}
@@ -6446,7 +6447,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: -566675075
-  m_SortingOrder: 300
+  m_SortingOrder: 290
   m_TargetDisplay: 0
 --- !u!224 &1082966508
 RectTransform:
@@ -6474,6 +6475,14 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!222 &1082966509
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082966503}
+  m_CullTransparentMesh: 1
 --- !u!1 &1142618671
 GameObject:
   m_ObjectHideFlags: 0
@@ -7200,8 +7209,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 225a70f18973cf745998d6f2badf2e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundClipStep: {fileID: 0}
-  soundClipWalk: {fileID: 0}
+  soundClipStep: {fileID: 8300000, guid: 2afddbeaea285124d9fccff295dee16e, type: 3}
+  soundClipWalk: {fileID: 8300000, guid: c41ef591ced52d944b5c80acedae7644, type: 3}
 --- !u!1 &1376328155
 GameObject:
   m_ObjectHideFlags: 0
