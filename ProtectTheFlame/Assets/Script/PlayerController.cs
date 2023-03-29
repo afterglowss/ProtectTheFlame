@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private DialogueRunner dialogueRunner;
     private InMemoryVariableStorage variableStorage;
 
+    public static PlayerController instance;
 
     public static FlameSliderController fsc;
     public static PileSliderController psc;
@@ -20,7 +21,7 @@ public class PlayerController : MonoBehaviour
     Animator anim;
     AudioSource audioSource;
 
-    bool stopMove = false;
+    public static bool stopMove = false;
 
     public float moveSpeed = 3.0f;
     Vector2 move = new Vector2();
@@ -44,6 +45,12 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI screenTxt;
 
     private static GameObject screenObj;
+
+    [YarnCommand("stopMoveBool")]
+    public static void StopMoveBool(bool state)     //얀 스크립트에서 stopMove bool 제어 가능
+    {
+        stopMove = state;
+    }
 
 
     [YarnFunction("getCnt")]
@@ -171,21 +178,29 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1)||Input.GetKeyDown(KeyCode.Keypad1))
         {
+            stopMove = true;
+            StopPlayer();
             dialogueRunner.Stop();
             dialogueRunner.StartDialogue("CheckUseFirewood");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
         {
+            stopMove = true;
+            StopPlayer();
             dialogueRunner.Stop();
             dialogueRunner.StartDialogue("CheckUsePaper");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
         {
+            stopMove = true;
+            StopPlayer();
             dialogueRunner.Stop();
             dialogueRunner.StartDialogue("CheckUseOil");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
         {
+            stopMove = true;
+            StopPlayer();
             dialogueRunner.Stop();
             dialogueRunner.StartDialogue("CheckUseScreen");
         }
@@ -273,6 +288,36 @@ public class PlayerController : MonoBehaviour
             time = 0;
         }
     }
+    public void isFinding()                        //잡동사니 뒤지는 함수
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            dialogueRunner.StartDialogue("Finding");
+            dialogueRunner.Stop();
+        }
+        if (Input.GetKey(KeyCode.Space))
+        {
+            anim.SetBool("isFinding", true);
+            stopMove = true;
+            StopPlayer();
+
+            time += Time.deltaTime;
+
+            if (time > 5f)                      //잡동사니 뒤지는 데 5초 필요
+            {
+                time = 0;
+                GetItem();                    //랜덤으로 아이템 획득
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            dialogueRunner.Stop();
+            anim.SetBool("isFinding", false);
+            stopMove = false;
+            time = 0;
+        }
+    }
+
 
     public void GetFirewood()
     {
@@ -287,6 +332,40 @@ public class PlayerController : MonoBehaviour
         dialogueRunner.Stop();
         dialogueRunner.StartDialogue("GetScreen");
     }
+
+    public void GetItem()
+    {
+        int getWhat = Random.Range(1,101);
+        if (getWhat <= 20)                                      //20%의 확률로 장작 획득
+        {
+            firewoodCnt++;
+            dialogueRunner.Stop();
+            dialogueRunner.StartDialogue("GetFirewood");
+        }
+        else if (getWhat > 20 && getWhat <= 60)                 //40%의 확률로 신문지 획득
+        {
+            paperCnt++;
+            dialogueRunner.Stop();
+            dialogueRunner.StartDialogue("GetPaper");
+        }
+        else if (getWhat > 60 && getWhat <= 70)                 //10%의 확률로 기름 획득
+        {
+            oilCnt++;
+            dialogueRunner.Stop();
+            dialogueRunner.StartDialogue("GetOil");
+        }
+        else if (getWhat > 70 && getWhat <= 95)                 //25%의 확률로 쓰레기 획득
+        {
+            dialogueRunner.Stop();
+            dialogueRunner.StartDialogue("GetTrash");
+        }
+        else                                                    //5%의 확률로 ??? 획득
+        {
+            dialogueRunner.Stop();
+            dialogueRunner.StartDialogue("GetUnknown");
+        }
+    }
+
     public static void UseFirewood()    //장작 사용
     {
         firewoodCnt--;
@@ -312,7 +391,7 @@ public class PlayerController : MonoBehaviour
         fsc.StopFlameGage = true;       //가림막은 10초 동안 불꽃 게이지 감소를 막아줌
         screenObj.SetActive(true);      //가림막 생성
 
-        //Invoke("RemoveScreen", 10f);
+        instance.Invoke("RemoveScreen", 10f);   //10초 뒤 가림막 제거 함수 호출
     }
 
     private static void RemoveScreen()
@@ -320,11 +399,18 @@ public class PlayerController : MonoBehaviour
         screenObj.SetActive(false);
     }
 
+    //public static IEnumerator waitTime(float time)
+    //{
+    //    yield return new WaitForSeconds(time);
+    //}
+
+
     private void FixedUpdate()
     {
         if (!stopMove)
             MovePlayer();
     }
+    [YarnCommand("movePlayer")]
     private void MovePlayer()
     {
         move.x = Input.GetAxisRaw("Horizontal");
@@ -332,7 +418,7 @@ public class PlayerController : MonoBehaviour
         move.Normalize();
         rigid.velocity = move * moveSpeed;
     }
-
+    [YarnCommand("stopPlayer")]
     public void StopPlayer()
     {
         move.x = 0;

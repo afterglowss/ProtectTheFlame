@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Fade : MonoBehaviour
 {
     [YarnCommand("fadeIn")]
-    static IEnumerator FadeIn(GameObject obj)
+    public static IEnumerator FadeIn(GameObject obj)
     {
         float FadeCount = 0;
         Color color;
@@ -22,7 +22,7 @@ public class Fade : MonoBehaviour
         }
     }
     [YarnCommand("fadeOut")]
-    static IEnumerator FadeOut(GameObject obj)
+    public static IEnumerator FadeOut(GameObject obj)
     {
         float FadeCount = 1f;
         Color color;
@@ -36,7 +36,7 @@ public class Fade : MonoBehaviour
         }
     }
     [YarnCommand("textFadeIn")]
-    static IEnumerator TextFadeIn(GameObject obj)
+    public static IEnumerator TextFadeIn(GameObject obj)
     {
         float FadeCount = 0;
         Color color;
@@ -50,7 +50,7 @@ public class Fade : MonoBehaviour
         }
     }
     [YarnCommand("textFadeOut")]
-    static IEnumerator TextFadeOut(GameObject obj)
+    public static IEnumerator TextFadeOut(GameObject obj)
     {
         float FadeCount = 1f;
         Color color;
