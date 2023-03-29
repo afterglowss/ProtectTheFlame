@@ -10,6 +10,7 @@ public class FlameSliderController : MonoBehaviour
 {
     [HideInInspector]
     public float FlameGage = 500f;
+    [HideInInspector]
     public bool StopFlameGage = false;
     
     void Update()

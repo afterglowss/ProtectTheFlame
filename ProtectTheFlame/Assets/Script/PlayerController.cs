@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
     bool inTable = false;
     bool inTent = false;
 
-    float time = 0;
+    static float time = 0;
 
     static int firewoodCnt = 0;
     static int paperCnt = 0;
@@ -42,6 +42,8 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI paperTxt;
     public TextMeshProUGUI oilTxt;
     public TextMeshProUGUI screenTxt;
+
+    private static GameObject screenObj;
 
 
     [YarnFunction("getCnt")]
@@ -130,6 +132,8 @@ public class PlayerController : MonoBehaviour
         tsc = FindObjectOfType<TemparatureSliderController>();
         fsc = FindObjectOfType<FlameSliderController>();
         psc = FindObjectOfType<PileSliderController>();
+
+        screenObj = GameObject.Find("GameObject").transform.Find("Screen").gameObject;
     }
 
     public void Update()
@@ -139,6 +143,7 @@ public class PlayerController : MonoBehaviour
         if (inFlame == true)
         {
             isFanning();
+            CheckingKeyDown();
         }
 
         if (inPile == true)
@@ -161,13 +166,37 @@ public class PlayerController : MonoBehaviour
 
         }
     }
+
+    public void CheckingKeyDown()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1)||Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            dialogueRunner.Stop();
+            dialogueRunner.StartDialogue("CheckUseFirewood");
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            dialogueRunner.Stop();
+            dialogueRunner.StartDialogue("CheckUsePaper");
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            dialogueRunner.Stop();
+            dialogueRunner.StartDialogue("CheckUseOil");
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
+        {
+            dialogueRunner.Stop();
+            dialogueRunner.StartDialogue("CheckUseScreen");
+        }
+    }
     
     public void isFanning()                         //부채질 함수
     {
         if (Input.GetKeyDown(KeyCode.Space))        //space 누른 순간 한번만 실행
         {
             dialogueRunner.StartDialogue("Fanning");
-            //dialogueRunner.Stop();
+            dialogueRunner.Stop();
         }
         else if (Input.GetKey(KeyCode.Space))            //space 누르고 있는 동안 실행
         {
@@ -189,6 +218,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             dialogueRunner.StartDialogue("Chopping");
+            dialogueRunner.Stop();
         }
         if (Input.GetKey(KeyCode.Space))
         {
@@ -217,6 +247,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             dialogueRunner.StartDialogue("Making");
+            dialogueRunner.Stop();
         }
         if (Input.GetKey(KeyCode.Space))
         {
@@ -226,12 +257,12 @@ public class PlayerController : MonoBehaviour
 
             time += Time.deltaTime;
 
-            if (time > 5f)
+            if (time > 5f)                      //가림막 제작에 5초 필요
             {
                 time = 0;
-                GetScreen();
+                GetScreen();                    //가림막 획득
                 dialogueRunner.Stop();
-                dialogueRunner.StartDialogue("GetScreen");
+                dialogueRunner.StartDialogue("GetScreen");  //가림막 획득했다는 대사 출력
             }
         }
         if (Input.GetKeyUp(KeyCode.Space))
@@ -279,7 +310,14 @@ public class PlayerController : MonoBehaviour
     {
         screenCnt--;
         fsc.StopFlameGage = true;       //가림막은 10초 동안 불꽃 게이지 감소를 막아줌
-        
+        screenObj.SetActive(true);      //가림막 생성
+
+        //Invoke("RemoveScreen", 10f);
+    }
+
+    private static void RemoveScreen()
+    {
+        screenObj.SetActive(false);
     }
 
     private void FixedUpdate()
@@ -327,7 +365,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Flame"))
         {
-            tsc.stopSlider = true;
+            tsc.stopTemparatureGage = true;
             inFlame = true;
         }
         else if (other.gameObject.CompareTag("Pile"))
@@ -374,7 +412,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Flame"))
         {
-            tsc.stopSlider = false;
+            tsc.stopTemparatureGage = false;
             inFlame = false;
         }
         else if (other.gameObject.CompareTag("Pile"))

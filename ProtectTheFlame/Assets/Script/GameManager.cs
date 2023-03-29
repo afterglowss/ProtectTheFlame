@@ -9,13 +9,12 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    BTN btn;
 
     public Button pauseBtn;
 
     private DialogueRunner dialogueRunner;
     private InMemoryVariableStorage variableStorage;
-    public void Awake()
+    private void Awake()
     {
         Application.targetFrameRate = 60;
         if(instance == null)
@@ -46,6 +45,7 @@ public class GameManager : MonoBehaviour
                     pauseBtn.GetComponent<BTN>().OptionGroupOff();
                 }
             }
+
         }
     }
 

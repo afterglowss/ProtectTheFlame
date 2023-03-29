@@ -8,17 +8,63 @@ tags:
 ---
 장작 패는 중......
 ===
-title: GetFirewood
----
-'가공된 장작'을 얻었다!
-===
-
 title: Making
 tags: 
 ---
 가림막 만드는 중......
 ===
+
+title: Finding
+---
+잡동사니 뒤지는 중......
+===
+
+title: GetFirewood
+---
+'장작'을 얻었다!
+===
+
 title: GetScreen
 ---
 '가림막'을 얻었다!
+===
+title: GetOil
+---
+'기름'을 얻었다!
+===
+title: GetPaper
+---
+'신문지'를 얻었다!
+===
+title: CheckUseFirewood
+---
+'장작'을 넣으시겠습니까?
+-> 예.
+    <<minusCnt firewood>>
+    '장작'을 불꽃에 넣었습니다!
+-> 아니오.
+===
+title: CheckUsePaper
+---
+'신문지'를 넣으시겠습니까?
+-> 예.
+    <<minusCnt paper>>
+    '신문지'를 불꽃에 넣었습니다!
+-> 아니오.
+===
+title: CheckUseOil
+---
+'기름'을 넣으시겠습니까?
+-> 예.
+    <<minusCnt oil>>
+    '기름'을 불꽃에 넣었습니다!
+-> 아니오.
+===
+title: CheckUseScreen
+---
+'가림막'을 설치하시겠습니까?
+-> 예.
+    <<minusCnt screen>>
+    '가림막'을 설치했습니다!
+-> 아니오.
 ===
