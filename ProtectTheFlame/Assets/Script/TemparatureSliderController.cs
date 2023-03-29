@@ -7,12 +7,13 @@ public class TemparatureSliderController : MonoBehaviour
 {
     [HideInInspector]
     public float TemparatureGage = 70;
-    public bool stopSlider;
+    [HideInInspector]
+    public bool stopTemparatureGage;
 
 
     private void Start()
     {
-        stopSlider = false;
+        stopTemparatureGage = false;
     }
 
     void Update()
@@ -30,11 +31,11 @@ public class TemparatureSliderController : MonoBehaviour
      
     public void TempGUpDown()
     {
-        if (!stopSlider)
+        if (!stopTemparatureGage)
         {
             TemparatureGage -= Time.deltaTime * 2;
         }
-        else if (stopSlider)
+        else if (stopTemparatureGage)
         {
             TemparatureGage += Time.deltaTime * 4;
 

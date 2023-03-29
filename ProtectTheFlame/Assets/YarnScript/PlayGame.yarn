@@ -8,17 +8,88 @@ tags:
 ---
 장작 패는 중......
 ===
-title: GetFirewood
----
-'가공된 장작'을 얻었다!
-===
-
 title: Making
 tags: 
 ---
 가림막 만드는 중......
 ===
+
+title: Finding
+---
+잡동사니 뒤지는 중......
+===
+
+title: GetFirewood
+---
+'장작'을 얻었다!
+===
+
 title: GetScreen
 ---
 '가림막'을 얻었다!
+===
+title: GetOil
+---
+'기름'을 얻었다! 이걸 불꽃에 넣으면 불이 살아날 것이다.
+===
+title: GetPaper
+---
+'신문지'를 얻었다! 장작처럼 태울 수 있을 것 같다.
+===
+
+title: GetTrash
+---
+이건... 태우지도 못할 쓰레기다. 그냥 버리자.
+===
+title: GetUnknown
+---
+......이건 뭐지?
+===
+title: CheckUseFirewood
+---
+'장작'을 넣으시겠습니까?
+-> 예.
+    <<movePlayer Player>>
+    <<stopMoveBool true>>
+    <<minusCnt firewood>>
+    '장작'을 불꽃에 넣었습니다!
+-> 아니오. 
+    <<movePlayer Player>>
+    <<stopMoveBool true>>
+===
+title: CheckUsePaper
+---
+'신문지'를 넣으시겠습니까?
+-> 예.
+    <<movePlayer Player>>
+    <<stopMoveBool true>>
+    <<minusCnt paper>>
+    '신문지'를 불꽃에 넣었습니다!
+-> 아니오.
+    <<movePlayer Player>>
+    <<stopMoveBool true>>
+===
+title: CheckUseOil
+---
+'기름'을 넣으시겠습니까?
+-> 예.
+    <<movePlayer Player>>
+    <<stopMoveBool true>>
+    <<minusCnt oil>>
+    '기름'을 불꽃에 넣었습니다!
+-> 아니오.
+    <<movePlayer Player>>
+    <<stopMoveBool true>>
+===
+title: CheckUseScreen
+---
+'가림막'을 설치하시겠습니까?
+-> 예.
+    <<movePlayer Player>>
+    <<stopMoveBool true>>
+    <<minusCnt screen>>
+    '가림막'을 설치했습니다!
+-> 아니오.
+    <<movePlayer Player>>
+    <<stopMoveBool true>>
 ===
