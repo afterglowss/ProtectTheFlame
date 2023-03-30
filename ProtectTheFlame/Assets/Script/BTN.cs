@@ -49,12 +49,16 @@ public class BTN : MonoBehaviour
         CanvasGroupOn(optionGroup);
         CanvasGroupOff(mainGroup);
         GameManager.PauseGame();
+        //PlayerController.StopMoveBool(true);
+        //PlayerController.instance.StopPlayer();
     }
     public void OptionGroupOff()
     {
         CanvasGroupOn(mainGroup);
         CanvasGroupOff(optionGroup);
         GameManager.ResumeGame();
+        //PlayerController.StopMoveBool(false);
+        //PlayerController.instance.MovePlayer();
     }
 
     public void CanvasGroupOn(CanvasGroup cg)

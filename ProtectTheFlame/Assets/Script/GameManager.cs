@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    public static bool isPause = false;
 
     public Button pauseBtn;
 
@@ -65,10 +66,12 @@ public class GameManager : MonoBehaviour
     public static void PauseGame()
     {
         Time.timeScale = 0;
+        isPause = true;
     }
     public static void ResumeGame()
     {
         Time.timeScale = 1;
+        isPause = false;
     }
 
 
