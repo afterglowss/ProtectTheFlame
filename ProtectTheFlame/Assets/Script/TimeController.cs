@@ -20,9 +20,11 @@ public class TimeController : MonoBehaviour
     public static int min = 0;
     public static float sec = 0f;
 
+    public static TimeController instance;
+
     private void Awake()
     {
-
+        instance = this;
     }
     public void Start()
     {

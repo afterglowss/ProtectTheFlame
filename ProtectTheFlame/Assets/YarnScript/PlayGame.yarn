@@ -1,95 +1,122 @@
-﻿title: Fanning
+﻿title: ZeroCnt
+---
+사용하고자 하는 아이템이 없습니다!
+===
+
+title: Fanning
 tags: 
 ---
-부채질 하는 중......
+부채질 하는 중...... 
+<<stop>>
 ===
 title: Chopping
 tags: 
 ---
 장작 패는 중......
+<<stop>>
 ===
 title: Making
 tags: 
 ---
 가림막 만드는 중......
+<<stop>>
 ===
 
 title: Finding
 ---
 잡동사니 뒤지는 중......
+<<stop>>
 ===
 
 title: GetFirewood
 ---
 '장작'을 얻었다!
+<<stop>>
 ===
 
 title: GetScreen
 ---
 '가림막'을 얻었다!
+<<stop>>
 ===
 title: GetOil
 ---
-'기름'을 얻었다! 이걸 불꽃에 넣으면 불이 살아날 것이다.
+'기름'을 얻었다!
+<<stop>>
 ===
 title: GetPaper
 ---
-'신문지'를 얻었다! 장작처럼 태울 수 있을 것 같다.
+'신문지'를 얻었다!
+<<stop>>
 ===
 
 title: GetTrash
 ---
-이건... 태우지도 못할 쓰레기다. 그냥 버리자.
+태우지도 못할 쓰레기다. 그냥 버리자.
+<<stop>>
 ===
 title: GetUnknown
 ---
 ......이건 뭐지?
+<<stop>>
 ===
 title: CheckUseFirewood
 ---
+<<stopPlayer Player>>
+<<stopMoveBool true>>
+<<isCheckingBool true>>
 '장작'을 넣으시겠습니까?
 -> 예.
-    <<movePlayer Player>>
-    <<stopMoveBool true>>
     <<minusCnt firewood>>
     '장작'을 불꽃에 넣었습니다!
 -> 아니오. 
-    <<movePlayer Player>>
-    <<stopMoveBool true>>
+<<movePlayer Player>>
+<<stopMoveBool false>>
+<<isCheckingBool false>>
+<<stop>>
 ===
 title: CheckUsePaper
 ---
+<<stopPlayer Player>>
+<<stopMoveBool true>>
+<<isCheckingBool true>>
 '신문지'를 넣으시겠습니까?
 -> 예.
-    <<movePlayer Player>>
-    <<stopMoveBool true>>
     <<minusCnt paper>>
     '신문지'를 불꽃에 넣었습니다!
 -> 아니오.
-    <<movePlayer Player>>
-    <<stopMoveBool true>>
+<<movePlayer Player>>
+<<stopMoveBool false>>
+<<isCheckingBool false>>
+<<stop>>
 ===
 title: CheckUseOil
 ---
+<<stopPlayer Player>>
+<<stopMoveBool true>>
+<<isCheckingBool true>>
 '기름'을 넣으시겠습니까?
 -> 예.
-    <<movePlayer Player>>
-    <<stopMoveBool true>>
     <<minusCnt oil>>
     '기름'을 불꽃에 넣었습니다!
 -> 아니오.
-    <<movePlayer Player>>
-    <<stopMoveBool true>>
+<<movePlayer Player>>
+<<stopMoveBool false>>
+<<isCheckingBool false>>
+<<stop>>
 ===
 title: CheckUseScreen
 ---
+<<stopPlayer Player>>
+<<stopMoveBool true>>
+<<isCheckingBool true>>
 '가림막'을 설치하시겠습니까?
 -> 예.
-    <<movePlayer Player>>
-    <<stopMoveBool true>>
     <<minusCnt screen>>
     '가림막'을 설치했습니다!
 -> 아니오.
-    <<movePlayer Player>>
-    <<stopMoveBool true>>
+<<movePlayer Player>>
+<<stopMoveBool false>>
+<<isCheckingBool false>>
+<<stop>>
 ===
