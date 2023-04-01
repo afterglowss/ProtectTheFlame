@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     bool inTable = false;
     bool inTent = false;
 
-    static float time = 0;
+    static float itemCoolTime = 0;
 
     static int firewoodCnt = 0;
     static int paperCnt = 0;
@@ -48,6 +48,13 @@ public class PlayerController : MonoBehaviour
 
     bool hungry = false;
 
+    public static bool isChecking = false;
+
+    [YarnCommand("isCheckingBool")]
+    public static void IsCheckingBool(bool state)
+    {
+        isChecking = state;
+    }
 
     [YarnCommand("stopMoveBool")]
     public static void StopMoveBool(bool state)     //얀 스크립트에서 stopMove bool 제어 가능
@@ -144,6 +151,7 @@ public class PlayerController : MonoBehaviour
         psc = FindObjectOfType<PileSliderController>();
 
         screenObj = GameObject.Find("GameObject").transform.Find("Screen").gameObject;
+        instance = this;
     }
 
     public void Update()
@@ -179,31 +187,52 @@ public class PlayerController : MonoBehaviour
 
     public void CheckingItemUsing()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)||Input.GetKeyDown(KeyCode.Keypad1))
+        if (isChecking == true) return;
+        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
         {
-            //stopMove = true;
-            //StopPlayer();
+            if (firewoodCnt == 0)
+            {
+                dialogueRunner.Stop();
+                dialogueRunner.StartDialogue("ZeroCnt");
+                return;
+            }
+            //isChecking = true;
             dialogueRunner.Stop();
             dialogueRunner.StartDialogue("CheckUseFirewood");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
         {
-            //stopMove = true;
-            //StopPlayer();
+            if (paperCnt == 0)
+            {
+                dialogueRunner.Stop();
+                dialogueRunner.StartDialogue("ZeroCnt");
+                return;
+            }
+            //isChecking = true;
             dialogueRunner.Stop();
             dialogueRunner.StartDialogue("CheckUsePaper");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
         {
-            //stopMove = true;
-            //StopPlayer();
+            if (oilCnt == 0)
+            {
+                dialogueRunner.Stop();
+                dialogueRunner.StartDialogue("ZeroCnt");
+                return;
+            }
+            //isChecking = true;
             dialogueRunner.Stop();
             dialogueRunner.StartDialogue("CheckUseOil");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
         {
-            //stopMove = true;
-            //StopPlayer();
+            if (screenCnt == 0)
+            {
+                dialogueRunner.Stop();
+                dialogueRunner.StartDialogue("ZeroCnt");
+                return;
+            }
+            //isChecking = true;
             dialogueRunner.Stop();
             dialogueRunner.StartDialogue("CheckUseScreen");
         }
@@ -212,10 +241,11 @@ public class PlayerController : MonoBehaviour
     public void isFanning()                         //부채질 함수
     {
         if (GameManager.isPause == true) return;
+        if (isChecking == true) return;
         if (Input.GetKeyDown(KeyCode.Space))        //space 누른 순간 한번만 실행
         {
+            dialogueRunner.Stop();
             dialogueRunner.StartDialogue("Fanning");
-            //dialogueRunner.Stop();
         }
         else if (Input.GetKey(KeyCode.Space))            //space 누르고 있는 동안 실행
         {
@@ -223,7 +253,7 @@ public class PlayerController : MonoBehaviour
             stopMove = true;
             StopPlayer();
 
-            fsc.FlameGage += Time.deltaTime * 40;
+            fsc.FlameGage += Time.deltaTime * 20;
         }
         else if (Input.GetKeyUp(KeyCode.Space))          //space 뗀 순간 한번만 실행
         {
@@ -235,10 +265,11 @@ public class PlayerController : MonoBehaviour
     public void isChopping()                        //장작 패기 함수
     {
         if (GameManager.isPause == true) return;
+        if (isChecking == true) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            dialogueRunner.Stop();
             dialogueRunner.StartDialogue("Chopping");
-            //dialogueRunner.Stop();
         }
         if (Input.GetKey(KeyCode.Space))
         {
@@ -246,11 +277,11 @@ public class PlayerController : MonoBehaviour
             stopMove = true;
             StopPlayer();
 
-            time += Time.deltaTime;
+            itemCoolTime += Time.deltaTime;
 
-            if (time > 3f)
+            if (itemCoolTime > 3f)
             {
-                time = 0;
+                itemCoolTime = 0;
                 GetFirewood();
             }
         }
@@ -259,16 +290,17 @@ public class PlayerController : MonoBehaviour
             //dialogueRunner.Stop();
             anim.SetBool("isChopping", false);
             stopMove = false;
-            time = 0;
+            itemCoolTime = 0;
         }
     }
     public void isMaking()                        //가림막 제작 함수
     {
         if (GameManager.isPause == true) return;
+        if (isChecking == true) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            dialogueRunner.Stop();
             dialogueRunner.StartDialogue("Making");
-            //dialogueRunner.Stop();
         }
         if (Input.GetKey(KeyCode.Space))
         {
@@ -276,14 +308,12 @@ public class PlayerController : MonoBehaviour
             stopMove = true;
             StopPlayer();
 
-            time += Time.deltaTime;
+            itemCoolTime += Time.deltaTime;
 
-            if (time > 5f)                      //가림막 제작에 5초 필요
+            if (itemCoolTime > 5f)                      //가림막 제작에 5초 필요
             {
-                time = 0;
+                itemCoolTime = 0;
                 GetScreen();                    //가림막 획득
-                //dialogueRunner.StartDialogue("GetScreen");  //가림막 획득했다는 대사 출력
-                //dialogueRunner.Stop();
             }
         }
         if (Input.GetKeyUp(KeyCode.Space))
@@ -291,16 +321,17 @@ public class PlayerController : MonoBehaviour
             //dialogueRunner.Stop();
             anim.SetBool("isMaking", false);
             stopMove = false;
-            time = 0;
+            itemCoolTime = 0;
         }
     }
     public void isFinding()                        //잡동사니 뒤지는 함수
     {
         if (GameManager.isPause == true) return;
+        if (isChecking == true) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            dialogueRunner.Stop();
             dialogueRunner.StartDialogue("Finding");
-            //dialogueRunner.Stop();
         }
         if (Input.GetKey(KeyCode.Space))
         {
@@ -308,20 +339,19 @@ public class PlayerController : MonoBehaviour
             stopMove = true;
             StopPlayer();
 
-            time += Time.deltaTime;
+            itemCoolTime += Time.deltaTime;
 
-            if (time > 5f)                      //잡동사니 뒤지는 데 5초 필요
+            if (itemCoolTime > 5f)                      //잡동사니 뒤지는 데 5초 필요
             {
-                time = 0;
+                itemCoolTime = 0;
                 GetItem();                    //랜덤으로 아이템 획득
             }
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            //dialogueRunner.Stop();
             anim.SetBool("isFinding", false);
             stopMove = false;
-            time = 0;
+            itemCoolTime = 0;
         }
     }
 
@@ -398,15 +428,16 @@ public class PlayerController : MonoBehaviour
     public static void UseScreen()      //가림막 사용
     {
         screenCnt--;
-        fsc.StopFlameGage = true;       //가림막은 10초 동안 불꽃 게이지 감소를 막아줌
+        fsc.stopFlameGage = true;       //가림막은 10초 동안 불꽃 게이지 감소를 막아줌
         screenObj.SetActive(true);      //가림막 생성
 
         instance.Invoke("RemoveScreen", 10f);   //10초 뒤 가림막 제거 함수 호출
     }
 
-    private static void RemoveScreen()
+    private void RemoveScreen()
     {
         screenObj.SetActive(false);
+        fsc.stopFlameGage = false;
     }
 
     //public static IEnumerator waitTime(float time)

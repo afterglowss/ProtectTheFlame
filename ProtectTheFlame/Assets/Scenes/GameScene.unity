@@ -2888,13 +2888,15 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -0.5167004, y: -0.10557985}
-  - {x: -0.52914435, y: -0.61207604}
-  - {x: -0.3445136, y: -0.7891371}
-  - {x: 0.35226157, y: -0.7995807}
-  - {x: 0.51303136, y: -0.63416064}
-  - {x: 0.49656403, y: -0.10398573}
-  - {x: -0.50412786, y: -0.10596532}
+  - {x: -0.35482776, y: -0.042378895}
+  - {x: -0.5071449, y: -0.15667114}
+  - {x: -0.5147988, y: -0.5997791}
+  - {x: -0.3366036, y: -0.7498989}
+  - {x: 0.3448264, y: -0.7556448}
+  - {x: 0.5134963, y: -0.62358123}
+  - {x: 0.5072652, y: -0.15998599}
+  - {x: 0.3371242, y: -0.037755325}
+  - {x: -0.3581036, y: -0.034492083}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -3202,7 +3204,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3292657645895612462, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 374.4
+      value: 359.4
       objectReference: {fileID: 0}
     - target: {fileID: 3292657645895612463, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
       propertyPath: m_Enabled
@@ -3217,6 +3219,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3292657645895612466, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
+      propertyPath: fadeTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3292657645895612466, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
       propertyPath: optionViewPrefab
       value: 
       objectReference: {fileID: 1833187535}
@@ -3226,19 +3232,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3292657645953925571, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 33.58
+      value: 33.81
       objectReference: {fileID: 0}
     - target: {fileID: 3292657645953925571, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 75.51
+      value: 177.07
       objectReference: {fileID: 0}
     - target: {fileID: 3292657645953925571, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -0.27999878
       objectReference: {fileID: 0}
     - target: {fileID: 3292657645953925571, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -37.75
+      value: -85.69
       objectReference: {fileID: 0}
     - target: {fileID: 3292657645953925573, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
       propertyPath: m_Sprite
@@ -3338,7 +3344,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3292657647476544606, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
       propertyPath: m_VerticalAlignment
-      value: 512
+      value: 256
       objectReference: {fileID: 0}
     - target: {fileID: 3579681405068720530, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
       propertyPath: startNode
@@ -3901,7 +3907,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FlameGage: 500
-  StopFlameGage: 0
+  stopFlameGage: 0
 --- !u!114 &644568866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4758,8 +4764,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 774430431}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.05, y: -0.216, z: 0}
-  m_LocalScale: {x: 2.04078, y: 1.1877497, z: 1}
+  m_LocalPosition: {x: -0.052, y: -0.265, z: 0}
+  m_LocalScale: {x: 1.9013947, y: 1.0977184, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 546302023}

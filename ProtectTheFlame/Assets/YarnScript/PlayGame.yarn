@@ -1,6 +1,6 @@
-﻿title: Stop
+﻿title: ZeroCnt
 ---
-<<stop>>
+사용하고자 하는 아이템이 없습니다!
 ===
 
 title: Fanning
@@ -64,6 +64,7 @@ title: CheckUseFirewood
 ---
 <<stopPlayer Player>>
 <<stopMoveBool true>>
+<<isCheckingBool true>>
 '장작'을 넣으시겠습니까?
 -> 예.
     <<minusCnt firewood>>
@@ -71,12 +72,14 @@ title: CheckUseFirewood
 -> 아니오. 
 <<movePlayer Player>>
 <<stopMoveBool false>>
+<<isCheckingBool false>>
 <<stop>>
 ===
 title: CheckUsePaper
 ---
 <<stopPlayer Player>>
 <<stopMoveBool true>>
+<<isCheckingBool true>>
 '신문지'를 넣으시겠습니까?
 -> 예.
     <<minusCnt paper>>
@@ -84,12 +87,14 @@ title: CheckUsePaper
 -> 아니오.
 <<movePlayer Player>>
 <<stopMoveBool false>>
+<<isCheckingBool false>>
 <<stop>>
 ===
 title: CheckUseOil
 ---
 <<stopPlayer Player>>
 <<stopMoveBool true>>
+<<isCheckingBool true>>
 '기름'을 넣으시겠습니까?
 -> 예.
     <<minusCnt oil>>
@@ -97,12 +102,14 @@ title: CheckUseOil
 -> 아니오.
 <<movePlayer Player>>
 <<stopMoveBool false>>
+<<isCheckingBool false>>
 <<stop>>
 ===
 title: CheckUseScreen
 ---
 <<stopPlayer Player>>
 <<stopMoveBool true>>
+<<isCheckingBool true>>
 '가림막'을 설치하시겠습니까?
 -> 예.
     <<minusCnt screen>>
@@ -110,5 +117,6 @@ title: CheckUseScreen
 -> 아니오.
 <<movePlayer Player>>
 <<stopMoveBool false>>
+<<isCheckingBool false>>
 <<stop>>
 ===
