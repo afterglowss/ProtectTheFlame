@@ -11,8 +11,12 @@ public class TimeController : MonoBehaviour
     [SerializeField]
 
     public TextMeshProUGUI timeText;
-    private DialogueRunner dialogueRunner;
-    private InMemoryVariableStorage variableStorage;
+
+    public DialogueRunner dialogueRunner1;
+    public InMemoryVariableStorage variableStorage1;
+
+    public DialogueRunner dialogueRunner2;
+    public InMemoryVariableStorage variableStorage2;
 
     int b;
 
@@ -29,8 +33,7 @@ public class TimeController : MonoBehaviour
     public void Start()
     {
         b = 0;
-        dialogueRunner = FindObjectOfType<DialogueRunner>();
-        variableStorage = FindObjectOfType<InMemoryVariableStorage>();
+        
     }
 
     void Update()
@@ -60,13 +63,13 @@ public class TimeController : MonoBehaviour
 
     public void TimeFinish()
     {
-        dialogueRunner.Stop();
-        dialogueRunner.StartDialogue("NormalEnding");
+        //dialogueRunner.Stop();
+        //dialogueRunner.StartDialogue("NormalEnding");
     }
     public void Remove()
     {
-        dialogueRunner.Stop();
-        dialogueRunner.StartDialogue("ToInfering");
+        //dialogueRunner.Stop();
+        //dialogueRunner.StartDialogue("ToInfering");
     }
 
     [YarnCommand("timeSet")]

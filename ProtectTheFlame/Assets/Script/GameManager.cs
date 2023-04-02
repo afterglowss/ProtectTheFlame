@@ -13,8 +13,8 @@ public class GameManager : MonoBehaviour
 
     public Button pauseBtn;
 
-    private DialogueRunner dialogueRunner;
-    private InMemoryVariableStorage variableStorage;
+    //private DialogueRunner dialogueRunner;
+    //private InMemoryVariableStorage variableStorage;
     private void Awake()
     {
         Application.targetFrameRate = 60;
@@ -27,8 +27,8 @@ public class GameManager : MonoBehaviour
         {
             Destroy(instance);
         }
-        dialogueRunner = FindObjectOfType<DialogueRunner>();
-        variableStorage = FindObjectOfType<InMemoryVariableStorage>();
+        //dialogueRunner = FindObjectOfType<DialogueRunner>();
+        //variableStorage = FindObjectOfType<InMemoryVariableStorage>();
     }
 
     public void Update()

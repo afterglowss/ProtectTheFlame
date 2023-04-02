@@ -9,9 +9,9 @@ using UnityEngine.UI;
 public class FlameSliderController : MonoBehaviour
 {
     [HideInInspector]
-    public float FlameGage = 500f;
+    public static float FlameGage = 500f;
     [HideInInspector]
-    public bool stopFlameGage = false;
+    public static bool stopFlameGage = false;
     
     void Update()
     {
