@@ -8,8 +8,11 @@ using Yarn.Unity;
 
 public class PlayerController : MonoBehaviour
 {
-    private DialogueRunner dialogueRunner;
-    private InMemoryVariableStorage variableStorage;
+    public DialogueRunner dialogueRunner1;
+    public InMemoryVariableStorage variableStorage1;
+
+    public DialogueRunner dialogueRunner2;
+    public InMemoryVariableStorage variableStorage2;
 
     public static PlayerController instance;
 
@@ -50,6 +53,12 @@ public class PlayerController : MonoBehaviour
 
     public static bool isChecking = false;
 
+    public static bool blockFanning = false;
+
+    public static bool blockScreen = false;         //눈보라 이벤트 시 스크린 사용 불가. 원래 있던 것도 파괴됨.
+
+    public static bool isScreen = false;
+
     [YarnCommand("isCheckingBool")]
     public static void IsCheckingBool(bool state)
     {
@@ -62,6 +71,11 @@ public class PlayerController : MonoBehaviour
         stopMove = state;
     }
 
+    [YarnFunction("getBlockScreen")]
+    public static bool GetBlockScreen()
+    {
+        return blockScreen;
+    }
 
     [YarnFunction("getCnt")]
     public static int GetCnt(string name)
@@ -143,8 +157,8 @@ public class PlayerController : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
-        dialogueRunner = FindObjectOfType<DialogueRunner>();
-        variableStorage = FindObjectOfType<InMemoryVariableStorage>();
+        //dialogueRunner1 = FindObjectOfType<DialogueRunner>();
+        //variableStorage1 = FindObjectOfType<InMemoryVariableStorage>();
         
         tsc = FindObjectOfType<TemparatureSliderController>();
         fsc = FindObjectOfType<FlameSliderController>();
@@ -160,28 +174,28 @@ public class PlayerController : MonoBehaviour
         UpdateCnt();
         if (inFlame == true)
         {
-            isFanning();
+            IsFanning();
             CheckingItemUsing();
         }
 
         if (inPile == true)
         {
-            isChopping();
+            IsChopping();
         }
 
         if (inJunk == true)
         {
-            isFinding();
+            IsFinding();
         }
 
         if (inTable == true)
         {
-            isMaking();
+            IsMaking();
         }
 
         if (inTent == true && hungry == true)
         {
-            isTenting();
+            IsTenting();
         }
     }
 
@@ -192,84 +206,105 @@ public class PlayerController : MonoBehaviour
         {
             if (firewoodCnt == 0)
             {
-                dialogueRunner.Stop();
-                dialogueRunner.StartDialogue("ZeroCnt");
+                dialogueRunner1.Stop();
+                dialogueRunner1.StartDialogue("ZeroCnt");
                 return;
             }
             //isChecking = true;
-            dialogueRunner.Stop();
-            dialogueRunner.StartDialogue("CheckUseFirewood");
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("CheckUseFirewood");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
         {
             if (paperCnt == 0)
             {
-                dialogueRunner.Stop();
-                dialogueRunner.StartDialogue("ZeroCnt");
+                dialogueRunner1.Stop();
+                dialogueRunner1.StartDialogue("ZeroCnt");
                 return;
             }
             //isChecking = true;
-            dialogueRunner.Stop();
-            dialogueRunner.StartDialogue("CheckUsePaper");
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("CheckUsePaper");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
         {
             if (oilCnt == 0)
             {
-                dialogueRunner.Stop();
-                dialogueRunner.StartDialogue("ZeroCnt");
+                dialogueRunner1.Stop();
+                dialogueRunner1.StartDialogue("ZeroCnt");
                 return;
             }
             //isChecking = true;
-            dialogueRunner.Stop();
-            dialogueRunner.StartDialogue("CheckUseOil");
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("CheckUseOil");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
         {
             if (screenCnt == 0)
             {
-                dialogueRunner.Stop();
-                dialogueRunner.StartDialogue("ZeroCnt");
+                dialogueRunner1.Stop();
+                dialogueRunner1.StartDialogue("ZeroCnt");
                 return;
             }
-            //isChecking = true;
-            dialogueRunner.Stop();
-            dialogueRunner.StartDialogue("CheckUseScreen");
+            if (blockScreen == true)
+            {
+                dialogueRunner1.Stop();
+                dialogueRunner1.StartDialogue("BlockScreen");
+            }
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("CheckUseScreen");
         }
     }
     
-    public void isFanning()                         //부채질 함수
+    public void IsFanning()                         //부채질 함수
     {
         if (GameManager.isPause == true) return;
         if (isChecking == true) return;
+        
         if (Input.GetKeyDown(KeyCode.Space))        //space 누른 순간 한번만 실행
         {
-            dialogueRunner.Stop();
-            dialogueRunner.StartDialogue("Fanning");
+            if (blockFanning == true)               //부채질을 할 수 없을 때
+            {
+                dialogueRunner1.Stop();
+                dialogueRunner1.StartDialogue("BlockFanning");
+                return;
+            }
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("Fanning");
         }
         else if (Input.GetKey(KeyCode.Space))            //space 누르고 있는 동안 실행
         {
+            if (blockFanning == true)               //부채질을 할 수 없을 때
+            {
+                return;
+            }
             anim.SetBool("isFanning", true);
             stopMove = true;
             StopPlayer();
-
-            fsc.FlameGage += Time.deltaTime * 20;
+            
+            FlameSliderController.FlameGage += Time.deltaTime * 30;
         }
         else if (Input.GetKeyUp(KeyCode.Space))          //space 뗀 순간 한번만 실행
         {
             //dialogueRunner.Stop();
+            if (blockFanning == true)               //부채질을 할 수 없을 때
+            {
+                anim.SetBool("isFanning", false);
+                stopMove = false;
+                return;
+            }
             anim.SetBool("isFanning", false);
             stopMove = false;
         }
     }
-    public void isChopping()                        //장작 패기 함수
+    public void IsChopping()                        //장작 패기 함수
     {
         if (GameManager.isPause == true) return;
         if (isChecking == true) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            dialogueRunner.Stop();
-            dialogueRunner.StartDialogue("Chopping");
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("Chopping");
         }
         if (Input.GetKey(KeyCode.Space))
         {
@@ -279,7 +314,7 @@ public class PlayerController : MonoBehaviour
 
             itemCoolTime += Time.deltaTime;
 
-            if (itemCoolTime > 3f)
+            if (itemCoolTime > 5f)
             {
                 itemCoolTime = 0;
                 GetFirewood();
@@ -293,14 +328,14 @@ public class PlayerController : MonoBehaviour
             itemCoolTime = 0;
         }
     }
-    public void isMaking()                        //가림막 제작 함수
+    public void IsMaking()                        //가림막 제작 함수
     {
         if (GameManager.isPause == true) return;
         if (isChecking == true) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            dialogueRunner.Stop();
-            dialogueRunner.StartDialogue("Making");
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("Making");
         }
         if (Input.GetKey(KeyCode.Space))
         {
@@ -324,14 +359,14 @@ public class PlayerController : MonoBehaviour
             itemCoolTime = 0;
         }
     }
-    public void isFinding()                        //잡동사니 뒤지는 함수
+    public void IsFinding()                        //잡동사니 뒤지는 함수
     {
         if (GameManager.isPause == true) return;
         if (isChecking == true) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            dialogueRunner.Stop();
-            dialogueRunner.StartDialogue("Finding");
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("Finding");
         }
         if (Input.GetKey(KeyCode.Space))
         {
@@ -341,7 +376,7 @@ public class PlayerController : MonoBehaviour
 
             itemCoolTime += Time.deltaTime;
 
-            if (itemCoolTime > 5f)                      //잡동사니 뒤지는 데 5초 필요
+            if (itemCoolTime > 3f)                      //잡동사니 뒤지는 데 5초 필요
             {
                 itemCoolTime = 0;
                 GetItem();                    //랜덤으로 아이템 획득
@@ -355,22 +390,22 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void isTenting()
+    public void IsTenting()
     {
         if (GameManager.isPause == true) return;
     }
     public void GetFirewood()
     {
         firewoodCnt++;
-        dialogueRunner.Stop();
-        dialogueRunner.StartDialogue("GetFirewood");
+        dialogueRunner1.Stop();
+        dialogueRunner1.StartDialogue("GetFirewood");
     }
 
     public void GetScreen()
     {
         screenCnt++;
-        dialogueRunner.Stop();
-        dialogueRunner.StartDialogue("GetScreen");
+        dialogueRunner1.Stop();
+        dialogueRunner1.StartDialogue("GetScreen");
     }
 
     public void GetItem()
@@ -379,65 +414,67 @@ public class PlayerController : MonoBehaviour
         if (getWhat <= 20)                                      //20%의 확률로 장작 획득
         {
             firewoodCnt++;
-            dialogueRunner.Stop();
-            dialogueRunner.StartDialogue("GetFirewood");
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("GetFirewood");
         }
         else if (getWhat > 20 && getWhat <= 60)                 //40%의 확률로 신문지 획득
         {
             paperCnt++;
-            dialogueRunner.Stop();
-            dialogueRunner.StartDialogue("GetPaper");
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("GetPaper");
         }
         else if (getWhat > 60 && getWhat <= 70)                 //10%의 확률로 기름 획득
         {
             oilCnt++;
-            dialogueRunner.Stop();
-            dialogueRunner.StartDialogue("GetOil");
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("GetOil");
         }
         else if (getWhat > 70 && getWhat <= 95)                 //25%의 확률로 쓰레기 획득
         {
-            dialogueRunner.Stop();
-            dialogueRunner.StartDialogue("GetTrash");
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("GetTrash");
         }
         else                                                    //5%의 확률로 ??? 획득
         {
-            dialogueRunner.Stop();
-            dialogueRunner.StartDialogue("GetUnknown");
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("GetUnknown");
         }
     }
 
     public static void UseFirewood()    //장작 사용
     {
         firewoodCnt--;
-        psc.PileGage += 200;            //장작 게이지 +200
-        fsc.FlameGage += 20;            //불꽃 게이지 +20
+        PileSliderController.PileGage += 200;            //장작 게이지 +200
+        FlameSliderController.FlameGage += 20;            //불꽃 게이지 +20
     }
 
     public static void UsePaper()       //신문지 사용
     {
         paperCnt--;
-        fsc.FlameGage += 50;            //불꽃 게이지 +50
+        FlameSliderController.FlameGage += 50;            //불꽃 게이지 +50
     }
 
     public static void UseOil()         //기름 사용
     {
         oilCnt--;
-        fsc.FlameGage += 100;           //불꽃 게이지 +100
+        FlameSliderController.FlameGage += 100;           //불꽃 게이지 +100
     }
 
     public static void UseScreen()      //가림막 사용
     {
+        isScreen = true;                                    //스크린 있음
         screenCnt--;
-        fsc.stopFlameGage = true;       //가림막은 10초 동안 불꽃 게이지 감소를 막아줌
+        FlameSliderController.stopFlameGage = true;       //가림막은 10초 동안 불꽃 게이지 감소를 막아줌
         screenObj.SetActive(true);      //가림막 생성
 
         instance.Invoke("RemoveScreen", 10f);   //10초 뒤 가림막 제거 함수 호출
     }
 
-    private void RemoveScreen()
+    public void RemoveScreen()
     {
+        isScreen = false;                                   //스크린 제거
         screenObj.SetActive(false);
-        fsc.stopFlameGage = false;
+        FlameSliderController.stopFlameGage = false;
     }
 
     //public static IEnumerator waitTime(float time)
@@ -492,7 +529,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Flame"))
         {
-            tsc.stopTemparatureGage = true;
+            TemparatureSliderController.stopTemparatureGage = true;
             inFlame = true;
         }
         else if (other.gameObject.CompareTag("Pile"))
@@ -539,7 +576,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Flame"))
         {
-            tsc.stopTemparatureGage = false;
+            TemparatureSliderController.stopTemparatureGage = false;
             inFlame = false;
         }
         else if (other.gameObject.CompareTag("Pile"))

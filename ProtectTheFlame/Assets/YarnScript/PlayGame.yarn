@@ -120,3 +120,46 @@ title: CheckUseScreen
 <<isCheckingBool false>>
 <<stop>>
 ===
+title: NoEvent
+---
+이벤트가 없습니다.
+===
+title: StrongWind
+---
+바람이 강하게 불고 있다.
+===
+
+title: Snow
+---
+하늘에서 눈발이 날리기 시작했다. 
+===
+
+title: Blizzard
+---
+조금씩 날리던 눈발이 지나치게 거세졌다.
+===
+
+title: Fog
+---
+안개가 끼기 시작했다.
+===
+
+title: BlockFanning
+---
+지금은 부채질을 할 수 없다.
+===
+
+title: BlockScreen
+---
+지금은 가림막을 설치할 수 없다.
+===
+
+title: DestroyScreen
+---
+거센 눈보라에 가림막이 파괴되었다.
+===
+
+title: StopEvent
+---
+<<stop>>
+===
