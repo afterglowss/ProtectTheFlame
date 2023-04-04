@@ -55,6 +55,10 @@ public class PlayerController : MonoBehaviour
 
     public static bool blockFanning = false;
 
+    public static bool blockScreen = false;         //눈보라 이벤트 시 스크린 사용 불가. 원래 있던 것도 파괴됨.
+
+    public static bool isScreen = false;
+
     [YarnCommand("isCheckingBool")]
     public static void IsCheckingBool(bool state)
     {
@@ -67,6 +71,11 @@ public class PlayerController : MonoBehaviour
         stopMove = state;
     }
 
+    [YarnFunction("getBlockScreen")]
+    public static bool GetBlockScreen()
+    {
+        return blockScreen;
+    }
 
     [YarnFunction("getCnt")]
     public static int GetCnt(string name)
@@ -237,7 +246,11 @@ public class PlayerController : MonoBehaviour
                 dialogueRunner1.StartDialogue("ZeroCnt");
                 return;
             }
-            //isChecking = true;
+            if (blockScreen == true)
+            {
+                dialogueRunner1.Stop();
+                dialogueRunner1.StartDialogue("BlockScreen");
+            }
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("CheckUseScreen");
         }
@@ -261,15 +274,25 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.Space))            //space 누르고 있는 동안 실행
         {
+            if (blockFanning == true)               //부채질을 할 수 없을 때
+            {
+                return;
+            }
             anim.SetBool("isFanning", true);
             stopMove = true;
             StopPlayer();
-
+            
             FlameSliderController.FlameGage += Time.deltaTime * 30;
         }
         else if (Input.GetKeyUp(KeyCode.Space))          //space 뗀 순간 한번만 실행
         {
             //dialogueRunner.Stop();
+            if (blockFanning == true)               //부채질을 할 수 없을 때
+            {
+                anim.SetBool("isFanning", false);
+                stopMove = false;
+                return;
+            }
             anim.SetBool("isFanning", false);
             stopMove = false;
         }
@@ -291,7 +314,7 @@ public class PlayerController : MonoBehaviour
 
             itemCoolTime += Time.deltaTime;
 
-            if (itemCoolTime > 3f)
+            if (itemCoolTime > 5f)
             {
                 itemCoolTime = 0;
                 GetFirewood();
@@ -353,7 +376,7 @@ public class PlayerController : MonoBehaviour
 
             itemCoolTime += Time.deltaTime;
 
-            if (itemCoolTime > 5f)                      //잡동사니 뒤지는 데 5초 필요
+            if (itemCoolTime > 3f)                      //잡동사니 뒤지는 데 5초 필요
             {
                 itemCoolTime = 0;
                 GetItem();                    //랜덤으로 아이템 획득
@@ -439,6 +462,7 @@ public class PlayerController : MonoBehaviour
 
     public static void UseScreen()      //가림막 사용
     {
+        isScreen = true;                                    //스크린 있음
         screenCnt--;
         FlameSliderController.stopFlameGage = true;       //가림막은 10초 동안 불꽃 게이지 감소를 막아줌
         screenObj.SetActive(true);      //가림막 생성
@@ -446,8 +470,9 @@ public class PlayerController : MonoBehaviour
         instance.Invoke("RemoveScreen", 10f);   //10초 뒤 가림막 제거 함수 호출
     }
 
-    private void RemoveScreen()
+    public void RemoveScreen()
     {
+        isScreen = false;                                   //스크린 제거
         screenObj.SetActive(false);
         FlameSliderController.stopFlameGage = false;
     }
