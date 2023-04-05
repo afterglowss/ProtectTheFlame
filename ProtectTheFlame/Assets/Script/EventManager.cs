@@ -84,6 +84,9 @@ public class EventManager : MonoBehaviour
         PlayerController.instance.moveSpeed = 2.0f;         //플레이어 속도 느리게
         PlayerController.blockFanning = true;                   //부채질 불가
 
+        PlayerController.instance.anim.SetBool("isFanning", false);
+        PlayerController.stopMove = false;
+
         StartCoroutine(Co_StrongWind());                        //20초 동안 이벤트 실행
     }
     public IEnumerator Co_StrongWind()
@@ -121,7 +124,7 @@ public class EventManager : MonoBehaviour
         while (true)
         {
             PileSliderController.PileGage -= Time.deltaTime * 30;
-            TemparatureSliderController.TemparatureGage -= Time.deltaTime * 5;
+            TemparatureSliderController.TemparatureGage -= Time.deltaTime * 2;
 
             eventContinueTime += Time.deltaTime;
 
@@ -142,6 +145,9 @@ public class EventManager : MonoBehaviour
         PlayerController.blockFanning = true;           //부채질 불가능
         PlayerController.blockScreen = true;            //스크린 설치 불가능
 
+        PlayerController.instance.anim.SetBool("isFanning", false);
+        PlayerController.stopMove = false;
+
         StartCoroutine(Co_Blizzard());
     }
 
@@ -151,7 +157,7 @@ public class EventManager : MonoBehaviour
         {
             FlameSliderController.FlameGage -= Time.deltaTime * 30;
             PileSliderController.PileGage -= Time.deltaTime * 10;
-            TemparatureSliderController.TemparatureGage -= Time.deltaTime * 10;
+            TemparatureSliderController.TemparatureGage -= Time.deltaTime * 2;
 
             eventContinueTime += Time.deltaTime;
 

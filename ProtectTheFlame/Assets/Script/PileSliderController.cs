@@ -6,7 +6,12 @@ using UnityEngine.UI;
 public class PileSliderController : MonoBehaviour
 {
     [HideInInspector]
-    public static float PileGage = 500;
+    public static float PileGage;
+
+    private void Awake()
+    {
+        PileGage = 500;
+    }
 
     void Update()
     {

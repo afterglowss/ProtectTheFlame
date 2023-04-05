@@ -20,27 +20,27 @@ public class PlayerController : MonoBehaviour
     public static PileSliderController psc;
     public static TemparatureSliderController tsc;
     
-    Rigidbody2D rigid;
-    Animator anim;
-    AudioSource audioSource;
+    public Rigidbody2D rigid;
+    public Animator anim;
+    public AudioSource audioSource;
 
     public static bool stopMove = false;
 
-    public float moveSpeed = 3.0f;
-    Vector2 move = new Vector2();
+    public float moveSpeed;
+    Vector2 move;
 
-    bool inFlame = false;
-    bool inPile = false;
-    bool inJunk = false;
-    bool inTable = false;
-    bool inTent = false;
+    bool inFlame;
+    bool inPile;
+    bool inJunk;
+    bool inTable;
+    bool inTent;
 
-    static float itemCoolTime = 0;
+    static float itemCoolTime;
 
-    static int firewoodCnt = 0;
-    static int paperCnt = 0;
-    static int oilCnt = 0;
-    static int screenCnt = 0;
+    static int firewoodCnt;
+    static int paperCnt;
+    static int oilCnt;
+    static int screenCnt;
 
     public TextMeshProUGUI firewoodTxt;
     public TextMeshProUGUI paperTxt;
@@ -49,16 +49,56 @@ public class PlayerController : MonoBehaviour
 
     private static GameObject screenObj;
 
-    bool hungry = false;
+    bool hungry;
 
-    public static bool isChecking = false;
+    public static bool isChecking;
 
-    public static bool blockFanning = false;
+    public static bool blockFanning;
 
-    public static bool blockScreen = false;         //눈보라 이벤트 시 스크린 사용 불가. 원래 있던 것도 파괴됨.
+    public static bool blockScreen;         //눈보라 이벤트 시 스크린 사용 불가. 원래 있던 것도 파괴됨.
 
-    public static bool isScreen = false;
+    public static bool isScreen;
+    public void Awake()
+    {
+        audioSource = GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>();
+        rigid = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
 
+        //dialogueRunner1 = FindObjectOfType<DialogueRunner>();
+        //variableStorage1 = FindObjectOfType<InMemoryVariableStorage>();
+        
+        tsc = FindObjectOfType<TemparatureSliderController>();
+        fsc = FindObjectOfType<FlameSliderController>();
+        psc = FindObjectOfType<PileSliderController>();
+
+        screenObj = GameObject.Find("GameObject").transform.Find("Screen").gameObject;
+        instance = this;
+        
+        moveSpeed = 3.0f;
+        move = new Vector2();
+
+        inFlame = false;
+        inPile = false;
+        inJunk = false;
+        inTable = false;
+        inTent = false;
+
+        itemCoolTime = 0;
+        firewoodCnt = 0;
+        paperCnt = 0;
+        oilCnt = 0;
+        screenCnt = 0;
+
+        hungry = false;
+
+        isChecking = false;
+
+        blockFanning = false;
+
+        blockScreen = false;         
+
+        isScreen = false;
+    }
     [YarnCommand("isCheckingBool")]
     public static void IsCheckingBool(bool state)
     {
@@ -151,22 +191,7 @@ public class PlayerController : MonoBehaviour
         screenTxt.text = screenCnt.ToString();
     }
 
-    public void Awake()
-    {
-        audioSource = GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>();
-        rigid = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-
-        //dialogueRunner1 = FindObjectOfType<DialogueRunner>();
-        //variableStorage1 = FindObjectOfType<InMemoryVariableStorage>();
-        
-        tsc = FindObjectOfType<TemparatureSliderController>();
-        fsc = FindObjectOfType<FlameSliderController>();
-        psc = FindObjectOfType<PileSliderController>();
-
-        screenObj = GameObject.Find("GameObject").transform.Find("Screen").gameObject;
-        instance = this;
-    }
+    
 
     public void Update()
     {

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class TemparatureSliderController : MonoBehaviour
 {
     [HideInInspector]
-    public static float TemparatureGage = 70;
+    public static float TemparatureGage;
     [HideInInspector]
     public static bool stopTemparatureGage;
 
@@ -14,6 +14,7 @@ public class TemparatureSliderController : MonoBehaviour
     private void Start()
     {
         stopTemparatureGage = false;
+        TemparatureGage = 70;
     }
 
     void Update()
