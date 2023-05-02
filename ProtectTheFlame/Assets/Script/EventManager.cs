@@ -59,7 +59,7 @@ public class EventManager : MonoBehaviour
                 {
                     Fog();
                 }
-        else if (occurWhat > 0 && occurWhat <= 80)                 //30%의 확률로 강한 바람.
+        else if (occurWhat > 50 && occurWhat <= 80)                 //30%의 확률로 강한 바람.
         {
             StrongWind();
         }
@@ -81,7 +81,7 @@ public class EventManager : MonoBehaviour
     public void StrongWind()
     {
         dialogueRunner2.StartDialogue("StrongWind");            
-        PlayerController.instance.moveSpeed = 2.0f;         //플레이어 속도 느리게
+        PlayerController.instance.moveSpeed = PlayerController.lowMoveSpeed;         //플레이어 속도 느리게
         PlayerController.blockFanning = true;                   //부채질 불가
 
         PlayerController.instance.anim.SetBool("isFanning", false);
@@ -105,7 +105,7 @@ public class EventManager : MonoBehaviour
             {
                 eventContinueTime = 0;
                 Debug.Log("stopStrongWind");
-                PlayerController.instance.moveSpeed = 3.0f;     //플레이어 속도 원상복구
+                PlayerController.instance.moveSpeed = PlayerController.originMoveSpeed;     //플레이어 속도 원상복구
                 PlayerController.blockFanning = false;              //부채질 가능
                 yield break;
             }
@@ -141,7 +141,7 @@ public class EventManager : MonoBehaviour
     public void Blizzard()
     {
         dialogueRunner2.StartDialogue("Snow");
-        PlayerController.instance.moveSpeed = 2.0f;
+        PlayerController.instance.moveSpeed = PlayerController.lowMoveSpeed;
         PlayerController.blockFanning = true;           //부채질 불가능
         PlayerController.blockScreen = true;            //스크린 설치 불가능
 
@@ -165,7 +165,7 @@ public class EventManager : MonoBehaviour
             {
                 eventContinueTime = 0;
                 Debug.Log("stopSnow");
-                PlayerController.instance.moveSpeed = 3.0f;
+                PlayerController.instance.moveSpeed = PlayerController.originMoveSpeed;
                 PlayerController.blockFanning = false;
 
                 yield break;

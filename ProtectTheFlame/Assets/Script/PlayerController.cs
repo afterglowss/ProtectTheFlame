@@ -29,6 +29,9 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     Vector2 move;
 
+    public const float originMoveSpeed = 3.5f;
+    public const float lowMoveSpeed = 3.0f;
+
     bool inFlame;
     bool inPile;
     bool inJunk;
@@ -74,7 +77,7 @@ public class PlayerController : MonoBehaviour
         screenObj = GameObject.Find("GameObject").transform.Find("Screen").gameObject;
         instance = this;
         
-        moveSpeed = 3.0f;
+        moveSpeed = originMoveSpeed;
         move = new Vector2();
 
         inFlame = false;
