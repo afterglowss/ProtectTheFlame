@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Animations;
 using UnityEngine;
+using UnityEngine.UI;
 using Yarn.Unity;
 
 public class EventManager : MonoBehaviour
@@ -38,7 +39,7 @@ public class EventManager : MonoBehaviour
             //만약 스크린 설치 불가 상태일때 스크린이 설치되어있는 isInvoking이 참이면
         {
             CancelInvoke();                             //인보크 취소하고
-            PlayerController.instance.RemoveScreen();   //바로 스크린 삭제
+            PlayerController.RemoveScreen();            //바로 스크린 삭제
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("DestroyScreen");
         }
@@ -47,27 +48,27 @@ public class EventManager : MonoBehaviour
     public void WhatEventIsIt()
     {
         int occurWhat = Random.Range(1, 101);
-        if (occurWhat <= 0 && TimeController.hour < 4)             //50%의 확률로 이벤트 없음. 새벽 4시 이전.
+        if (occurWhat <= 50 && TimeController.hour < 4)             //50%의 확률로 이벤트 없음. 새벽 4시 이전.
         {
             NoEvent();
         }
-                else if (occurWhat <= 20 && TimeController.hour >= 4)                                   //새벽 4시 이후는 20% 확률로 이벤트 없음.
-                {
-                    NoEvent();
-                }
-                else if (occurWhat > 20 && occurWhat <= 50 && TimeController.hour >= 4)                 //30%의 확률로 안개.
-                {
-                    Fog();
-                }
+        else if (occurWhat <= 20 && TimeController.hour >= 4)                                   //새벽 4시 이후는 20% 확률로 이벤트 없음.
+        {
+            NoEvent();
+        }
+        else if (occurWhat > 20 && occurWhat <= 50 && TimeController.hour >= 4)                 //30%의 확률로 안개.
+        {
+            Fog();
+        }
         else if (occurWhat > 50 && occurWhat <= 80)                 //30%의 확률로 강한 바람.
         {
             StrongWind();
         }
-        else if (occurWhat > 80 && occurWhat <= 95)                 //15%의 확률로 눈.
+        else if (occurWhat > 80 && occurWhat <= 97)                 //17%의 확률로 눈.
         {
             Snow();
         }
-        else if (occurWhat > 95 && occurWhat <= 100)                //5%의 확률로 눈보라. -> 거의 게임오버 수준으로 어렵게.
+        else if (occurWhat > 96 && occurWhat <= 100)                //3%의 확률로 눈보라. -> 거의 게임오버 수준으로 어렵게.
         {
             Blizzard();
         }
@@ -123,7 +124,7 @@ public class EventManager : MonoBehaviour
     {
         while (true)
         {
-            PileSliderController.PileGage -= Time.deltaTime * 30;
+            PileSliderController.PileGage -= Time.deltaTime * 20;
             TemparatureSliderController.TemparatureGage -= Time.deltaTime * 2;
 
             eventContinueTime += Time.deltaTime;
@@ -144,6 +145,7 @@ public class EventManager : MonoBehaviour
         PlayerController.instance.moveSpeed = PlayerController.lowMoveSpeed;
         PlayerController.blockFanning = true;           //부채질 불가능
         PlayerController.blockScreen = true;            //스크린 설치 불가능
+        //PlayerController.RemoveScreen();                //스크린 파괴
 
         PlayerController.instance.anim.SetBool("isFanning", false);
         PlayerController.stopMove = false;
@@ -167,12 +169,14 @@ public class EventManager : MonoBehaviour
                 Debug.Log("stopBlizzard");
                 PlayerController.instance.moveSpeed = PlayerController.originMoveSpeed;
                 PlayerController.blockFanning = false;
+                PlayerController.blockScreen = true;
 
                 yield break;
             }
             yield return null;
         }
     }
+    public GameObject fogImage;
 
     public void Fog()
     {
@@ -182,17 +186,50 @@ public class EventManager : MonoBehaviour
 
     public IEnumerator Co_Fog()
     {
-        while (true)
-        {
-            eventContinueTime += Time.deltaTime;
+        StartCoroutine(FadeFromTo(fogImage, 0, 0.6f));
+        yield return new WaitForSeconds(3f);
+        StartCoroutine(FadeFromTo(fogImage, 0.6f, 0.2f));
+        yield return new WaitForSeconds(3f);
+        StartCoroutine(FadeFromTo(fogImage, 0.2f, 0.9f));
+        yield return new WaitForSeconds(5f);
+        StartCoroutine(FadeFromTo(fogImage, 0.9f, 0.4f));
+        yield return new WaitForSeconds(4f);
+        StartCoroutine(FadeFromTo(fogImage, 0.4f, 1.0f));
+        yield return new WaitForSeconds(5f);
+        StartCoroutine(FadeFromTo(fogImage, 1.0f, 0f));
+    }
 
-            if (eventContinueTime > 20f)
+    public static IEnumerator FadeFromTo(GameObject obj, float from, float to)
+    {
+        Debug.Log("Fadefromto 진입");
+        float FadeCount;
+        if (to > from)
+        {
+            Debug.Log("to>from");
+            FadeCount = from;
+            Color color;
+            color = obj.GetComponent<Image>().color;
+            while (FadeCount < to)
             {
-                eventContinueTime = 0;
-                Debug.Log("stopSnow");
-                yield break;
+                FadeCount += 0.005f;
+                yield return new WaitForSeconds(0.005f);
+                color.a = FadeCount;
+                obj.GetComponent<Image>().color = color;
             }
-            yield return null;
+        }
+        else if (from > to)
+        {
+            Debug.Log("to<from");
+            FadeCount = from;
+            Color color;
+            color = obj.GetComponent<Image>().color;
+            while (FadeCount > to)
+            {
+                FadeCount -= 0.005f;
+                yield return new WaitForSeconds(0.005f);
+                color.a = FadeCount;
+                obj.GetComponent<Image>().color = color;
+            }
         }
     }
 }

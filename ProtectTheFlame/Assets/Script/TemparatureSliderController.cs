@@ -9,6 +9,7 @@ public class TemparatureSliderController : MonoBehaviour
     public static float TemparatureGage;
     [HideInInspector]
     public static bool stopTemparatureGage;
+    int a = 0;
 
 
     private void Start()
@@ -22,6 +23,12 @@ public class TemparatureSliderController : MonoBehaviour
         if (TemparatureGage < 0)
         {
             TemparatureGage = 0;
+            if (a == 0)
+            {
+                PlayerController.instance.dialogueRunner1.Stop();
+                PlayerController.instance.dialogueRunner1.StartDialogue("Cold");
+                a++;
+            }
         }
         if (TemparatureGage > 100)
         {
@@ -38,7 +45,7 @@ public class TemparatureSliderController : MonoBehaviour
         }
         else if (stopTemparatureGage)
         {
-            TemparatureGage += Time.deltaTime * 4;
+            TemparatureGage += Time.deltaTime * 3;
         }
         GetComponent<Slider>().value = (int)TemparatureGage;
     }

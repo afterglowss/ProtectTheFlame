@@ -40,7 +40,7 @@ public class BTN : MonoBehaviour
                 break;
             case BTNType.GoMain:
                 GameManager.ResumeGame();
-                GameManager.StartScene();
+                GameManager.JumpScene("StartScene");
                 break;
         }
     }

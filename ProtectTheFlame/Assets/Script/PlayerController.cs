@@ -503,11 +503,16 @@ public class PlayerController : MonoBehaviour
         instance.Invoke("RemoveScreen", 10f);   //10초 뒤 가림막 제거 함수 호출
     }
 
-    public void RemoveScreen()
+    public static void RemoveScreen()
     {
         isScreen = false;                                   //스크린 제거
         screenObj.SetActive(false);
         FlameSliderController.stopFlameGage = false;
+    }
+
+    public void GameOver()
+    {
+        
     }
 
     //public static IEnumerator waitTime(float time)
