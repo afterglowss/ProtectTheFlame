@@ -39,7 +39,8 @@ public class BTN : MonoBehaviour
                 Debug.Log("╬ша╬╥А");
                 break;
             case BTNType.GoMain:
-                GameManager.StartScene();
+                GameManager.ResumeGame();
+                GameManager.JumpScene("StartScene");
                 break;
         }
     }

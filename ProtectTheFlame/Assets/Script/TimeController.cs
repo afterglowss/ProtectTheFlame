@@ -20,15 +20,18 @@ public class TimeController : MonoBehaviour
 
     int b;
 
-    public static int hour = 0;
-    public static int min = 0;
-    public static float sec = 0f;
+    public static int hour;
+    public static int min;
+    public static float sec;
 
     public static TimeController instance;
 
     private void Awake()
     {
         instance = this;
+        hour = 0;
+        min = 0;
+        sec = 0f;
     }
     public void Start()
     {
@@ -66,12 +69,7 @@ public class TimeController : MonoBehaviour
         //dialogueRunner.Stop();
         //dialogueRunner.StartDialogue("NormalEnding");
     }
-    public void Remove()
-    {
-        //dialogueRunner.Stop();
-        //dialogueRunner.StartDialogue("ToInfering");
-    }
-
+    
     [YarnCommand("timeSet")]
     public static void TimeSet()
     {

@@ -163,3 +163,25 @@ title: StopEvent
 ---
 <<stop>>
 ===
+
+title: Cold
+---
+<<fadeIn FogImage>>
+<<wait 1>>
+<<jumpScene GameOverScene>>
+===
+
+title: GameOver
+---
+<<fadeOut FogImage>>
+<<wait 1>>
+......추워.
+//wait 1.5>>
+더 이상 몸을 움직일 수 없다.
+//<<wait 2>>
+그래... 아무래도 졸린 것 같아.
+<<wait 1>>
+<<textFadeIn ToMain>>
+<<wait 0.5>>
+<<btnInteractable FadeCanvas>>
+===

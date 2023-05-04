@@ -20,27 +20,30 @@ public class PlayerController : MonoBehaviour
     public static PileSliderController psc;
     public static TemparatureSliderController tsc;
     
-    Rigidbody2D rigid;
-    Animator anim;
-    AudioSource audioSource;
+    public Rigidbody2D rigid;
+    public Animator anim;
+    public AudioSource audioSource;
 
     public static bool stopMove = false;
 
-    public float moveSpeed = 3.0f;
-    Vector2 move = new Vector2();
+    public float moveSpeed;
+    Vector2 move;
 
-    bool inFlame = false;
-    bool inPile = false;
-    bool inJunk = false;
-    bool inTable = false;
-    bool inTent = false;
+    public const float originMoveSpeed = 3.5f;
+    public const float lowMoveSpeed = 3.0f;
 
-    static float itemCoolTime = 0;
+    bool inFlame;
+    bool inPile;
+    bool inJunk;
+    bool inTable;
+    bool inTent;
 
-    static int firewoodCnt = 0;
-    static int paperCnt = 0;
-    static int oilCnt = 0;
-    static int screenCnt = 0;
+    static float itemCoolTime;
+
+    static int firewoodCnt;
+    static int paperCnt;
+    static int oilCnt;
+    static int screenCnt;
 
     public TextMeshProUGUI firewoodTxt;
     public TextMeshProUGUI paperTxt;
@@ -49,16 +52,56 @@ public class PlayerController : MonoBehaviour
 
     private static GameObject screenObj;
 
-    bool hungry = false;
+    bool hungry;
 
-    public static bool isChecking = false;
+    public static bool isChecking;
 
-    public static bool blockFanning = false;
+    public static bool blockFanning;
 
-    public static bool blockScreen = false;         //눈보라 이벤트 시 스크린 사용 불가. 원래 있던 것도 파괴됨.
+    public static bool blockScreen;         //눈보라 이벤트 시 스크린 사용 불가. 원래 있던 것도 파괴됨.
 
-    public static bool isScreen = false;
+    public static bool isScreen;
+    public void Awake()
+    {
+        audioSource = GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>();
+        rigid = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
 
+        //dialogueRunner1 = FindObjectOfType<DialogueRunner>();
+        //variableStorage1 = FindObjectOfType<InMemoryVariableStorage>();
+        
+        tsc = FindObjectOfType<TemparatureSliderController>();
+        fsc = FindObjectOfType<FlameSliderController>();
+        psc = FindObjectOfType<PileSliderController>();
+
+        screenObj = GameObject.Find("GameObject").transform.Find("Screen").gameObject;
+        instance = this;
+        
+        moveSpeed = originMoveSpeed;
+        move = new Vector2();
+
+        inFlame = false;
+        inPile = false;
+        inJunk = false;
+        inTable = false;
+        inTent = false;
+
+        itemCoolTime = 0;
+        firewoodCnt = 0;
+        paperCnt = 0;
+        oilCnt = 0;
+        screenCnt = 0;
+
+        hungry = false;
+
+        isChecking = false;
+
+        blockFanning = false;
+
+        blockScreen = false;         
+
+        isScreen = false;
+    }
     [YarnCommand("isCheckingBool")]
     public static void IsCheckingBool(bool state)
     {
@@ -151,22 +194,7 @@ public class PlayerController : MonoBehaviour
         screenTxt.text = screenCnt.ToString();
     }
 
-    public void Awake()
-    {
-        audioSource = GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>();
-        rigid = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-
-        //dialogueRunner1 = FindObjectOfType<DialogueRunner>();
-        //variableStorage1 = FindObjectOfType<InMemoryVariableStorage>();
-        
-        tsc = FindObjectOfType<TemparatureSliderController>();
-        fsc = FindObjectOfType<FlameSliderController>();
-        psc = FindObjectOfType<PileSliderController>();
-
-        screenObj = GameObject.Find("GameObject").transform.Find("Screen").gameObject;
-        instance = this;
-    }
+    
 
     public void Update()
     {
@@ -263,7 +291,7 @@ public class PlayerController : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Space))        //space 누른 순간 한번만 실행
         {
-            if (blockFanning == true)               //부채질을 할 수 없을 때
+            if (blockFanning == true || FlameSliderController.goOutFlame || PileSliderController.goOutPile)               //부채질을 할 수 없을 때
             {
                 dialogueRunner1.Stop();
                 dialogueRunner1.StartDialogue("BlockFanning");
@@ -274,7 +302,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.Space))            //space 누르고 있는 동안 실행
         {
-            if (blockFanning == true)               //부채질을 할 수 없을 때
+            if (blockFanning == true || FlameSliderController.goOutFlame || PileSliderController.goOutPile)               //부채질을 할 수 없을 때
             {
                 return;
             }
@@ -445,19 +473,24 @@ public class PlayerController : MonoBehaviour
     {
         firewoodCnt--;
         PileSliderController.PileGage += 200;            //장작 게이지 +200
-        FlameSliderController.FlameGage += 20;            //불꽃 게이지 +20
+        PileSliderController.goOutPile = false;
+        
+        if (!FlameSliderController.goOutFlame)          //불꽃이 이미 꺼지지만 않았다면
+            FlameSliderController.FlameGage += 20;            //불꽃 게이지 +20
     }
 
     public static void UsePaper()       //신문지 사용
     {
         paperCnt--;
-        FlameSliderController.FlameGage += 50;            //불꽃 게이지 +50
+        if (!FlameSliderController.goOutFlame)
+            FlameSliderController.FlameGage += 50;            //불꽃 게이지 +50
     }
 
     public static void UseOil()         //기름 사용
     {
         oilCnt--;
-        FlameSliderController.FlameGage += 100;           //불꽃 게이지 +100
+        if (!FlameSliderController.goOutFlame)
+            FlameSliderController.FlameGage += 100;           //불꽃 게이지 +100
     }
 
     public static void UseScreen()      //가림막 사용
@@ -470,11 +503,16 @@ public class PlayerController : MonoBehaviour
         instance.Invoke("RemoveScreen", 10f);   //10초 뒤 가림막 제거 함수 호출
     }
 
-    public void RemoveScreen()
+    public static void RemoveScreen()
     {
         isScreen = false;                                   //스크린 제거
         screenObj.SetActive(false);
         FlameSliderController.stopFlameGage = false;
+    }
+
+    public void GameOver()
+    {
+        
     }
 
     //public static IEnumerator waitTime(float time)

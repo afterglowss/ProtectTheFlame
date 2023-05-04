@@ -7,6 +7,16 @@ using UnityEngine.UI;
 
 public class Fade : MonoBehaviour
 {
+    Button btn;
+    public void Awake()
+    {
+        btn = GetComponentInChildren<Button>();
+    }
+    [YarnCommand("btnInteractable")]
+    public void BtnInteractable()
+    {
+        btn.interactable = true;
+    }
     [YarnCommand("fadeIn")]
     public static IEnumerator FadeIn(GameObject obj)
     {
@@ -15,7 +25,7 @@ public class Fade : MonoBehaviour
         color = obj.GetComponent<Image>().color;
         while (FadeCount < 1.0f)
         {
-            FadeCount += 0.01f;
+            FadeCount += 0.02f;
             yield return new WaitForSeconds(0.005f);
             color.a = FadeCount;
             obj.GetComponent<Image>().color = color;
@@ -29,7 +39,7 @@ public class Fade : MonoBehaviour
         color = obj.GetComponent<Image>().color;
         while (FadeCount > 0)
         {
-            FadeCount -= 0.01f;
+            FadeCount -= 0.02f;
             yield return new WaitForSeconds(0.005f);
             color.a = FadeCount;
             obj.GetComponent<Image>().color = color;
@@ -43,7 +53,7 @@ public class Fade : MonoBehaviour
         color = obj.GetComponent<TextMeshProUGUI>().color;
         while (FadeCount < 1.0f)
         {
-            FadeCount += 0.01f;
+            FadeCount += 0.02f;
             yield return new WaitForSeconds(0.02f);
             color.a = FadeCount;
             obj.GetComponent<TextMeshProUGUI>().color = color;
@@ -57,7 +67,7 @@ public class Fade : MonoBehaviour
         color = obj.GetComponent<TextMeshProUGUI>().color;
         while (FadeCount > 0)
         {
-            FadeCount -= 0.01f;
+            FadeCount -= 0.02f;
             yield return new WaitForSeconds(0.02f);
             color.a = FadeCount;
             obj.GetComponent<TextMeshProUGUI>().color = color;
