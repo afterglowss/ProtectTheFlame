@@ -95,7 +95,7 @@ public class EventManager : MonoBehaviour
         {
             if (!FlameSliderController.stopFlameGage)           //가림막으로 막혀 있지 않으면
             {
-                FlameSliderController.FlameGage -= Time.deltaTime * 30; //불꽃 게이지 1초마다 -30
+                FlameSliderController.FlameGage -= Time.deltaTime * 20; //불꽃 게이지 1초마다 -20
             }
             TemparatureSliderController.TemparatureGage -= Time.deltaTime * 1;  //체온 게이지 1초마다 -1
 
@@ -140,7 +140,7 @@ public class EventManager : MonoBehaviour
 
     public void Blizzard()
     {
-        dialogueRunner2.StartDialogue("Snow");
+        dialogueRunner2.StartDialogue("Blizzard");
         PlayerController.instance.moveSpeed = PlayerController.lowMoveSpeed;
         PlayerController.blockFanning = true;           //부채질 불가능
         PlayerController.blockScreen = true;            //스크린 설치 불가능
@@ -164,7 +164,7 @@ public class EventManager : MonoBehaviour
             if (eventContinueTime > 20f)
             {
                 eventContinueTime = 0;
-                Debug.Log("stopSnow");
+                Debug.Log("stopBlizzard");
                 PlayerController.instance.moveSpeed = PlayerController.originMoveSpeed;
                 PlayerController.blockFanning = false;
 
@@ -176,6 +176,23 @@ public class EventManager : MonoBehaviour
 
     public void Fog()
     {
+        dialogueRunner2.StartDialogue("Fog");
+        StartCoroutine(Co_Fog());
+    }
 
+    public IEnumerator Co_Fog()
+    {
+        while (true)
+        {
+            eventContinueTime += Time.deltaTime;
+
+            if (eventContinueTime > 20f)
+            {
+                eventContinueTime = 0;
+                Debug.Log("stopSnow");
+                yield break;
+            }
+            yield return null;
+        }
     }
 }

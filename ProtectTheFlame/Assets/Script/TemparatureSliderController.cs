@@ -32,14 +32,13 @@ public class TemparatureSliderController : MonoBehaviour
      
     public void TempGUpDown()
     {
-        if (!stopTemparatureGage)
+        if (!stopTemparatureGage || FlameSliderController.goOutFlame)
         {
             TemparatureGage -= Time.deltaTime * 2;
         }
         else if (stopTemparatureGage)
         {
             TemparatureGage += Time.deltaTime * 4;
-
         }
         GetComponent<Slider>().value = (int)TemparatureGage;
     }

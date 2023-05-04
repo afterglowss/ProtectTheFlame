@@ -69,12 +69,7 @@ public class TimeController : MonoBehaviour
         //dialogueRunner.Stop();
         //dialogueRunner.StartDialogue("NormalEnding");
     }
-    public void Remove()
-    {
-        //dialogueRunner.Stop();
-        //dialogueRunner.StartDialogue("ToInfering");
-    }
-
+    
     [YarnCommand("timeSet")]
     public static void TimeSet()
     {

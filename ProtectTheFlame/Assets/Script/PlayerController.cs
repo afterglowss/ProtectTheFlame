@@ -291,7 +291,7 @@ public class PlayerController : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Space))        //space 누른 순간 한번만 실행
         {
-            if (blockFanning == true)               //부채질을 할 수 없을 때
+            if (blockFanning == true || FlameSliderController.goOutFlame || PileSliderController.goOutPile)               //부채질을 할 수 없을 때
             {
                 dialogueRunner1.Stop();
                 dialogueRunner1.StartDialogue("BlockFanning");
@@ -302,7 +302,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.Space))            //space 누르고 있는 동안 실행
         {
-            if (blockFanning == true)               //부채질을 할 수 없을 때
+            if (blockFanning == true || FlameSliderController.goOutFlame || PileSliderController.goOutPile)               //부채질을 할 수 없을 때
             {
                 return;
             }
@@ -473,19 +473,24 @@ public class PlayerController : MonoBehaviour
     {
         firewoodCnt--;
         PileSliderController.PileGage += 200;            //장작 게이지 +200
-        FlameSliderController.FlameGage += 20;            //불꽃 게이지 +20
+        PileSliderController.goOutPile = false;
+        
+        if (!FlameSliderController.goOutFlame)          //불꽃이 이미 꺼지지만 않았다면
+            FlameSliderController.FlameGage += 20;            //불꽃 게이지 +20
     }
 
     public static void UsePaper()       //신문지 사용
     {
         paperCnt--;
-        FlameSliderController.FlameGage += 50;            //불꽃 게이지 +50
+        if (!FlameSliderController.goOutFlame)
+            FlameSliderController.FlameGage += 50;            //불꽃 게이지 +50
     }
 
     public static void UseOil()         //기름 사용
     {
         oilCnt--;
-        FlameSliderController.FlameGage += 100;           //불꽃 게이지 +100
+        if (!FlameSliderController.goOutFlame)
+            FlameSliderController.FlameGage += 100;           //불꽃 게이지 +100
     }
 
     public static void UseScreen()      //가림막 사용
