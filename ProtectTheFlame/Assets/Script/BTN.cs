@@ -29,6 +29,7 @@ public class BTN : MonoBehaviour
                 GameManager.StoryScene();
                 break;
             case BTNType.Option:
+                if (TemparatureSliderController.TemparatureGage <= 0f) return;
                 OptionGroupOn();
                 break;
             case BTNType.Back:

@@ -3,6 +3,7 @@
 사용하고자 하는 아이템이 없습니다!
 ===
 
+
 title: Fanning
 tags: 
 ---
@@ -173,14 +174,24 @@ title: Cold
 
 title: GameOver
 ---
-<<fadeOut FogImage>>
-<<wait 1>>
 ......추워.
-//wait 1.5>>
 더 이상 몸을 움직일 수 없다.
-//<<wait 2>>
 그래... 아무래도 졸린 것 같아.
 <<wait 1>>
+<<textFadeIn ToMain>>
+<<wait 0.5>>
+<<btnInteractable FadeCanvas>>
+===
+
+title: GameClear
+---
+<<wait 2>>
+......이상한 소리가 들린다.
+이곳에 나 말고 다른 사람이 있던가?
+그것은 헬기 소리였다. 구조대가 온 것이다.
+나는, 이곳에서 벗어날 수 있게 되었다.
+<<wait 1>>
+<<textFadeIn GameClearText>>
 <<textFadeIn ToMain>>
 <<wait 0.5>>
 <<btnInteractable FadeCanvas>>

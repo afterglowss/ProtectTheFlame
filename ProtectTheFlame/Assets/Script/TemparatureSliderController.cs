@@ -25,8 +25,9 @@ public class TemparatureSliderController : MonoBehaviour
             TemparatureGage = 0;
             if (a == 0)
             {
+                PlayerController.instance.GameOver();
                 PlayerController.instance.dialogueRunner1.Stop();
-                PlayerController.instance.dialogueRunner1.StartDialogue("Cold");
+                PlayerController.instance.dialogueRunner1.StartDialogue("GameOver");
                 a++;
             }
         }
