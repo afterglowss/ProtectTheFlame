@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "GameScene")
         {
+            if (TemparatureSliderController.TemparatureGage <= 0f) return;
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 if (pauseBtn.GetComponent<BTN>().optionGroup.alpha == 0)

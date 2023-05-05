@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     Vector2 move;
 
     public const float originMoveSpeed = 3.5f;
-    public const float lowMoveSpeed = 3.0f;
+    public const float lowMoveSpeed = 2.7f;
 
     bool inFlame;
     bool inPile;
@@ -77,6 +77,7 @@ public class PlayerController : MonoBehaviour
         screenObj = GameObject.Find("GameObject").transform.Find("Screen").gameObject;
         instance = this;
         
+        stopMove = false;
         moveSpeed = originMoveSpeed;
         move = new Vector2();
 
@@ -198,6 +199,7 @@ public class PlayerController : MonoBehaviour
 
     public void Update()
     {
+        if (TemparatureSliderController.TemparatureGage <= 0f) return;
         UpdateState();
         UpdateCnt();
         if (inFlame == true)
@@ -509,10 +511,12 @@ public class PlayerController : MonoBehaviour
         screenObj.SetActive(false);
         FlameSliderController.stopFlameGage = false;
     }
-
+    public RuntimeAnimatorController downAnimatorController;
     public void GameOver()
     {
-        
+        stopMove = true;
+        StopPlayer();
+        anim.runtimeAnimatorController = downAnimatorController;
     }
 
     //public static IEnumerator waitTime(float time)

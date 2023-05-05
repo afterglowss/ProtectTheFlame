@@ -27,6 +27,7 @@ public class EventManager : MonoBehaviour
 
     public void Update()
     {
+        if (TemparatureSliderController.TemparatureGage <= 0f) return;
         eventCoolTime += Time.deltaTime;
         
         if (eventCoolTime > 60f)

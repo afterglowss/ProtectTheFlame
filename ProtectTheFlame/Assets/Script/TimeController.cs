@@ -41,6 +41,7 @@ public class TimeController : MonoBehaviour
 
     void Update()
     {
+        if (TemparatureSliderController.TemparatureGage <= 0f) return;
         ClockTime();
         if (hour == 6 && min == 0 && sec == 0f && b == 0)
         {
