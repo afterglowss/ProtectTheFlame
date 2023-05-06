@@ -63,6 +63,8 @@ public class PlayerController : MonoBehaviour
     public static bool isScreen;
     public void Awake()
     {
+        //Fade.FadeOut("FogImage");
+
         audioSource = GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>();
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -317,7 +319,7 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyUp(KeyCode.Space))          //space 뗀 순간 한번만 실행
         {
             //dialogueRunner.Stop();
-            if (blockFanning == true)               //부채질을 할 수 없을 때
+            if (blockFanning == true || FlameSliderController.goOutFlame || PileSliderController.goOutPile)               //부채질을 할 수 없을 때
             {
                 anim.SetBool("isFanning", false);
                 stopMove = false;
@@ -502,10 +504,10 @@ public class PlayerController : MonoBehaviour
         FlameSliderController.stopFlameGage = true;       //가림막은 10초 동안 불꽃 게이지 감소를 막아줌
         screenObj.SetActive(true);      //가림막 생성
 
-        instance.Invoke("RemoveScreen", 10f);   //10초 뒤 가림막 제거 함수 호출
+        instance.Invoke("RemoveScreen", 15f);   //15초 뒤 가림막 제거 함수 호출
     }
 
-    public static void RemoveScreen()
+    public void RemoveScreen()
     {
         isScreen = false;                                   //스크린 제거
         screenObj.SetActive(false);

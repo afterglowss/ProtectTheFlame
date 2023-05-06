@@ -21,3 +21,8 @@ tags:
 <<fadeIn FogImage>>
 <<jumpScene GameScene>>
 ===
+
+title: GameSceneStart
+---
+<<fadeOut FogImage>>
+===
