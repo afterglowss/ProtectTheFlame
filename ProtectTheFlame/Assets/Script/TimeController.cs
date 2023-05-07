@@ -52,7 +52,7 @@ public class TimeController : MonoBehaviour
             PlayerController.instance.dialogueRunner1.Stop();
             PlayerController.instance.dialogueRunner1.StartDialogue("HungryFirst");
         }
-        if (hour == 0 && min == 10 && sec == 0f && b == 0)
+        if (hour == 6 && min == 0 && sec == 0f && b == 0)
         {
             b++;
             TimeFinish();
