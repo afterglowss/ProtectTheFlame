@@ -16,7 +16,7 @@ public class SoundManager : MonoBehaviour
 
     public SoundType[] SoundList;
 
-    public static float volume = 0.5f;
+    public static float volume = 0.3f;
     public static SoundManager instance;
     public void SetSoundVolume(float volume)
     {
@@ -48,6 +48,7 @@ public class SoundManager : MonoBehaviour
                 soundSource.clip = SoundList[i].sound;
                 if (!soundSource.isPlaying)
                 {
+                    soundSource.pitch = SoundList[i].pitch;
                     soundSource.Play();
                 }
                 break;
@@ -65,6 +66,7 @@ public class SoundManager : MonoBehaviour
                 if (!soundSource.isPlaying)
                 {
                     soundSource.loop = true;
+                    soundSource.pitch = SoundList[i].pitch;
                     soundSource.Play();
                 }
                 break;
@@ -116,7 +118,7 @@ public class SoundManager : MonoBehaviour
         UnPauseSound();
         while (FadeCount < previousVolume)
         {
-            FadeCount += 0.01f;
+            FadeCount += 0.005f;
             yield return new WaitForSeconds(0.0005f);
             SetSoundVolume(FadeCount);
         }

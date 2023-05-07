@@ -18,6 +18,7 @@ public class TimeController : MonoBehaviour
     public DialogueRunner dialogueRunner2;
     public InMemoryVariableStorage variableStorage2;
 
+    int a;
     int b;
 
     public static int hour;
@@ -35,6 +36,7 @@ public class TimeController : MonoBehaviour
     }
     public void Start()
     {
+        a = 0;
         b = 0;
         
     }
@@ -43,7 +45,14 @@ public class TimeController : MonoBehaviour
     {
         if (TemparatureSliderController.TemparatureGage <= 0f) return;
         ClockTime();
-        if (hour == 6 && min == 0 && sec == 0f && b == 0)
+        if (hour == 0 && min == 30 && sec == 0f && a == 0)
+        {
+            a++;
+            PlayerController.hungry = true;
+            PlayerController.instance.dialogueRunner1.Stop();
+            PlayerController.instance.dialogueRunner1.StartDialogue("HungryFirst");
+        }
+        if (hour == 0 && min == 10 && sec == 0f && b == 0)
         {
             b++;
             TimeFinish();
@@ -67,8 +76,7 @@ public class TimeController : MonoBehaviour
 
     public void TimeFinish()
     {
-        //dialogueRunner.Stop();
-        //dialogueRunner.StartDialogue("NormalEnding");
+        GameManager.JumpScene("GameClearScene");
     }
     
     [YarnCommand("timeSet")]

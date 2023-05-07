@@ -49,7 +49,7 @@ public class EventManager : MonoBehaviour
     public void WhatEventIsIt()
     {
         int occurWhat = Random.Range(1, 101);
-        if (occurWhat <= 0 && TimeController.hour < 4)             //50%의 확률로 이벤트 없음. 새벽 4시 이전.
+        if (occurWhat <= 100 && TimeController.hour < 4)             //50%의 확률로 이벤트 없음. 새벽 4시 이전.
         {
             NoEvent();
         }

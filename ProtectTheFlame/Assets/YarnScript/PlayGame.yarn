@@ -3,6 +3,34 @@
 사용하고자 하는 아이템이 없습니다!
 ===
 
+title: Tent
+---
+지금은 쉴 때가 아니야.
+<<stop>>
+===
+
+title: Eating
+---
+텐트에 남은 식량을 먹는 중......
+<<stop>>
+===
+title: HungryFirst
+---
+배가 너무 고프다......
+<<stop>>
+===
+
+title: Hungry
+---
+배가 고파서 아무것도 할 수 없다.
+<<stop>>
+===
+
+title: Full
+---
+텐트에 남은 식량을 먹었다.
+<<stop>>
+===
 
 title: Fanning
 tags: 
@@ -185,10 +213,15 @@ title: GameOver
 
 title: GameClear
 ---
+<<pauseMusic MusicManager>>
+<<playSound SoundManager helicopter>>
+<<soundFadeIn SoundManager>>
 <<wait 2>>
 ......이상한 소리가 들린다.
 이곳에 나 말고 다른 사람이 있던가?
+<<wait 1.5>>
 그것은 헬기 소리였다. 구조대가 온 것이다.
+<<wait 1>>
 나는, 이곳에서 벗어날 수 있게 되었다.
 <<wait 1>>
 <<textFadeIn GameClearText>>
