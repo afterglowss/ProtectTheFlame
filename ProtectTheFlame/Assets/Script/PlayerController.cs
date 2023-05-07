@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
 
     private static GameObject screenObj;
 
-    bool hungry;
+    public static bool hungry;
 
     public static bool isChecking;
 
@@ -63,6 +63,8 @@ public class PlayerController : MonoBehaviour
     public static bool isScreen;
     public void Awake()
     {
+        //Fade.FadeOut("FogImage");
+
         audioSource = GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>();
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -223,7 +225,7 @@ public class PlayerController : MonoBehaviour
             IsMaking();
         }
 
-        if (inTent == true && hungry == true)
+        if (inTent == true)
         {
             IsTenting();
         }
@@ -232,6 +234,7 @@ public class PlayerController : MonoBehaviour
     public void CheckingItemUsing()
     {
         if (isChecking == true) return;
+        if (stopMove == true) return;
         if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
         {
             if (firewoodCnt == 0)
@@ -278,6 +281,7 @@ public class PlayerController : MonoBehaviour
             }
             if (blockScreen == true)
             {
+                SoundManager.instance.PlaySound("block");
                 dialogueRunner1.Stop();
                 dialogueRunner1.StartDialogue("BlockScreen");
             }
@@ -295,8 +299,16 @@ public class PlayerController : MonoBehaviour
         {
             if (blockFanning == true || FlameSliderController.goOutFlame || PileSliderController.goOutPile)               //부채질을 할 수 없을 때
             {
+                SoundManager.instance.PlaySound("block");
                 dialogueRunner1.Stop();
                 dialogueRunner1.StartDialogue("BlockFanning");
+                return;
+            }
+            if (hungry == true)
+            {
+                SoundManager.instance.PlaySound("block");
+                dialogueRunner1.Stop();
+                dialogueRunner1.StartDialogue("Hungry");
                 return;
             }
             dialogueRunner1.Stop();
@@ -304,7 +316,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.Space))            //space 누르고 있는 동안 실행
         {
-            if (blockFanning == true || FlameSliderController.goOutFlame || PileSliderController.goOutPile)               //부채질을 할 수 없을 때
+            if (blockFanning == true || FlameSliderController.goOutFlame || PileSliderController.goOutPile || hungry == true)               //부채질을 할 수 없을 때
             {
                 return;
             }
@@ -313,18 +325,20 @@ public class PlayerController : MonoBehaviour
             StopPlayer();
             
             FlameSliderController.FlameGage += Time.deltaTime * 30;
+
+            if (!audioSource.isPlaying)
+            {
+                //SoundManager.instance.PlaySound("fanning");
+            }
         }
         else if (Input.GetKeyUp(KeyCode.Space))          //space 뗀 순간 한번만 실행
         {
-            //dialogueRunner.Stop();
-            if (blockFanning == true)               //부채질을 할 수 없을 때
-            {
-                anim.SetBool("isFanning", false);
-                stopMove = false;
-                return;
-            }
             anim.SetBool("isFanning", false);
             stopMove = false;
+            audioSource.Stop();
+
+            if (blockFanning == true || FlameSliderController.goOutFlame || PileSliderController.goOutPile || hungry == true)
+                return; //부채질을 할 수 없을 때
         }
     }
     public void IsChopping()                        //장작 패기 함수
@@ -333,11 +347,23 @@ public class PlayerController : MonoBehaviour
         if (isChecking == true) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            if (hungry == true)
+            {
+                SoundManager.instance.PlaySound("block");
+                dialogueRunner1.Stop();
+                dialogueRunner1.StartDialogue("Hungry");
+                return;
+            }
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("Chopping");
+            
         }
         if (Input.GetKey(KeyCode.Space))
         {
+            if (hungry == true)
+            {
+                return;
+            }
             anim.SetBool("isChopping", true);
             stopMove = true;
             StopPlayer();
@@ -349,13 +375,20 @@ public class PlayerController : MonoBehaviour
                 itemCoolTime = 0;
                 GetFirewood();
             }
+            if (!audioSource.isPlaying)
+            {
+                SoundManager.instance.PlaySound("chopping");
+            }
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            //dialogueRunner.Stop();
             anim.SetBool("isChopping", false);
             stopMove = false;
             itemCoolTime = 0;
+            audioSource.Stop();
+
+            if (hungry == true) return;
+
         }
     }
     public void IsMaking()                        //가림막 제작 함수
@@ -364,11 +397,22 @@ public class PlayerController : MonoBehaviour
         if (isChecking == true) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            if (hungry == true)
+            {
+                SoundManager.instance.PlaySound("block");
+                dialogueRunner1.Stop();
+                dialogueRunner1.StartDialogue("Hungry");
+                return;
+            }
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("Making");
         }
         if (Input.GetKey(KeyCode.Space))
         {
+            if (hungry == true)
+            {
+                return;
+            }
             anim.SetBool("isMaking", true);
             stopMove = true;
             StopPlayer();
@@ -380,6 +424,10 @@ public class PlayerController : MonoBehaviour
                 itemCoolTime = 0;
                 GetScreen();                    //가림막 획득
             }
+            if (!audioSource.isPlaying)
+            {
+                SoundManager.instance.PlaySound("making");
+            }
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
@@ -387,6 +435,8 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("isMaking", false);
             stopMove = false;
             itemCoolTime = 0;
+            audioSource.Stop();
+            if (hungry == true) return;
         }
     }
     public void IsFinding()                        //잡동사니 뒤지는 함수
@@ -395,11 +445,22 @@ public class PlayerController : MonoBehaviour
         if (isChecking == true) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            if (hungry == true)
+            {
+                SoundManager.instance.PlaySound("block");
+                dialogueRunner1.Stop();
+                dialogueRunner1.StartDialogue("Hungry");
+                return;
+            }
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("Finding");
         }
         if (Input.GetKey(KeyCode.Space))
         {
+            if (hungry == true)
+            {
+                return;
+            }
             anim.SetBool("isFinding", true);
             stopMove = true;
             StopPlayer();
@@ -411,21 +472,66 @@ public class PlayerController : MonoBehaviour
                 itemCoolTime = 0;
                 GetItem();                    //랜덤으로 아이템 획득
             }
+            if (!audioSource.isPlaying)
+            {
+                SoundManager.instance.PlaySound("finding");
+            }
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
             anim.SetBool("isFinding", false);
             stopMove = false;
             itemCoolTime = 0;
+            audioSource.Stop();
+            if (hungry == true) return;
         }
     }
 
     public void IsTenting()
     {
         if (GameManager.isPause == true) return;
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (hungry == false)
+            {
+                SoundManager.instance.PlaySound("block");
+                dialogueRunner1.Stop();
+                dialogueRunner1.StartDialogue("Tent");
+                return;
+            }
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("Eating");
+        }
+        if (Input.GetKey(KeyCode.Space))
+        {
+            if (hungry == false) return;
+            stopMove = true;
+            StopPlayer();
+
+            if (!audioSource.isPlaying)
+            {
+                SoundManager.instance.PlaySound("eating");
+            }
+
+            itemCoolTime += Time.deltaTime;
+
+            if (itemCoolTime >= 3f)                      //텐트의 식량 먹는데 3초 필요
+            {
+                itemCoolTime = 0;
+
+                stopMove = false;
+                hungry = false;
+                audioSource.Stop();
+
+                dialogueRunner1.Stop();
+                dialogueRunner1.StartDialogue("Full");
+                return;
+            }
+        }
     }
     public void GetFirewood()
     {
+        SoundManager.instance.PlaySound("getitem");
         firewoodCnt++;
         dialogueRunner1.Stop();
         dialogueRunner1.StartDialogue("GetFirewood");
@@ -433,6 +539,7 @@ public class PlayerController : MonoBehaviour
 
     public void GetScreen()
     {
+        SoundManager.instance.PlaySound("getitem");
         screenCnt++;
         dialogueRunner1.Stop();
         dialogueRunner1.StartDialogue("GetScreen");
@@ -443,29 +550,34 @@ public class PlayerController : MonoBehaviour
         int getWhat = Random.Range(1,101);
         if (getWhat <= 20)                                      //20%의 확률로 장작 획득
         {
+            SoundManager.instance.PlaySound("getitem");
             firewoodCnt++;
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetFirewood");
         }
         else if (getWhat > 20 && getWhat <= 60)                 //40%의 확률로 신문지 획득
         {
+            SoundManager.instance.PlaySound("getitem");
             paperCnt++;
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetPaper");
         }
         else if (getWhat > 60 && getWhat <= 70)                 //10%의 확률로 기름 획득
         {
+            SoundManager.instance.PlaySound("getitem");
             oilCnt++;
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetOil");
         }
         else if (getWhat > 70 && getWhat <= 95)                 //25%의 확률로 쓰레기 획득
         {
+            SoundManager.instance.PlaySound("getitem");
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetTrash");
         }
         else                                                    //5%의 확률로 ??? 획득
         {
+            SoundManager.instance.PlaySound("getitem");
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetUnknown");
         }
@@ -474,6 +586,7 @@ public class PlayerController : MonoBehaviour
     public static void UseFirewood()    //장작 사용
     {
         firewoodCnt--;
+        SoundManager.instance.PlaySound("useitem");
         PileSliderController.PileGage += 200;            //장작 게이지 +200
         PileSliderController.goOutPile = false;
         
@@ -484,6 +597,7 @@ public class PlayerController : MonoBehaviour
     public static void UsePaper()       //신문지 사용
     {
         paperCnt--;
+        SoundManager.instance.PlaySound("useitem");
         if (!FlameSliderController.goOutFlame)
             FlameSliderController.FlameGage += 50;            //불꽃 게이지 +50
     }
@@ -491,6 +605,7 @@ public class PlayerController : MonoBehaviour
     public static void UseOil()         //기름 사용
     {
         oilCnt--;
+        SoundManager.instance.PlaySound("useitem");
         if (!FlameSliderController.goOutFlame)
             FlameSliderController.FlameGage += 100;           //불꽃 게이지 +100
     }
@@ -499,13 +614,14 @@ public class PlayerController : MonoBehaviour
     {
         isScreen = true;                                    //스크린 있음
         screenCnt--;
+        SoundManager.instance.PlaySound("usescreen");
         FlameSliderController.stopFlameGage = true;       //가림막은 10초 동안 불꽃 게이지 감소를 막아줌
         screenObj.SetActive(true);      //가림막 생성
 
-        instance.Invoke("RemoveScreen", 10f);   //10초 뒤 가림막 제거 함수 호출
+        instance.Invoke("RemoveScreen", 15f);   //15초 뒤 가림막 제거 함수 호출
     }
 
-    public static void RemoveScreen()
+    public void RemoveScreen()
     {
         isScreen = false;                                   //스크린 제거
         screenObj.SetActive(false);
@@ -551,15 +667,16 @@ public class PlayerController : MonoBehaviour
     {
         if (Mathf.Approximately(move.x, 0) && Mathf.Approximately(move.y, 0))
         {
-            audioSource.Stop();
+            //audioSource.Stop();
             anim.SetBool("isMove", false);
         }
         else
         {
             if (!audioSource.isPlaying)
             {
-                audioSource.Play();
-                audioSource.pitch = 1.7f;
+                //audioSource.Play();
+                //audioSource.pitch = 1.7f;
+                SoundManager.instance.PlaySound("snowstep");
             }
             anim.SetBool("isMove", true);
         }

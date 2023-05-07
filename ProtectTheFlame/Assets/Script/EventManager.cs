@@ -40,7 +40,7 @@ public class EventManager : MonoBehaviour
             //만약 스크린 설치 불가 상태일때 스크린이 설치되어있는 isInvoking이 참이면
         {
             CancelInvoke();                             //인보크 취소하고
-            PlayerController.RemoveScreen();            //바로 스크린 삭제
+            PlayerController.instance.RemoveScreen();            //바로 스크린 삭제
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("DestroyScreen");
         }
@@ -49,7 +49,7 @@ public class EventManager : MonoBehaviour
     public void WhatEventIsIt()
     {
         int occurWhat = Random.Range(1, 101);
-        if (occurWhat <= 50 && TimeController.hour < 4)             //50%의 확률로 이벤트 없음. 새벽 4시 이전.
+        if (occurWhat <= 100 && TimeController.hour < 4)             //50%의 확률로 이벤트 없음. 새벽 4시 이전.
         {
             NoEvent();
         }
@@ -61,7 +61,7 @@ public class EventManager : MonoBehaviour
         {
             Fog();
         }
-        else if (occurWhat > 50 && occurWhat <= 80)                 //30%의 확률로 강한 바람.
+        else if (occurWhat > 0 && occurWhat <= 80)                 //30%의 확률로 강한 바람.
         {
             StrongWind();
         }

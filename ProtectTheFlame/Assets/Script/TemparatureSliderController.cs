@@ -25,6 +25,7 @@ public class TemparatureSliderController : MonoBehaviour
             TemparatureGage = 0;
             if (a == 0)
             {
+                SoundManager.instance.StopSound();
                 PlayerController.instance.GameOver();
                 PlayerController.instance.dialogueRunner1.Stop();
                 PlayerController.instance.dialogueRunner1.StartDialogue("GameOver");

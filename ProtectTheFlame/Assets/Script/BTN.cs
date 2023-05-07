@@ -20,7 +20,7 @@ public class BTN : MonoBehaviour
     public BTNType currentType;
     public CanvasGroup mainGroup;
     public CanvasGroup optionGroup;
-    
+
     public void OnBtnClick()
     {
         switch (currentType)
@@ -29,7 +29,10 @@ public class BTN : MonoBehaviour
                 GameManager.StoryScene();
                 break;
             case BTNType.Option:
-                if (TemparatureSliderController.TemparatureGage <= 0f) return;
+                if (SceneManager.GetActiveScene().name == "GameScene")
+                {
+                    if (TemparatureSliderController.TemparatureGage <= 0f) return;
+                }
                 OptionGroupOn();
                 break;
             case BTNType.Back:
@@ -41,6 +44,8 @@ public class BTN : MonoBehaviour
                 break;
             case BTNType.GoMain:
                 GameManager.ResumeGame();
+                SoundManager.instance.StopSound();
+                MusicManager.instance.UnPauseMusic();
                 GameManager.JumpScene("StartScene");
                 break;
         }
@@ -48,6 +53,10 @@ public class BTN : MonoBehaviour
 
     public void OptionGroupOn()
     {
+        if (SceneManager.GetActiveScene().name == "GameScene")
+        {
+            SoundManager.instance.PlaySound("pause");
+        }
         CanvasGroupOn(optionGroup);
         CanvasGroupOff(mainGroup);
         GameManager.PauseGame();
@@ -56,6 +65,10 @@ public class BTN : MonoBehaviour
     }
     public void OptionGroupOff()
     {
+        if (SceneManager.GetActiveScene().name == "GameScene")
+        {
+            SoundManager.instance.PlaySound("unpause");
+        }
         CanvasGroupOn(mainGroup);
         CanvasGroupOff(optionGroup);
         GameManager.ResumeGame();
