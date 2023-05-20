@@ -197,8 +197,6 @@ public class PlayerController : MonoBehaviour
         screenTxt.text = screenCnt.ToString();
     }
 
-    
-
     public void Update()
     {
         if (TemparatureSliderController.TemparatureGage <= 0f) return;
@@ -284,6 +282,7 @@ public class PlayerController : MonoBehaviour
                 SoundManager.instance.PlaySound("block");
                 dialogueRunner1.Stop();
                 dialogueRunner1.StartDialogue("BlockScreen");
+                return;
             }
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("CheckUseScreen");
@@ -370,7 +369,7 @@ public class PlayerController : MonoBehaviour
 
             itemCoolTime += Time.deltaTime;
 
-            if (itemCoolTime > 5f)
+            if (itemCoolTime > 3f)
             {
                 itemCoolTime = 0;
                 GetFirewood();
@@ -548,34 +547,34 @@ public class PlayerController : MonoBehaviour
     public void GetItem()
     {
         int getWhat = Random.Range(1,101);
-        if (getWhat <= 20)                                      //20%ÀÇ È®·ü·Î ÀåÀÛ È¹µæ
+        if (getWhat <= 30)                                      //30%ÀÇ È®·ü·Î ÀåÀÛ È¹µæ
         {
             SoundManager.instance.PlaySound("getitem");
             firewoodCnt++;
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetFirewood");
         }
-        else if (getWhat > 20 && getWhat <= 60)                 //40%ÀÇ È®·ü·Î ½Å¹®Áö È¹µæ
+        else if (getWhat > 30 && getWhat <= 70)                 //40%ÀÇ È®·ü·Î ½Å¹®Áö È¹µæ
         {
             SoundManager.instance.PlaySound("getitem");
             paperCnt++;
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetPaper");
         }
-        else if (getWhat > 60 && getWhat <= 70)                 //10%ÀÇ È®·ü·Î ±â¸§ È¹µæ
+        else if (getWhat > 70 && getWhat <= 85)                 //15%ÀÇ È®·ü·Î ±â¸§ È¹µæ
         {
             SoundManager.instance.PlaySound("getitem");
             oilCnt++;
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetOil");
         }
-        else if (getWhat > 70 && getWhat <= 95)                 //25%ÀÇ È®·ü·Î ¾²·¹±â È¹µæ
+        else if (getWhat > 85 && getWhat <= 99)                 //14%ÀÇ È®·ü·Î ¾²·¹±â È¹µæ
         {
             SoundManager.instance.PlaySound("getitem");
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetTrash");
         }
-        else                                                    //5%ÀÇ È®·ü·Î ??? È¹µæ
+        else                                                    //1%ÀÇ È®·ü·Î ??? È¹µæ
         {
             SoundManager.instance.PlaySound("getitem");
             dialogueRunner1.Stop();
@@ -599,7 +598,8 @@ public class PlayerController : MonoBehaviour
         paperCnt--;
         SoundManager.instance.PlaySound("useitem");
         if (!FlameSliderController.goOutFlame)
-            FlameSliderController.FlameGage += 50;            //ºÒ²É °ÔÀÌÁö +50
+            FlameSliderController.FlameGage += 70;            //ºÒ²É °ÔÀÌÁö +70
+        PileSliderController.PileGage += 30;
     }
 
     public static void UseOil()         //±â¸§ »ç¿ë
@@ -607,7 +607,7 @@ public class PlayerController : MonoBehaviour
         oilCnt--;
         SoundManager.instance.PlaySound("useitem");
         if (!FlameSliderController.goOutFlame)
-            FlameSliderController.FlameGage += 100;           //ºÒ²É °ÔÀÌÁö +100
+            FlameSliderController.FlameGage += 200;           //ºÒ²É °ÔÀÌÁö +200
     }
 
     public static void UseScreen()      //°¡¸²¸· »ç¿ë
@@ -615,7 +615,7 @@ public class PlayerController : MonoBehaviour
         isScreen = true;                                    //½ºÅ©¸° ÀÖÀ½
         screenCnt--;
         SoundManager.instance.PlaySound("usescreen");
-        FlameSliderController.stopFlameGage = true;       //°¡¸²¸·Àº 10ÃÊ µ¿¾È ºÒ²É °ÔÀÌÁö °¨¼Ò¸¦ ¸·¾ÆÁÜ
+        FlameSliderController.stopFlameGage = true;       //°¡¸²¸·Àº 15ÃÊ µ¿¾È ºÒ²É °ÔÀÌÁö °¨¼Ò¸¦ ¸·¾ÆÁÜ
         screenObj.SetActive(true);      //°¡¸²¸· »ý¼º
 
         instance.Invoke("RemoveScreen", 15f);   //15ÃÊ µÚ °¡¸²¸· Á¦°Å ÇÔ¼ö È£Ãâ
@@ -706,29 +706,6 @@ public class PlayerController : MonoBehaviour
         else if (other.gameObject.CompareTag("Tent"))
         {
             inTent = true;
-        }
-    }
-    public void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("Flame"))
-        {
-            
-        }
-        else if (other.gameObject.CompareTag("Pile"))
-        {
-
-        }
-        else if (other.gameObject.CompareTag("Junk"))
-        {
-
-        }
-        else if (other.gameObject.CompareTag("Table"))
-        {
-
-        }
-        else if (other.gameObject.CompareTag("Tent"))
-        {
-
         }
     }
     public void OnTriggerExit2D(Collider2D other)

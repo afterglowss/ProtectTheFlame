@@ -45,7 +45,7 @@ public class TimeController : MonoBehaviour
     {
         if (TemparatureSliderController.TemparatureGage <= 0f) return;
         ClockTime();
-        if (hour == 0 && min == 30 && sec == 0f && a == 0)
+        if (hour == 4 && min == 30 && sec == 0f && a == 0)
         {
             a++;
             PlayerController.hungry = true;
