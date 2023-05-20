@@ -7,16 +7,16 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 0
     path: 
-    guid: 2cda990e2423bbf4892e6590ba056729
+    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/StartScene.unity
+    guid: fb5dee3e320f0b147b95c31db2fe9af7
   - enabled: 1
     path: Assets/Scenes/StoryScene.unity
     guid: b66f845d954dfa247a0f87ecbbb3324f
   - enabled: 1
     path: Assets/Scenes/GameScene.unity
     guid: 3a0828b03cd2afb4cb88e7860e61f315
-  - enabled: 1
-    path: Assets/Scenes/StartScene.unity
-    guid: fb5dee3e320f0b147b95c31db2fe9af7
   - enabled: 1
     path: Assets/Scenes/GameClearScene.unity
     guid: 0314ef89dcb90f5449a088be8359e027

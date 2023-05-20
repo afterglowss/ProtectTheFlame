@@ -11,11 +11,14 @@ public class TemparatureSliderController : MonoBehaviour
     public static bool stopTemparatureGage;
     int a = 0;
 
+    public GameObject warningImage;
+    Color color;
 
     private void Start()
     {
         stopTemparatureGage = false;
         TemparatureGage = 70;
+        color = warningImage.GetComponent<Image>().color;
     }
 
     void Update()
@@ -36,6 +39,8 @@ public class TemparatureSliderController : MonoBehaviour
         {
             TemparatureGage = 100;
         }
+        //color.a = 70 - TemparatureGage;
+        //warningImage.GetComponent<Image>().color = color;
         TempGUpDown();
     }
      

@@ -16,9 +16,9 @@ public class EventManager : MonoBehaviour
     public DialogueRunner dialogueRunner2;                      //dialogueRunner2는 대사가 20초 뒤에 사라지도록 세팅
     public InMemoryVariableStorage variableStorage2;
 
-    private BlendTree blendTree;
 
-
+    public GameObject fogImage;
+    
 
     public void Awake()
     {
@@ -36,20 +36,12 @@ public class EventManager : MonoBehaviour
             WhatEventIsIt();
         }
 
-        if (PlayerController.blockScreen == true && IsInvoking() == true)   
-            //만약 스크린 설치 불가 상태일때 스크린이 설치되어있는 isInvoking이 참이면
-        {
-            CancelInvoke();                             //인보크 취소하고
-            PlayerController.instance.RemoveScreen();            //바로 스크린 삭제
-            dialogueRunner1.Stop();
-            dialogueRunner1.StartDialogue("DestroyScreen");
-        }
     }
 
     public void WhatEventIsIt()
     {
         int occurWhat = Random.Range(1, 101);
-        if (occurWhat <= 0 && TimeController.hour < 4)             //50%의 확률로 이벤트 없음. 새벽 4시 이전.
+        if (occurWhat <= 50 && TimeController.hour < 4)             //50%의 확률로 이벤트 없음. 새벽 4시 이전.
         {
             NoEvent();
         }
@@ -61,7 +53,7 @@ public class EventManager : MonoBehaviour
         {
             Fog();
         }
-        else if (occurWhat > 0 && occurWhat <= 80)                 //30%의 확률로 강한 바람.
+        else if (occurWhat > 50 && occurWhat <= 80)                 //30%의 확률로 강한 바람.
         {
             StrongWind();
         }
@@ -69,7 +61,7 @@ public class EventManager : MonoBehaviour
         {
             Snow();
         }
-        else if (occurWhat > 96 && occurWhat <= 100)                //3%의 확률로 눈보라. -> 거의 게임오버 수준으로 어렵게.
+        else if (occurWhat > 97 && occurWhat <= 100)                //3%의 확률로 눈보라. -> 거의 게임오버 수준으로 어렵게.
         {
             Blizzard();
         }
@@ -126,7 +118,7 @@ public class EventManager : MonoBehaviour
         while (true)
         {
             PileSliderController.PileGage -= Time.deltaTime * 20;
-            TemparatureSliderController.TemparatureGage -= Time.deltaTime * 2;
+            TemparatureSliderController.TemparatureGage -= Time.deltaTime * 3;
 
             eventContinueTime += Time.deltaTime;
 
@@ -146,7 +138,16 @@ public class EventManager : MonoBehaviour
         PlayerController.instance.moveSpeed = PlayerController.lowMoveSpeed;
         PlayerController.blockFanning = true;           //부채질 불가능
         PlayerController.blockScreen = true;            //스크린 설치 불가능
-        //PlayerController.RemoveScreen();                //스크린 파괴
+
+        if (PlayerController.isScreen == true)
+        //눈보라일 때 스크린이 설치되어있으면
+        {
+            CancelInvoke();                             //인보크 취소하고
+            PlayerController.isScreen = false;
+            PlayerController.instance.RemoveScreen();            //바로 스크린 삭제
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("DestroyScreen");
+        }
 
         PlayerController.instance.anim.SetBool("isFanning", false);
         PlayerController.stopMove = false;
@@ -170,14 +171,13 @@ public class EventManager : MonoBehaviour
                 Debug.Log("stopBlizzard");
                 PlayerController.instance.moveSpeed = PlayerController.originMoveSpeed;
                 PlayerController.blockFanning = false;
-                PlayerController.blockScreen = true;
+                PlayerController.blockScreen = false;
 
                 yield break;
             }
             yield return null;
         }
     }
-    public GameObject fogImage;
 
     public void Fog()
     {
