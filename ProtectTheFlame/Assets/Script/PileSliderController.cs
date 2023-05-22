@@ -36,7 +36,7 @@ public class PileSliderController : MonoBehaviour
     {
         if (!stopPileGage && !FlameSliderController.goOutFlame)     //불꽃이 꺼지면 장작 게이지 더이상 줄어들지 않음.
         {
-            PileGage -= Time.deltaTime * 10;
+            PileGage -= Time.deltaTime * 15;
         }
         GetComponent<Slider>().value = (int)PileGage;
     }

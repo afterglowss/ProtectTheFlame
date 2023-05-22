@@ -97,7 +97,11 @@ title: CheckUseFirewood
 '장작'을 넣으시겠습니까?
 -> 예.
     <<minusCnt firewood>>
+    <<movePlayer Player>>
+    <<stopMoveBool false>>
+    <<isCheckingBool false>>
     '장작'을 불꽃에 넣었습니다!
+    <<stop>>
 -> 아니오. 
 <<movePlayer Player>>
 <<stopMoveBool false>>
@@ -112,7 +116,11 @@ title: CheckUsePaper
 '신문지'를 넣으시겠습니까?
 -> 예.
     <<minusCnt paper>>
+    <<movePlayer Player>>
+    <<stopMoveBool false>>
+    <<isCheckingBool false>>
     '신문지'를 불꽃에 넣었습니다!
+    <<stop>>
 -> 아니오.
 <<movePlayer Player>>
 <<stopMoveBool false>>
@@ -127,7 +135,11 @@ title: CheckUseOil
 '기름'을 넣으시겠습니까?
 -> 예.
     <<minusCnt oil>>
+    <<movePlayer Player>>
+    <<stopMoveBool false>>
+    <<isCheckingBool false>>
     '기름'을 불꽃에 넣었습니다!
+    <<stop>>
 -> 아니오.
 <<movePlayer Player>>
 <<stopMoveBool false>>
@@ -142,7 +154,11 @@ title: CheckUseScreen
 '가림막'을 설치하시겠습니까?
 -> 예.
     <<minusCnt screen>>
+    <<movePlayer Player>>
+    <<stopMoveBool false>>
+    <<isCheckingBool false>>
     '가림막'을 설치했습니다!
+    <<stop>>
 -> 아니오.
 <<movePlayer Player>>
 <<stopMoveBool false>>
@@ -151,7 +167,7 @@ title: CheckUseScreen
 ===
 title: NoEvent
 ---
-이벤트가 없습니다.
+
 ===
 title: StrongWind
 ---
@@ -165,7 +181,7 @@ title: Snow
 
 title: Blizzard
 ---
-조금씩 날리던 눈발이 지나치게 거세졌다.
+눈보라가 몰아친다.
 ===
 
 title: Fog

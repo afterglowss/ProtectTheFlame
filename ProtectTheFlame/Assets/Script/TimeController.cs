@@ -45,10 +45,17 @@ public class TimeController : MonoBehaviour
     {
         if (TemparatureSliderController.TemparatureGage <= 0f) return;
         ClockTime();
-        if (hour == 4 && min == 30 && sec == 0f && a == 0)
+        if (hour == 4 && min == 5 && sec == 0f && a == 0)
         {
             a++;
             PlayerController.hungry = true;
+            PlayerController.instance.anim.SetBool("isFanning", false);
+            PlayerController.instance.anim.SetBool("isChopping", false);
+            PlayerController.instance.anim.SetBool("isMaking", false);
+            PlayerController.instance.anim.SetBool("isFinding", false);
+
+            PlayerController.stopMove = false;
+
             PlayerController.instance.dialogueRunner1.Stop();
             PlayerController.instance.dialogueRunner1.StartDialogue("HungryFirst");
         }
