@@ -49,12 +49,7 @@ public class TimeController : MonoBehaviour
         {
             a++;
             PlayerController.hungry = true;
-            PlayerController.instance.anim.SetBool("isFanning", false);
-            PlayerController.instance.anim.SetBool("isChopping", false);
-            PlayerController.instance.anim.SetBool("isMaking", false);
-            PlayerController.instance.anim.SetBool("isFinding", false);
-
-            PlayerController.stopMove = false;
+            PlayerController.instance.StopsOnPause();
 
             PlayerController.instance.dialogueRunner1.Stop();
             PlayerController.instance.dialogueRunner1.StartDialogue("HungryFirst");

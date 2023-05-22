@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
             {
                 if (pauseBtn.GetComponent<BTN>().optionGroup.alpha == 0)
                 {
+                    PlayerController.instance.StopsOnPause();       //일시정지 시 하고 있던 행위 멈추기
                     pauseBtn.GetComponent<BTN>().OptionGroupOn();
                 }
                 else
