@@ -200,6 +200,7 @@ public class PlayerController : MonoBehaviour
     public void Update()
     {
         if (TemparatureSliderController.TemparatureGage <= 0f) return;
+        if (GameManager.isPause == true) return;
         UpdateState();
         UpdateCnt();
         if (inFlame == true)
@@ -277,6 +278,12 @@ public class PlayerController : MonoBehaviour
                 dialogueRunner1.StartDialogue("ZeroCnt");
                 return;
             }
+            if (isScreen == true)
+            {
+                dialogueRunner1.Stop();
+                dialogueRunner1.StartDialogue("AlreadyScreen");
+                return;
+            }
             if (blockScreen == true)
             {
                 SoundManager.instance.PlaySound("block");
@@ -339,6 +346,16 @@ public class PlayerController : MonoBehaviour
             if (blockFanning == true || FlameSliderController.goOutFlame || PileSliderController.goOutPile || hungry == true)
                 return; //부채질을 할 수 없을 때
         }
+    }
+    public void StopsOnPause()
+    {
+        anim.SetBool("isFanning", false);
+        anim.SetBool("isChopping", false);
+        anim.SetBool("isMaking", false);
+        anim.SetBool("isFinding", false);
+        stopMove = false;
+        itemCoolTime = 0;
+        audioSource.Stop();
     }
     public void IsChopping()                        //장작 패기 함수
     {
@@ -599,7 +616,7 @@ public class PlayerController : MonoBehaviour
         SoundManager.instance.PlaySound("useitem");
         if (!FlameSliderController.goOutFlame)
             FlameSliderController.FlameGage += 70;            //불꽃 게이지 +70
-        PileSliderController.PileGage += 30;
+        PileSliderController.PileGage += 50;
     }
 
     public static void UseOil()         //기름 사용
@@ -607,11 +624,12 @@ public class PlayerController : MonoBehaviour
         oilCnt--;
         SoundManager.instance.PlaySound("useitem");
         if (!FlameSliderController.goOutFlame)
-            FlameSliderController.FlameGage += 150;           //불꽃 게이지 +150
+            FlameSliderController.FlameGage += 200;           //불꽃 게이지 +200
     }
 
     public static void UseScreen()      //가림막 사용
     {
+        
         isScreen = true;                                    //스크린 있음
         screenCnt--;
         SoundManager.instance.PlaySound("usescreen");

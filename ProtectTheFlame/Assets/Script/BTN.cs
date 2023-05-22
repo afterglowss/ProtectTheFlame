@@ -55,6 +55,7 @@ public class BTN : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "GameScene")
         {
+            SoundManager.instance.StopSound();
             SoundManager.instance.PlaySound("pause");
         }
         CanvasGroupOn(optionGroup);
@@ -67,6 +68,7 @@ public class BTN : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "GameScene")
         {
+            SoundManager.instance.StopSound();
             SoundManager.instance.PlaySound("unpause");
         }
         CanvasGroupOn(mainGroup);

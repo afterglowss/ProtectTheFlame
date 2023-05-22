@@ -6,6 +6,9 @@ using Yarn.Unity;
 
 public class EventManager : MonoBehaviour
 {
+    public ParticleSystem snowParticleSystem;
+    public ParticleSystem blizzardParticleSystem;
+
     float eventCoolTime = 0;
     float eventContinueTime = 0;
 
@@ -40,15 +43,15 @@ public class EventManager : MonoBehaviour
     public void WhatEventIsIt()
     {
         int occurWhat = Random.Range(1, 101);
-        if (occurWhat <= 30 && TimeController.hour < 4)             //50%의 확률로 이벤트 없음. 새벽 4시 이전.
+        if (occurWhat <= 30 && TimeController.hour < 4)             //30%의 확률로 이벤트 없음. 새벽 4시 이전.
         {
             NoEvent();
         }
-        else if (occurWhat < 0 && TimeController.hour >= 4)                                   //새벽 4시 이후는 0% 확률로 이벤트 없음.
+        else if (occurWhat <= 5 && TimeController.hour >= 4)                                   //새벽 4시 이후는 5% 확률로 이벤트 없음.
         {
             NoEvent();
         }
-        else if (occurWhat >= 0 && occurWhat <= 30 && TimeController.hour >= 4)                 //30%의 확률로 안개.
+        else if (occurWhat > 5 && occurWhat <= 30 && TimeController.hour >= 4)                 //25%의 확률로 안개.
         {
             Fog();
         }
@@ -56,11 +59,15 @@ public class EventManager : MonoBehaviour
         {
             StrongWind();
         }
-        else if (occurWhat > 70 && occurWhat <= 90)                 //20%의 확률로 눈.
+        else if (occurWhat > 70 && occurWhat <= 90)                 //2시 전까지는 30%의 확률로 눈. 2시 이후 20% 확률
         {
             Snow();
         }
-        else if (occurWhat > 90 && occurWhat <= 100)                //10%의 확률로 눈보라. -> 거의 게임오버 수준으로 어렵게.
+        else if (occurWhat > 90 && occurWhat <= 100 && TimeController.hour < 2)                 
+        {
+            Snow();
+        }
+        else if (occurWhat > 90 && occurWhat <= 100 && TimeController.hour >= 2)        //2시 이후 10%의 확률로 눈보라. -> 거의 게임오버 수준으로 어렵게.
         {
             Blizzard();
         }
@@ -108,6 +115,7 @@ public class EventManager : MonoBehaviour
     public void Snow()
     {
         dialogueRunner2.StartDialogue("Snow");
+        snowParticleSystem.Play();
 
         StartCoroutine(Co_Snow());
     }
@@ -134,6 +142,8 @@ public class EventManager : MonoBehaviour
     public void Blizzard()
     {
         dialogueRunner2.StartDialogue("Blizzard");
+        blizzardParticleSystem.Play();
+
         PlayerController.instance.moveSpeed = PlayerController.lowMoveSpeed;
         PlayerController.blockFanning = true;           //부채질 불가능
         PlayerController.blockScreen = true;            //스크린 설치 불가능
