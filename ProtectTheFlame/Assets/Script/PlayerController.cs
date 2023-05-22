@@ -356,6 +356,7 @@ public class PlayerController : MonoBehaviour
         stopMove = false;
         itemCoolTime = 0;
         audioSource.Stop();
+        isChecking = false;
     }
     public void IsChopping()                        //장작 패기 함수
     {
