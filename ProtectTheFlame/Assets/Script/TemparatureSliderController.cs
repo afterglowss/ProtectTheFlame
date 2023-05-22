@@ -32,6 +32,8 @@ public class TemparatureSliderController : MonoBehaviour
                 PlayerController.instance.GameOver();
                 PlayerController.instance.dialogueRunner1.Stop();
                 PlayerController.instance.dialogueRunner1.StartDialogue("GameOver");
+                PlayerController.instance.dialogueRunner2.Stop();
+                PlayerController.instance.dialogueRunner2.StartDialogue("NoEvent");
                 a++;
             }
         }

@@ -40,27 +40,27 @@ public class EventManager : MonoBehaviour
     public void WhatEventIsIt()
     {
         int occurWhat = Random.Range(1, 101);
-        if (occurWhat <= 50 && TimeController.hour < 4)             //50%의 확률로 이벤트 없음. 새벽 4시 이전.
+        if (occurWhat <= 30 && TimeController.hour < 4)             //50%의 확률로 이벤트 없음. 새벽 4시 이전.
         {
             NoEvent();
         }
-        else if (occurWhat <= 20 && TimeController.hour >= 4)                                   //새벽 4시 이후는 20% 확률로 이벤트 없음.
+        else if (occurWhat < 0 && TimeController.hour >= 4)                                   //새벽 4시 이후는 0% 확률로 이벤트 없음.
         {
             NoEvent();
         }
-        else if (occurWhat > 20 && occurWhat <= 50 && TimeController.hour >= 4)                 //30%의 확률로 안개.
+        else if (occurWhat >= 0 && occurWhat <= 30 && TimeController.hour >= 4)                 //30%의 확률로 안개.
         {
             Fog();
         }
-        else if (occurWhat > 50 && occurWhat <= 80)                 //30%의 확률로 강한 바람.
+        else if (occurWhat > 30 && occurWhat <= 70)                 //40%의 확률로 강한 바람.
         {
             StrongWind();
         }
-        else if (occurWhat > 80 && occurWhat <= 97)                 //17%의 확률로 눈.
+        else if (occurWhat > 70 && occurWhat <= 90)                 //20%의 확률로 눈.
         {
             Snow();
         }
-        else if (occurWhat > 97 && occurWhat <= 100)                //3%의 확률로 눈보라. -> 거의 게임오버 수준으로 어렵게.
+        else if (occurWhat > 90 && occurWhat <= 100)                //10%의 확률로 눈보라. -> 거의 게임오버 수준으로 어렵게.
         {
             Blizzard();
         }

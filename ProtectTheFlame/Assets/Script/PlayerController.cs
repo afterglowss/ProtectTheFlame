@@ -369,7 +369,7 @@ public class PlayerController : MonoBehaviour
 
             itemCoolTime += Time.deltaTime;
 
-            if (itemCoolTime > 3f)
+            if (itemCoolTime > 4f)
             {
                 itemCoolTime = 0;
                 GetFirewood();
@@ -466,7 +466,7 @@ public class PlayerController : MonoBehaviour
 
             itemCoolTime += Time.deltaTime;
 
-            if (itemCoolTime > 3f)                      //잡동사니 뒤지는 데 5초 필요
+            if (itemCoolTime > 3f)                      //잡동사니 뒤지는 데 3초 필요
             {
                 itemCoolTime = 0;
                 GetItem();                    //랜덤으로 아이템 획득
@@ -514,7 +514,7 @@ public class PlayerController : MonoBehaviour
 
             itemCoolTime += Time.deltaTime;
 
-            if (itemCoolTime >= 3f)                      //텐트의 식량 먹는데 3초 필요
+            if (itemCoolTime >= 7f)                      //텐트의 식량 먹는데 7초 필요
             {
                 itemCoolTime = 0;
 
@@ -547,28 +547,28 @@ public class PlayerController : MonoBehaviour
     public void GetItem()
     {
         int getWhat = Random.Range(1,101);
-        if (getWhat <= 30)                                      //30%의 확률로 장작 획득
+        if (getWhat <= 20)                                      //20%의 확률로 장작 획득
         {
             SoundManager.instance.PlaySound("getitem");
             firewoodCnt++;
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetFirewood");
         }
-        else if (getWhat > 30 && getWhat <= 70)                 //40%의 확률로 신문지 획득
+        else if (getWhat > 20 && getWhat <= 50)                 //30%의 확률로 신문지 획득
         {
             SoundManager.instance.PlaySound("getitem");
             paperCnt++;
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetPaper");
         }
-        else if (getWhat > 70 && getWhat <= 85)                 //15%의 확률로 기름 획득
+        else if (getWhat > 50 && getWhat <= 65)                 //15%의 확률로 기름 획득
         {
             SoundManager.instance.PlaySound("getitem");
             oilCnt++;
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetOil");
         }
-        else if (getWhat > 85 && getWhat <= 99)                 //14%의 확률로 쓰레기 획득
+        else if (getWhat > 65 && getWhat <= 99)                 //34%의 확률로 쓰레기 획득
         {
             SoundManager.instance.PlaySound("getitem");
             dialogueRunner1.Stop();
@@ -607,7 +607,7 @@ public class PlayerController : MonoBehaviour
         oilCnt--;
         SoundManager.instance.PlaySound("useitem");
         if (!FlameSliderController.goOutFlame)
-            FlameSliderController.FlameGage += 200;           //불꽃 게이지 +200
+            FlameSliderController.FlameGage += 150;           //불꽃 게이지 +150
     }
 
     public static void UseScreen()      //가림막 사용
@@ -615,10 +615,10 @@ public class PlayerController : MonoBehaviour
         isScreen = true;                                    //스크린 있음
         screenCnt--;
         SoundManager.instance.PlaySound("usescreen");
-        FlameSliderController.stopFlameGage = true;       //가림막은 15초 동안 불꽃 게이지 감소를 막아줌
+        FlameSliderController.stopFlameGage = true;       //가림막은 10초 동안 불꽃 게이지 감소를 막아줌
         screenObj.SetActive(true);      //가림막 생성
 
-        instance.Invoke("RemoveScreen", 15f);   //15초 뒤 가림막 제거 함수 호출
+        instance.Invoke("RemoveScreen", 10f);   //10초 뒤 가림막 제거 함수 호출
     }
 
     public void RemoveScreen()
