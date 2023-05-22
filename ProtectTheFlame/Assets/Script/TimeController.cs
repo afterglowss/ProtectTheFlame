@@ -49,6 +49,7 @@ public class TimeController : MonoBehaviour
         {
             a++;
             PlayerController.hungry = true;
+
             PlayerController.instance.StopsOnPause();
 
             PlayerController.instance.dialogueRunner1.Stop();
