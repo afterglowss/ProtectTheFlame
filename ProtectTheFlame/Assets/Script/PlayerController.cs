@@ -61,6 +61,9 @@ public class PlayerController : MonoBehaviour
     public static bool blockScreen;         //´«º¸¶ó ÀÌº¥Æ® ½Ã ½ºÅ©¸° »ç¿ë ºÒ°¡. ¿ø·¡ ÀÖ´ø °Íµµ ÆÄ±«µÊ.
 
     public static bool isScreen;
+
+
+    int unknownOneTime;
     public void Awake()
     {
         //Fade.FadeOut("FogImage");
@@ -104,6 +107,8 @@ public class PlayerController : MonoBehaviour
         blockScreen = false;         
 
         isScreen = false;
+
+        unknownOneTime = 0;
     }
     [YarnCommand("isCheckingBool")]
     public static void IsCheckingBool(bool state)
@@ -123,70 +128,25 @@ public class PlayerController : MonoBehaviour
         return blockScreen;
     }
 
-    [YarnFunction("getCnt")]
-    public static int GetCnt(string name)
-    {
-        if (name == "firewood")
-        {
-            return firewoodCnt;
-        }
-        else if (name == "paper")
-        {
-            return paperCnt;
-        }
-        else if (name == "oil")
-        {
-            return oilCnt;
-        }
-        else if (name == "screen")
-        {
-            return screenCnt;
-        }
-        else
-        {
-            return 0;
-        }
-    }
-
-    [YarnCommand("plusCnt")]
-    public static void PlusCnt(string name)
-    {
-        if (name == "firewood")
-        {
-            firewoodCnt++;
-        }
-        else if (name == "paper")
-        {
-            paperCnt++;
-        }
-        else if (name == "oil")
-        {
-            oilCnt++;
-        }
-        else if (name == "screen")
-        {
-            screenCnt++;
-        }
-    }
     [YarnCommand("minusCnt")]
     public static void MinusCnt(string name)
     {
-        if (name == "firewood")
+        switch (name)
         {
-            UseFirewood();
+            case "firewoood":
+                UseFirewood();
+                break;
+            case "paper":
+                UsePaper();
+                break;
+            case "oil":
+                UseOil();
+                break;
+            case "screen":
+                UseScreen();
+                break;
         }
-        else if (name == "paper")
-        {
-            UsePaper();
-        }
-        else if (name == "oil")
-        {
-            UseOil();
-        }
-        else if (name == "screen")
-        {
-            UseScreen();
-        }
+
     }
 
     public void UpdateCnt()
@@ -579,24 +539,31 @@ public class PlayerController : MonoBehaviour
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetPaper");
         }
-        else if (getWhat > 50 && getWhat <= 65)                 //15%ÀÇ È®·ü·Î ±â¸§ È¹µæ
+        else if (getWhat > 50 && getWhat <= 70)                 //20%ÀÇ È®·ü·Î ±â¸§ È¹µæ
         {
             SoundManager.instance.PlaySound("getitem");
             oilCnt++;
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetOil");
         }
-        else if (getWhat > 65 && getWhat <= 99)                 //34%ÀÇ È®·ü·Î ¾²·¹±â È¹µæ
+        else if (getWhat > 70 && getWhat <= 99)                 //30%ÀÇ È®·ü·Î ¾²·¹±â È¹µæ
         {
             SoundManager.instance.PlaySound("getitem");
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetTrash");
         }
-        else                                                    //1%ÀÇ È®·ü·Î ??? È¹µæ
+        else if (getWhat == 100 && unknownOneTime == 0)         //1%ÀÇ È®·ü·Î µü ÇÑ¹ø ??? È¹µæ
         {
             SoundManager.instance.PlaySound("getitem");
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetUnknown");
+            unknownOneTime++;
+        }
+        else if (getWhat == 100)                 
+        {
+            SoundManager.instance.PlaySound("getitem");
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("GetTrash");
         }
     }
 
@@ -686,15 +653,12 @@ public class PlayerController : MonoBehaviour
     {
         if (Mathf.Approximately(move.x, 0) && Mathf.Approximately(move.y, 0))
         {
-            //audioSource.Stop();
             anim.SetBool("isMove", false);
         }
         else
         {
             if (!audioSource.isPlaying)
             {
-                //audioSource.Play();
-                //audioSource.pitch = 1.7f;
                 SoundManager.instance.PlaySound("snowstep");
             }
             anim.SetBool("isMove", true);

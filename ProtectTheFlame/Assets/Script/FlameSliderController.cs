@@ -24,15 +24,9 @@ public class FlameSliderController : MonoBehaviour
 
     void Update()
     {
-        if (FlameGage < 0f)
-        {
-            FlameGage = 0;
-            goOutFlame = true;
-        }
-        else if (FlameGage > 1000f)
-        {
-            FlameGage = 1000;
-        }
+        if (FlameGage <= 0f) goOutFlame = true;
+        FlameGage = Mathf.Clamp(FlameGage, 0f, 1000);
+        
         FlameGUpDown();
     }
 

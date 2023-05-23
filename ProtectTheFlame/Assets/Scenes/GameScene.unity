@@ -572,6 +572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956ef60f9335cdb45a8ddb865040e3c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 60717264}
   fire1: {fileID: 21300000, guid: 191475b7a09dfd44a96a1da51fc30138, type: 3}
   fire2: {fileID: 21300000, guid: ed0e37cc4688dcb4d87877191ca8d2aa, type: 3}
   fire3: {fileID: 21300000, guid: a4743ad18e55a8b4da74732553721153, type: 3}
@@ -17369,6 +17370,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dialogue System2
       objectReference: {fileID: 0}
+    - target: {fileID: 2753718018764665327, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3183266951831634833, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -17795,8 +17800,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7778558434976753272, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
       propertyPath: m_text
-      value: "\uC870\uAE08\uC529 \uB0A0\uB9AC\uB358 \uB208\uBC1C\uC774 \uC9C0\uB098\uCE58\uAC8C
-        \uAC70\uC138\uC84C\uB2E4."
+      value: "\uB208\uBCF4\uB77C\uAC00 \uBAB0\uC544\uCE5C\uB2E4."
       objectReference: {fileID: 0}
     - target: {fileID: 7778558434976753272, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
       propertyPath: m_fontSize
@@ -17840,7 +17844,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7778558435068644803, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -1081.36
+      value: -1214.54
       objectReference: {fileID: 0}
     - target: {fileID: 7778558435068644803, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
       propertyPath: m_SizeDelta.y
@@ -17848,7 +17852,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7778558435068644803, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -66.59003
       objectReference: {fileID: 0}
     - target: {fileID: 7778558435068644803, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -19351,7 +19355,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -283}
+  m_AnchoredPosition: {x: 0, y: 261}
   m_SizeDelta: {x: 846.65, y: 368.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1645212351
@@ -20610,6 +20614,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Option View1
       objectReference: {fileID: 0}
+    - target: {fileID: 6635123125486227991, guid: 3ff4e0d87ab7d4789a1565ac303e8261, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7306900526976280635, guid: 3ff4e0d87ab7d4789a1565ac303e8261, type: 3}
       propertyPath: m_fontSize
       value: 30
@@ -20727,7 +20735,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.00012207031, y: -0.000045776367}
   m_SizeDelta: {x: -52.95999, y: -43.089996}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2052277998
@@ -20777,13 +20785,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 150
-  m_fontSizeBase: 150
+  m_fontSize: 130
+  m_fontSizeBase: 130
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 2
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535

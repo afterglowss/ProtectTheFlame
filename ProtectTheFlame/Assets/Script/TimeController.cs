@@ -18,12 +18,12 @@ public class TimeController : MonoBehaviour
     public DialogueRunner dialogueRunner2;
     public InMemoryVariableStorage variableStorage2;
 
-    int a;
-    int b;
+    int hungryOneTime;
+    int clearOneTime;
 
     public static int hour;
     public static int min;
-    public static float sec;
+    public static double sec;
 
     public static TimeController instance;
 
@@ -32,12 +32,12 @@ public class TimeController : MonoBehaviour
         instance = this;
         hour = 0;
         min = 0;
-        sec = 0f;
+        sec = 0;
     }
     public void Start()
     {
-        a = 0;
-        b = 0;
+        hungryOneTime = 0;
+        clearOneTime = 0;
         
     }
 
@@ -45,9 +45,9 @@ public class TimeController : MonoBehaviour
     {
         if (TemparatureSliderController.TemparatureGage <= 0f) return;
         ClockTime();
-        if (hour == 4 && min == 5 && sec == 0f && a == 0)
+        if (hour == 4 && min == 5 && sec == 0 && hungryOneTime == 0)
         {
-            a++;
+            hungryOneTime++;
             PlayerController.hungry = true;
 
             PlayerController.instance.StopsOnPause();
@@ -55,9 +55,9 @@ public class TimeController : MonoBehaviour
             PlayerController.instance.dialogueRunner1.Stop();
             PlayerController.instance.dialogueRunner1.StartDialogue("HungryFirst");
         }
-        if (hour == 6 && min == 0 && sec == 0f && b == 0)
+        if (hour == 6 && min == 0 && sec == 0 && clearOneTime == 0)
         {
-            b++;
+            clearOneTime++;
             TimeFinish();
         }
     }
@@ -65,9 +65,9 @@ public class TimeController : MonoBehaviour
     {
         sec += Time.deltaTime * 20; //3초가 1분으로 계산됨.
         timeText.text = String.Format("{0:D2}:{1:D2}", hour, min);
-        if ((int)sec > 59)
+        if (sec >= 60)
         {
-            sec = 0f;
+            sec -= 60;
             min++;
         }
         if (min > 59)
@@ -87,7 +87,7 @@ public class TimeController : MonoBehaviour
     {
         hour = 0;
         min = 0;
-        sec = 0f;
+        sec = 0;
     }
 }
 

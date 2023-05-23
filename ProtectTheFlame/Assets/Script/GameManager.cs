@@ -4,17 +4,18 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Yarn.Unity;
+using System.IO;
+
 
 public class GameManager : MonoBehaviour
 {
+
     public static GameManager instance;
 
     public static bool isPause = false;
 
     public Button pauseBtn;
 
-    //private DialogueRunner dialogueRunner;
-    //private InMemoryVariableStorage variableStorage;
     private void Awake()
     {
         Application.targetFrameRate = 60;
@@ -27,8 +28,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(instance);
         }
-        //dialogueRunner = FindObjectOfType<DialogueRunner>();
-        //variableStorage = FindObjectOfType<InMemoryVariableStorage>();
+
     }
 
     public void Update()
@@ -81,6 +81,12 @@ public class GameManager : MonoBehaviour
     public static void JumpScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+    }
+
+    [YarnFunction("getTryCnt")]
+    public static void GetTryCnt()
+    {
+        
     }
 
 }

@@ -86,7 +86,7 @@ title: GetTrash
 ===
 title: GetUnknown
 ---
-......이건 뭐지?
+...! 찾았다.
 <<stop>>
 ===
 title: CheckUseFirewood
@@ -204,6 +204,7 @@ title: BlockScreen
 title: DestroyScreen
 ---
 거센 눈보라에 가림막이 파괴되었다.
+<<stop>>
 ===
 
 title: AlreadyScreen
@@ -247,6 +248,27 @@ title: GameClear
 그것은 헬기 소리였다. 구조대가 온 것이다.
 <<wait 1>>
 나는, 이곳에서 벗어날 수 있게 되었다.
+<<wait 1>>
+<<textFadeIn GameClearText>>
+<<textFadeIn ToMain>>
+<<wait 0.5>>
+<<btnInteractable FadeCanvas>>
+===
+
+title: TrueEnding
+---
+<<pauseMusic MusicManager>>
+<<playSound SoundManager helicopter>>
+<<soundFadeIn SoundManager>>
+<<wait 2>>
+......이상한 소리가 들린다.
+이곳에 나 말고 다른 사람이 있던가?
+<<wait 1.5>>
+그것은 헬기 소리였다. 구조대가 온 것이다.
+<<wait 1>>
+나는, 이곳에서 벗어날 수 있게 되었다.
+...하지만 무엇보다 기쁜 것은 결국 찾아냈다는 것이다.
+그래. 나는 이걸 얻기 위해 이 설산에 번을 올랐어.
 <<wait 1>>
 <<textFadeIn GameClearText>>
 <<textFadeIn ToMain>>
