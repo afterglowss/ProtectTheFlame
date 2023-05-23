@@ -62,8 +62,8 @@ public class PlayerController : MonoBehaviour
 
     public static bool isScreen;
 
+    public static bool gotUnknown;
 
-    int unknownOneTime;
     public void Awake()
     {
         //Fade.FadeOut("FogImage");
@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour
 
         isScreen = false;
 
-        unknownOneTime = 0;
+        gotUnknown = false;
     }
     [YarnCommand("isCheckingBool")]
     public static void IsCheckingBool(bool state)
@@ -133,7 +133,7 @@ public class PlayerController : MonoBehaviour
     {
         switch (name)
         {
-            case "firewoood":
+            case "firewood":
                 UseFirewood();
                 break;
             case "paper":
@@ -552,12 +552,12 @@ public class PlayerController : MonoBehaviour
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetTrash");
         }
-        else if (getWhat == 100 && unknownOneTime == 0)         //1%ÀÇ È®·ü·Î µü ÇÑ¹ø ??? È¹µæ
+        else if (getWhat == 100 && gotUnknown == false)         //1%ÀÇ È®·ü·Î µü ÇÑ¹ø ??? È¹µæ
         {
             SoundManager.instance.PlaySound("getitem");
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetUnknown");
-            unknownOneTime++;
+            gotUnknown = true;
         }
         else if (getWhat == 100)                 
         {

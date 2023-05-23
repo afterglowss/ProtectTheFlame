@@ -102,7 +102,7 @@ title: CheckUseFirewood
     <<isCheckingBool false>>
     '장작'을 불꽃에 넣었습니다!
     <<stop>>
--> 아니오. 
+-> 아니오.
 <<movePlayer Player>>
 <<stopMoveBool false>>
 <<isCheckingBool false>>
@@ -227,6 +227,7 @@ title: Cold
 
 title: GameOver
 ---
+<<plusTryCnt>>
 ......추워.
 더 이상 몸을 움직일 수 없다.
 그래... 아무래도 졸린 것 같아.
@@ -238,6 +239,7 @@ title: GameOver
 
 title: GameClear
 ---
+<<plusTryCnt>>
 <<pauseMusic MusicManager>>
 <<playSound SoundManager helicopter>>
 <<soundFadeIn SoundManager>>
@@ -248,6 +250,7 @@ title: GameClear
 그것은 헬기 소리였다. 구조대가 온 것이다.
 <<wait 1>>
 나는, 이곳에서 벗어날 수 있게 되었다.
+...{getTryCnt()}번의 시도 끝에 말이다.
 <<wait 1>>
 <<textFadeIn GameClearText>>
 <<textFadeIn ToMain>>
@@ -257,6 +260,7 @@ title: GameClear
 
 title: TrueEnding
 ---
+<<plusTryCnt>>
 <<pauseMusic MusicManager>>
 <<playSound SoundManager helicopter>>
 <<soundFadeIn SoundManager>>
@@ -267,8 +271,9 @@ title: TrueEnding
 그것은 헬기 소리였다. 구조대가 온 것이다.
 <<wait 1>>
 나는, 이곳에서 벗어날 수 있게 되었다.
-...하지만 무엇보다 기쁜 것은 결국 찾아냈다는 것이다.
-그래. 나는 이걸 얻기 위해 이 설산에 번을 올랐어.
+...하지만 무엇보다 기쁜 것은 결국 원하는 걸 찾아냈다는 것이다.
+그래. 나는 이걸 얻기 위해 이 설산에 {getTryCnt()}번을 올랐는걸.
+정말 고생했어.
 <<wait 1>>
 <<textFadeIn GameClearText>>
 <<textFadeIn ToMain>>

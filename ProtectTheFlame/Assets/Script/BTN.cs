@@ -39,6 +39,7 @@ public class BTN : MonoBehaviour
                 OptionGroupOff();
                 break;
             case BTNType.Quit:
+                DataManager.instance.SaveData();
                 Application.Quit();
                 Debug.Log("╬ша╬╥А");
                 break;
