@@ -9,7 +9,7 @@ public class TemparatureSliderController : MonoBehaviour
     public static float TemparatureGage;
     [HideInInspector]
     public static bool stopTemparatureGage;
-    int a = 0;
+    int dieOneTime;
 
     public GameObject warningImage;
     Color color;
@@ -19,30 +19,21 @@ public class TemparatureSliderController : MonoBehaviour
         stopTemparatureGage = false;
         TemparatureGage = 70;
         color = warningImage.GetComponent<Image>().color;
+        dieOneTime = 0;
     }
 
     void Update()
     {
-        if (TemparatureGage < 0)
+        if (TemparatureGage <= 0 && dieOneTime == 0)
         {
-            TemparatureGage = 0;
-            if (a == 0)
-            {
-                SoundManager.instance.StopSound();
-                PlayerController.instance.GameOver();
-                PlayerController.instance.dialogueRunner1.Stop();
-                PlayerController.instance.dialogueRunner1.StartDialogue("GameOver");
-                PlayerController.instance.dialogueRunner2.Stop();
-                PlayerController.instance.dialogueRunner2.StartDialogue("NoEvent");
-                a++;
-            }
+            SoundManager.instance.StopSound();
+            PlayerController.instance.GameOver();
+            PlayerController.instance.dialogueRunner1.Stop();
+            PlayerController.instance.dialogueRunner1.StartDialogue("GameOver");
+            dieOneTime++;
         }
-        if (TemparatureGage > 100)
-        {
-            TemparatureGage = 100;
-        }
-        //color.a = 70 - TemparatureGage;
-        //warningImage.GetComponent<Image>().color = color;
+        TemparatureGage = Mathf.Clamp(TemparatureGage, 0, 100);
+        
         TempGUpDown();
     }
      

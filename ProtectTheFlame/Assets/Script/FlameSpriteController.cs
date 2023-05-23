@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class FlameSpriteController : MonoBehaviour
 {
-    SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
     public Sprite fire1;
     public Sprite fire2;
     public Sprite fire3;
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        
     }
     
     void Update()

@@ -21,15 +21,9 @@ public class PileSliderController : MonoBehaviour
 
     void Update()
     {
-        if (PileGage < 0)
-        {
-            PileGage = 0;
-            goOutPile = true;
-        }
-        else if (PileGage > 1000)
-        {
-            PileGage = 1000;
-        }
+        if (PileGage <= 0f) goOutPile = true;
+        PileGage = Mathf.Clamp(PileGage, 0f, 1000);
+        
         PileGUpDown();
     }
     public void PileGUpDown()
