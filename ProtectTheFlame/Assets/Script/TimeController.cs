@@ -33,11 +33,13 @@ public class TimeController : MonoBehaviour
         hour = 0;
         min = 0;
         sec = 0;
+        hungryOneTime = 0;
+        clearOneTime = 0;
     }
     public void Start()
     {
-        hungryOneTime = 0;
-        clearOneTime = 0;
+        //hungryOneTime = 0;
+        //clearOneTime = 0;
         
     }
 
@@ -45,7 +47,7 @@ public class TimeController : MonoBehaviour
     {
         if (TemparatureSliderController.TemparatureGage <= 0f) return;
         ClockTime();
-        if (hour == 4 && min == 5 && sec == 0 && hungryOneTime == 0)
+        if (hour == 4 && min == 5 && sec >= 0 && hungryOneTime == 0)
         {
             hungryOneTime++;
             PlayerController.hungry = true;
@@ -55,10 +57,17 @@ public class TimeController : MonoBehaviour
             PlayerController.instance.dialogueRunner1.Stop();
             PlayerController.instance.dialogueRunner1.StartDialogue("HungryFirst");
         }
-        if (hour == 6 && min == 0 && sec == 0 && clearOneTime == 0)
+        if (hour == 6 && min == 0 && sec >= 0 && clearOneTime == 0 && PlayerController.gotUnknown == false)
         {
             clearOneTime++;
-            TimeFinish();
+            StartCoroutine(Fade.FadeIn(EventManager.instance.blackImage));
+            Invoke("NormalEnding", 1.5f);
+        }
+        else if (hour == 6 && min == 0 && sec >= 0 && clearOneTime == 0 && PlayerController.gotUnknown == true)
+        {
+            clearOneTime++;
+            StartCoroutine(Fade.FadeIn(EventManager.instance.fogImage));
+            Invoke("TrueEnding", 1.5f);
         }
     }
     void ClockTime()
@@ -77,11 +86,15 @@ public class TimeController : MonoBehaviour
         }
     }
 
-    public void TimeFinish()
+    public void NormalEnding()
     {
         GameManager.JumpScene("GameClearScene");
     }
-    
+    public void TrueEnding()
+    {
+        GameManager.JumpScene("TrueEndingScene");
+    }
+
     [YarnCommand("timeSet")]
     public static void TimeSet()
     {

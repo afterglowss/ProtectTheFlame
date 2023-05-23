@@ -6,6 +6,8 @@ using Yarn.Unity;
 
 public class EventManager : MonoBehaviour
 {
+    public static EventManager instance;
+
     public ParticleSystem snowParticleSystem;
     public ParticleSystem blizzardParticleSystem;
 
@@ -20,11 +22,12 @@ public class EventManager : MonoBehaviour
 
 
     public GameObject fogImage;
+    public GameObject blackImage;
     
 
     public void Awake()
     {
-        //blendTree = FindObjectOfType<BlendTree>();
+        instance = this;
     }
 
     public void Update()

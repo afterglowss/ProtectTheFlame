@@ -9,7 +9,7 @@ using System.IO;
 
 public class GameManager : MonoBehaviour
 {
-
+    
     public static GameManager instance;
 
     public static bool isPause = false;
@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
         }
 
     }
+    
 
     public void Update()
     {
@@ -81,12 +82,6 @@ public class GameManager : MonoBehaviour
     public static void JumpScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
-    }
-
-    [YarnFunction("getTryCnt")]
-    public static void GetTryCnt()
-    {
-        
     }
 
 }
