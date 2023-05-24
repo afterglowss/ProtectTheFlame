@@ -65,6 +65,7 @@ public class DataManager : MonoBehaviour
     [YarnFunction("getDifficulty")]
     public static int GetDifficulty()
     {
+        Debug.Log(instance.data.difficulty);
         return instance.data.difficulty;
     }
     [YarnFunction("getIsSnowyCleared")]

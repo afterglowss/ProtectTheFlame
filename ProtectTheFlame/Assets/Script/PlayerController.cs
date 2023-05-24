@@ -70,6 +70,11 @@ public class PlayerController : MonoBehaviour
     public GameObject TentOutline;
     public GameObject JunkOutline;
 
+    float choppingTime;
+    float makingTime;
+    float screenLeftTime;
+
+
 
     public void Awake()
     {
@@ -116,6 +121,30 @@ public class PlayerController : MonoBehaviour
         isScreen = false;
 
         gotUnknown = false;
+
+
+    }
+    private void Start()
+    {
+        switch (DataManager.GetDifficulty())
+        {
+
+            case 1:
+                choppingTime = 10f;
+                makingTime = 4f;
+                screenLeftTime = 13f;
+                break;
+            case 0:
+                choppingTime = 3f;
+                makingTime = 4f;
+                screenLeftTime = 15f;
+                break;
+            case 2:
+                choppingTime = 5f;
+                makingTime = 5f;
+                screenLeftTime = 10f;
+                break;
+        }
     }
     [YarnCommand("isCheckingBool")]
     public static void IsCheckingBool(bool state)
@@ -355,7 +384,7 @@ public class PlayerController : MonoBehaviour
 
             itemCoolTime += Time.deltaTime;
 
-            if (itemCoolTime > 4f)
+            if (itemCoolTime > choppingTime)
             {
                 itemCoolTime = 0;
                 GetFirewood();
@@ -404,7 +433,7 @@ public class PlayerController : MonoBehaviour
 
             itemCoolTime += Time.deltaTime;
 
-            if (itemCoolTime > 5f)                      //가림막 제작에 5초 필요
+            if (itemCoolTime > makingTime)                      //가림막 제작에 5초 필요
             {
                 itemCoolTime = 0;
                 GetScreen();                    //가림막 획득
@@ -455,7 +484,9 @@ public class PlayerController : MonoBehaviour
             if (itemCoolTime > 3f)                      //잡동사니 뒤지는 데 3초 필요
             {
                 itemCoolTime = 0;
-                GetItem_Snowy();                    //랜덤으로 아이템 획득
+                if (DataManager.GetDifficulty() == 0) GetItem_Windy();
+                else if (DataManager.GetDifficulty() == 1) GetItem_Snowy();
+                else GetItem_Blizzard();                    //랜덤으로 아이템 획득
             }
             if (!audioSource.isPlaying)
             {
@@ -699,7 +730,7 @@ public class PlayerController : MonoBehaviour
         FlameSliderController.stopFlameGage = true;       //가림막은 10초 동안 불꽃 게이지 감소를 막아줌
         screenObj.SetActive(true);      //가림막 생성
 
-        instance.Invoke("RemoveScreen", 10f);   //10초 뒤 가림막 제거 함수 호출
+        instance.Invoke("RemoveScreen", instance.screenLeftTime);   //10초 뒤 가림막 제거 함수 호출
     }
 
     public void RemoveScreen()
@@ -715,11 +746,6 @@ public class PlayerController : MonoBehaviour
         StopPlayer();
         anim.runtimeAnimatorController = downAnimatorController;
     }
-
-    //public static IEnumerator waitTime(float time)
-    //{
-    //    yield return new WaitForSeconds(time);
-    //}
 
 
     private void FixedUpdate()

@@ -15,16 +15,19 @@ public class FlameSliderController : MonoBehaviour
     [HideInInspector]
     public static bool goOutFlame;          //불꽃이 꺼졌는지 확인할 불 변수
 
-    const float easyGage = 700;
-    const float hardGage = 500;
-
     private void Awake()
     {
         FlameGage = 500f;
         stopFlameGage = false;
         goOutFlame = false;
     }
-
+    private void Start()
+    {
+        if (DataManager.GetDifficulty() == 0)
+        {
+            FlameGage = 700;
+        }
+    }
     void Update()
     {
         if (FlameGage <= 0f) goOutFlame = true;

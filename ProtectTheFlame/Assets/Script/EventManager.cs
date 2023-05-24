@@ -23,11 +23,27 @@ public class EventManager : MonoBehaviour
 
     public GameObject fogImage;
     public GameObject blackImage;
+
+    float eventTime;
     
 
     public void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(instance);
+        }
+        else
+        {
+            Destroy(instance);
+        }
+    }
+    public void Start()
+    {
+        if (DataManager.GetDifficulty() == 0) eventTime = 70f;
+        else if (DataManager.GetDifficulty() == 1) eventTime = 60f;
+        else eventTime = 50f;
     }
 
     public void Update()
@@ -35,10 +51,12 @@ public class EventManager : MonoBehaviour
         if (TemparatureSliderController.TemparatureGage <= 0f) return;
         eventCoolTime += Time.deltaTime;
         
-        if (eventCoolTime > 60f)
+        if (eventCoolTime > eventTime)
         {
             eventCoolTime = 0;
-            WhatEventIsIt_Snowy();
+            if (DataManager.GetDifficulty() == 0) WhatEventIsIt_Windy();
+            else if (DataManager.GetDifficulty() == 1) WhatEventIsIt_Snowy();
+            else WhatEventIsIt_Blizzard();
         }
 
     }
