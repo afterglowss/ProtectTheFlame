@@ -74,7 +74,7 @@ public class Fade : MonoBehaviour
         }
     }
     [YarnCommand("objectAppear")]
-    public static void objectAppear(GameObject obj)
+    public static void ObjectAppear(GameObject obj)
     {
         Color color;
         color = obj.GetComponent<SpriteRenderer>().color;

@@ -1,4 +1,8 @@
-﻿title: ZeroCnt
+﻿title: Variables
+---
+
+===
+title: ZeroCnt
 ---
 사용하고자 하는 아이템이 없습니다!
 ===
@@ -87,6 +91,31 @@ title: GetTrash
 title: GetUnknown
 ---
 ...! 찾았다.
+<<stop>>
+===
+title: UseFirewood
+---
+<<minusCnt firewood>>
+'장작'을 불꽃에 넣었습니다!
+<<stop>>
+===
+title: UsePaper
+---
+<<minusCnt paper>> 
+'신문지'를 불꽃에 넣었습니다!
+<<stop>>
+
+===
+title: UseOil
+---
+<<minusCnt oil>>
+'기름'을 불꽃에 넣었습니다!
+<<stop>>
+===
+title: UseScreen
+---
+<<minusCnt screen>>
+'가림막'을 설치했습니다!
 <<stop>>
 ===
 title: CheckUseFirewood

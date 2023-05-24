@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
 
     public Button pauseBtn;
 
+    public static int difficulty;
+
     private void Awake()
     {
         Application.targetFrameRate = 60;

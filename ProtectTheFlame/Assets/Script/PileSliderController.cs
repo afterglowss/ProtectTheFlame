@@ -12,6 +12,9 @@ public class PileSliderController : MonoBehaviour
     [HideInInspector]
     public static bool goOutPile;
 
+    const float easyGage = 700;
+    const float hardGage = 500;
+
     private void Awake()
     {
         PileGage = 500;

@@ -12,7 +12,8 @@ public enum BTNType
     Sound,
     Back,
     Quit,
-    GoMain
+    GoMain,
+    Retry
 }
 
 public class BTN : MonoBehaviour
@@ -48,6 +49,10 @@ public class BTN : MonoBehaviour
                 SoundManager.instance.StopSound();
                 MusicManager.instance.UnPauseMusic();
                 GameManager.JumpScene("StartScene");
+                break;
+            case BTNType.Retry:
+                OptionGroupOff();
+                GameManager.JumpScene("GameScene");
                 break;
         }
     }

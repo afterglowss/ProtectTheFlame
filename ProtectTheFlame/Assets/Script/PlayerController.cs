@@ -64,6 +64,13 @@ public class PlayerController : MonoBehaviour
 
     public static bool gotUnknown;
 
+    public GameObject Pile1Outline;
+    public GameObject Pile2Outline;
+    public GameObject TableOutline;
+    public GameObject TentOutline;
+    public GameObject JunkOutline;
+
+
     public void Awake()
     {
         //Fade.FadeOut("FogImage");
@@ -202,9 +209,9 @@ public class PlayerController : MonoBehaviour
                 dialogueRunner1.StartDialogue("ZeroCnt");
                 return;
             }
-            //isChecking = true;
             dialogueRunner1.Stop();
-            dialogueRunner1.StartDialogue("CheckUseFirewood");
+            //dialogueRunner1.StartDialogue("CheckUseFirewood");
+            dialogueRunner1.StartDialogue("UseFirewood");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
         {
@@ -214,9 +221,9 @@ public class PlayerController : MonoBehaviour
                 dialogueRunner1.StartDialogue("ZeroCnt");
                 return;
             }
-            //isChecking = true;
             dialogueRunner1.Stop();
-            dialogueRunner1.StartDialogue("CheckUsePaper");
+            //dialogueRunner1.StartDialogue("CheckUsePaper");
+            dialogueRunner1.StartDialogue("UsePaper");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
         {
@@ -226,9 +233,9 @@ public class PlayerController : MonoBehaviour
                 dialogueRunner1.StartDialogue("ZeroCnt");
                 return;
             }
-            //isChecking = true;
             dialogueRunner1.Stop();
-            dialogueRunner1.StartDialogue("CheckUseOil");
+            //dialogueRunner1.StartDialogue("CheckUseOil");
+            dialogueRunner1.StartDialogue("UseOil");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
         {
@@ -252,7 +259,8 @@ public class PlayerController : MonoBehaviour
                 return;
             }
             dialogueRunner1.Stop();
-            dialogueRunner1.StartDialogue("CheckUseScreen");
+            //dialogueRunner1.StartDialogue("CheckUseScreen");
+            dialogueRunner1.StartDialogue("UseScreen");
         }
     }
     
@@ -447,7 +455,7 @@ public class PlayerController : MonoBehaviour
             if (itemCoolTime > 3f)                      //¿‚µøªÁ¥œ µ⁄¡ˆ¥¬ µ• 3√  « ø‰
             {
                 itemCoolTime = 0;
-                GetItem();                    //∑£¥˝¿∏∑Œ æ∆¿Ã≈€ »πµÊ
+                GetItem_Snowy();                    //∑£¥˝¿∏∑Œ æ∆¿Ã≈€ »πµÊ
             }
             if (!audioSource.isPlaying)
             {
@@ -521,25 +529,112 @@ public class PlayerController : MonoBehaviour
         dialogueRunner1.Stop();
         dialogueRunner1.StartDialogue("GetScreen");
     }
-
-    public void GetItem()
+    public void GetItem_Windy()
     {
-        int getWhat = Random.Range(1,101);
-        if (getWhat <= 20)                                      //20%¿« »Æ∑¸∑Œ ¿Â¿€ »πµÊ
+        int getWhat = Random.Range(1, 101);
+        if (getWhat <= 25)                                      //25%¿« »Æ∑¸∑Œ ¿Â¿€ »πµÊ
         {
             SoundManager.instance.PlaySound("getitem");
             firewoodCnt++;
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetFirewood");
         }
-        else if (getWhat > 20 && getWhat <= 50)                 //30%¿« »Æ∑¸∑Œ Ω≈πÆ¡ˆ »πµÊ
+        else if (getWhat > 25 && getWhat <= 60)                 //35%¿« »Æ∑¸∑Œ Ω≈πÆ¡ˆ »πµÊ
         {
             SoundManager.instance.PlaySound("getitem");
             paperCnt++;
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetPaper");
         }
-        else if (getWhat > 50 && getWhat <= 70)                 //20%¿« »Æ∑¸∑Œ ±‚∏ß »πµÊ
+        else if (getWhat > 60 && getWhat <= 85)                 //25%¿« »Æ∑¸∑Œ ±‚∏ß »πµÊ
+        {
+            SoundManager.instance.PlaySound("getitem");
+            oilCnt++;
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("GetOil");
+        }
+        else if (getWhat > 85 && getWhat <= 99)                 //15%¿« »Æ∑¸∑Œ æ≤∑π±‚ »πµÊ
+        {
+            SoundManager.instance.PlaySound("getitem");
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("GetTrash");
+        }
+        else if (getWhat == 100 && gotUnknown == false)         //1%¿« »Æ∑¸∑Œ µ¸ «—π¯ ??? »πµÊ
+        {
+            SoundManager.instance.PlaySound("getitem");
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("GetUnknown");
+            gotUnknown = true;
+        }
+        else if (getWhat == 100)
+        {
+            SoundManager.instance.PlaySound("getitem");
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("GetTrash");
+        }
+    }
+    public void GetItem_Snowy()
+    {
+        int getWhat = Random.Range(1,101);
+        if (getWhat <= 25)                                      //25%¿« »Æ∑¸∑Œ ¿Â¿€ »πµÊ
+        {
+            SoundManager.instance.PlaySound("getitem");
+            firewoodCnt++;
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("GetFirewood");
+        }
+        else if (getWhat > 25 && getWhat <= 60)                 //35%¿« »Æ∑¸∑Œ Ω≈πÆ¡ˆ »πµÊ
+        {
+            SoundManager.instance.PlaySound("getitem");
+            paperCnt++;
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("GetPaper");
+        }
+        else if (getWhat > 60 && getWhat <= 80)                 //20%¿« »Æ∑¸∑Œ ±‚∏ß »πµÊ
+        {
+            SoundManager.instance.PlaySound("getitem");
+            oilCnt++;
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("GetOil");
+        }
+        else if (getWhat > 80 && getWhat <= 99)                 //20%¿« »Æ∑¸∑Œ æ≤∑π±‚ »πµÊ
+        {
+            SoundManager.instance.PlaySound("getitem");
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("GetTrash");
+        }
+        else if (getWhat == 100 && gotUnknown == false)         //1%¿« »Æ∑¸∑Œ µ¸ «—π¯ ??? »πµÊ
+        {
+            SoundManager.instance.PlaySound("getitem");
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("GetUnknown");
+            gotUnknown = true;
+        }
+        else if (getWhat == 100)                 
+        {
+            SoundManager.instance.PlaySound("getitem");
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("GetTrash");
+        }
+    }
+    public void GetItem_Blizzard()
+    {
+        int getWhat = Random.Range(1, 101);
+        if (getWhat <= 25)                                      //25%¿« »Æ∑¸∑Œ ¿Â¿€ »πµÊ
+        {
+            SoundManager.instance.PlaySound("getitem");
+            firewoodCnt++;
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("GetFirewood");
+        }
+        else if (getWhat > 25 && getWhat <= 55)                 //30%¿« »Æ∑¸∑Œ Ω≈πÆ¡ˆ »πµÊ
+        {
+            SoundManager.instance.PlaySound("getitem");
+            paperCnt++;
+            dialogueRunner1.Stop();
+            dialogueRunner1.StartDialogue("GetPaper");
+        }
+        else if (getWhat > 55 && getWhat <= 70)                 //15%¿« »Æ∑¸∑Œ ±‚∏ß »πµÊ
         {
             SoundManager.instance.PlaySound("getitem");
             oilCnt++;
@@ -559,7 +654,7 @@ public class PlayerController : MonoBehaviour
             dialogueRunner1.StartDialogue("GetUnknown");
             gotUnknown = true;
         }
-        else if (getWhat == 100)                 
+        else if (getWhat == 100)
         {
             SoundManager.instance.PlaySound("getitem");
             dialogueRunner1.Stop();
@@ -677,18 +772,23 @@ public class PlayerController : MonoBehaviour
         else if (other.gameObject.CompareTag("Pile"))
         {
             inPile = true;
+            Fade.ObjectAppear(Pile1Outline);
+            Fade.ObjectAppear(Pile2Outline);
         }
         else if (other.gameObject.CompareTag("Junk"))
         {
             inJunk = true;
+            Fade.ObjectAppear(JunkOutline);
         }
         else if (other.gameObject.CompareTag("Table"))
         {
             inTable = true;
+            Fade.ObjectAppear(TableOutline);
         }
         else if (other.gameObject.CompareTag("Tent"))
         {
             inTent = true;
+            Fade.ObjectAppear(TentOutline);
         }
     }
     public void OnTriggerExit2D(Collider2D other)
@@ -701,18 +801,23 @@ public class PlayerController : MonoBehaviour
         else if (other.gameObject.CompareTag("Pile"))
         {
             inPile = false;
+            Fade.ObjectDisappear(Pile1Outline);
+            Fade.ObjectDisappear(Pile2Outline);
         }
         else if (other.gameObject.CompareTag("Junk"))
         {
             inJunk = false;
+            Fade.ObjectDisappear(JunkOutline);
         }
         else if (other.gameObject.CompareTag("Table"))
         {
             inTable = false;
+            Fade.ObjectDisappear(TableOutline);
         }
         else if (other.gameObject.CompareTag("Tent"))
         {
             inTent = false;
+            Fade.ObjectDisappear(TentOutline);
         }
     }
     
