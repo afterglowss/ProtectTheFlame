@@ -23,11 +23,27 @@ public class EventManager : MonoBehaviour
 
     public GameObject fogImage;
     public GameObject blackImage;
+
+    float eventTime;
     
 
     public void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(instance);
+        }
+        else
+        {
+            Destroy(instance);
+        }
+    }
+    public void Start()
+    {
+        if (DataManager.GetDifficulty() == 0) eventTime = 70f;
+        else if (DataManager.GetDifficulty() == 1) eventTime = 60f;
+        else eventTime = 50f;
     }
 
     public void Update()
@@ -35,15 +51,82 @@ public class EventManager : MonoBehaviour
         if (TemparatureSliderController.TemparatureGage <= 0f) return;
         eventCoolTime += Time.deltaTime;
         
-        if (eventCoolTime > 60f)
+        if (eventCoolTime > eventTime)
         {
             eventCoolTime = 0;
-            WhatEventIsIt();
+            if (DataManager.GetDifficulty() == 0) WhatEventIsIt_Windy();
+            else if (DataManager.GetDifficulty() == 1) WhatEventIsIt_Snowy();
+            else WhatEventIsIt_Blizzard();
         }
 
     }
 
-    public void WhatEventIsIt()
+    
+    public void WhatEventIsIt_Windy()
+    {
+        int occurWhat = Random.Range(1, 101);
+        if (occurWhat <= 50 && TimeController.hour < 4)             //50%의 확률로 이벤트 없음. 새벽 4시 이전.
+        {
+            NoEvent();
+        }
+        else if (occurWhat <= 20 && TimeController.hour >= 4)                                   //새벽 4시 이후는 20% 확률로 이벤트 없음.
+        {
+            NoEvent();
+        }
+        else if (occurWhat > 20 && occurWhat <= 50 && TimeController.hour >= 4)                 //30%의 확률로 안개.
+        {
+            Fog();
+        }
+        else if (occurWhat > 50 && occurWhat <= 75)                 //25%의 확률로 강한 바람.
+        {
+            StrongWind();
+        }
+        else if (occurWhat > 75 && occurWhat <= 95)                 //3시 전까지는 20%의 확률로 눈. 2시 이후 15% 확률
+        {
+            Snow();
+        }
+        else if (occurWhat > 95 && occurWhat <= 100 && TimeController.hour < 3)
+        {
+            Snow();
+        }
+        else if (occurWhat > 95 && occurWhat <= 100 && TimeController.hour >= 3)        //3시 이후 5%의 확률로 눈보라. -> 거의 게임오버 수준으로 어렵게.
+        {
+            Blizzard();
+        }
+    }
+    public void WhatEventIsIt_Snowy()
+    {
+        int occurWhat = Random.Range(1, 101);
+        if (occurWhat <= 40 && TimeController.hour < 4)             //40%의 확률로 이벤트 없음. 새벽 4시 이전.
+        {
+            NoEvent();
+        }
+        else if (occurWhat <= 10 && TimeController.hour >= 4)                                   //새벽 4시 이후는 10% 확률로 이벤트 없음.
+        {
+            NoEvent();
+        }
+        else if (occurWhat > 10 && occurWhat <= 40 && TimeController.hour >= 4)                 //30%의 확률로 안개.
+        {
+            Fog();
+        }
+        else if (occurWhat > 40 && occurWhat <= 70)                 //30%의 확률로 강한 바람.
+        {
+            StrongWind();
+        }
+        else if (occurWhat > 70 && occurWhat <= 93)                 //2시 전까지는 30%의 확률로 눈. 2시 이후 23% 확률
+        {
+            Snow();
+        }
+        else if (occurWhat > 93 && occurWhat <= 100 && TimeController.hour < 2)
+        {
+            Snow();
+        }
+        else if (occurWhat > 93 && occurWhat <= 100 && TimeController.hour >= 2)        //2시 이후 7%의 확률로 눈보라. -> 거의 게임오버 수준으로 어렵게.
+        {
+            Blizzard();
+        }
+    }
+    public void WhatEventIsIt_Blizzard()
     {
         int occurWhat = Random.Range(1, 101);
         if (occurWhat <= 30 && TimeController.hour < 4)             //30%의 확률로 이벤트 없음. 새벽 4시 이전.
@@ -58,15 +141,15 @@ public class EventManager : MonoBehaviour
         {
             Fog();
         }
-        else if (occurWhat > 30 && occurWhat <= 70)                 //40%의 확률로 강한 바람.
+        else if (occurWhat > 30 && occurWhat <= 65)                 //40%의 확률로 강한 바람.
         {
             StrongWind();
         }
-        else if (occurWhat > 70 && occurWhat <= 90)                 //2시 전까지는 30%의 확률로 눈. 2시 이후 20% 확률
+        else if (occurWhat > 65 && occurWhat <= 90)                 //2시 전까지는 35%의 확률로 눈. 2시 이후 25% 확률
         {
             Snow();
         }
-        else if (occurWhat > 90 && occurWhat <= 100 && TimeController.hour < 2)                 
+        else if (occurWhat > 90 && occurWhat <= 100 && TimeController.hour < 2)
         {
             Snow();
         }
@@ -75,7 +158,6 @@ public class EventManager : MonoBehaviour
             Blizzard();
         }
     }
-
     public void NoEvent()
     {
         dialogueRunner2.StartDialogue("NoEvent");

@@ -8,6 +8,8 @@ using Yarn.Unity;
 public class Data
 {
     public int tryCnt;
+    public int difficulty;
+    public bool isSnowyCleared;
 }
 
 public class DataManager : MonoBehaviour
@@ -35,7 +37,11 @@ public class DataManager : MonoBehaviour
         string loadJson = File.ReadAllText(path);
         data = JsonUtility.FromJson<Data>(loadJson);
     }
-
+    public void LoadData()
+    {
+        string loadJson = File.ReadAllText(path);
+        data = JsonUtility.FromJson<Data>(loadJson);
+    }
     // Update is called once per frame
     void Update()
     {
@@ -52,12 +58,40 @@ public class DataManager : MonoBehaviour
     [YarnFunction("getTryCnt")]
     public static int GetTryCnt()
     {
+        instance.LoadData();
         return instance.data.tryCnt;
     }
     [YarnCommand("printTryCnt")]
     public static void PrintTryCnt()
     {
         Debug.Log(instance.data.tryCnt);
+    }
+
+    [YarnFunction("getDifficulty")]
+    public static int GetDifficulty()
+    {
+        Debug.Log(instance.data.difficulty);
+        instance.LoadData();
+        return instance.data.difficulty;
+    }
+    [YarnFunction("getIsSnowyCleared")]
+    public static bool GetIsSnowyCleared()
+    {
+        instance.LoadData();
+        return instance.data.isSnowyCleared;
+    }
+
+    [YarnCommand("setDifficulty")]
+    public static void SetDifficulty(int dif)
+    {
+        instance.data.difficulty = dif;
+        instance.SaveData();
+    }
+    [YarnCommand("setTrueIsSnowyCleared")]
+    public static void SetTrueIsSnowyCleared()
+    {
+        instance.data.isSnowyCleared = true;
+        instance.SaveData();
     }
 
     public void SaveData()

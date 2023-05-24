@@ -14,9 +14,17 @@ public class PileSliderController : MonoBehaviour
 
     private void Awake()
     {
-        PileGage = 500;
+        PileGage = 700;
         stopPileGage = false;
         goOutPile = false;
+    }
+    private void Start()
+    {
+        if (DataManager.GetDifficulty() == 2)
+        {
+            PileGage = 500;
+        }
+
     }
 
     void Update()

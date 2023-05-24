@@ -21,7 +21,13 @@ public class FlameSliderController : MonoBehaviour
         stopFlameGage = false;
         goOutFlame = false;
     }
-
+    private void Start()
+    {
+        if (DataManager.GetDifficulty() == 0)
+        {
+            FlameGage = 700;
+        }
+    }
     void Update()
     {
         if (FlameGage <= 0f) goOutFlame = true;
