@@ -86,4 +86,11 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
+    [YarnCommand("applicationQuit")]
+    public static void ApplicationQuit()
+    {
+        Debug.Log("¾Û Á¾·á");
+        Application.Quit();
+    }
+
 }

@@ -60,12 +60,14 @@ public class TimeController : MonoBehaviour
         if (hour == 6 && min == 0 && sec >= 0 && clearOneTime == 0 && PlayerController.gotUnknown == false)
         {
             clearOneTime++;
+            //if (DataManager.GetDifficulty() == 1) DataManager.SetTrueIsSnowyCleared();
             StartCoroutine(Fade.FadeIn(EventManager.instance.blackImage));
             Invoke("NormalEnding", 1.5f);
         }
         else if (hour == 6 && min == 0 && sec >= 0 && clearOneTime == 0 && PlayerController.gotUnknown == true)
         {
             clearOneTime++;
+            //if (DataManager.GetDifficulty() == 1) DataManager.SetTrueIsSnowyCleared();
             StartCoroutine(Fade.FadeIn(EventManager.instance.fogImage));
             Invoke("TrueEnding", 1.5f);
         }

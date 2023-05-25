@@ -584,8 +584,8 @@ public class PlayerController : MonoBehaviour
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetOil");
         }
-        else if (getWhat > 85 && getWhat <= 99)                 //15%ÀÇ È®·ü·Î ¾²·¹±â È¹µæ
-        {
+        else if (getWhat > 85 && getWhat <= 100)                 //15%ÀÇ È®·ü·Î ¾²·¹±â È¹µæ
+        {                                                        //Windy´Â È÷µç ¾øÀ½.
             SoundManager.instance.PlaySound("getitem");
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetTrash");
