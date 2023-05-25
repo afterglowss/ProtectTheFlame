@@ -15,10 +15,6 @@ public class PlayerController : MonoBehaviour
     public InMemoryVariableStorage variableStorage2;
 
     public static PlayerController instance;
-
-    public static FlameSliderController fsc;
-    public static PileSliderController psc;
-    public static TemparatureSliderController tsc;
     
     public Rigidbody2D rigid;
     public Animator anim;
@@ -73,9 +69,6 @@ public class PlayerController : MonoBehaviour
     float choppingTime;
     float makingTime;
     float screenLeftTime;
-
-
-
     public void Awake()
     {
         //Fade.FadeOut("FogImage");
@@ -83,13 +76,6 @@ public class PlayerController : MonoBehaviour
         audioSource = GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>();
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-
-        //dialogueRunner1 = FindObjectOfType<DialogueRunner>();
-        //variableStorage1 = FindObjectOfType<InMemoryVariableStorage>();
-        
-        tsc = FindObjectOfType<TemparatureSliderController>();
-        fsc = FindObjectOfType<FlameSliderController>();
-        psc = FindObjectOfType<PileSliderController>();
 
         screenObj = GameObject.Find("GameObject").transform.Find("Screen").gameObject;
         instance = this;
@@ -128,16 +114,15 @@ public class PlayerController : MonoBehaviour
     {
         switch (DataManager.GetDifficulty())
         {
-
-            case 1:
-                choppingTime = 10f;
-                makingTime = 4f;
-                screenLeftTime = 13f;
-                break;
             case 0:
                 choppingTime = 3f;
                 makingTime = 4f;
                 screenLeftTime = 15f;
+                break;
+            case 1:
+                choppingTime = 4f;
+                makingTime = 4f;
+                screenLeftTime = 13f;
                 break;
             case 2:
                 choppingTime = 5f;
@@ -156,12 +141,6 @@ public class PlayerController : MonoBehaviour
     public static void StopMoveBool(bool state)     //¾á ½ºÅ©¸³Æ®¿¡¼­ stopMove bool Á¦¾î °¡´É
     {
         stopMove = state;
-    }
-
-    [YarnFunction("getBlockScreen")]
-    public static bool GetBlockScreen()
-    {
-        return blockScreen;
     }
 
     [YarnCommand("minusCnt")]
@@ -184,7 +163,17 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-
+    public void StopsOnPause()
+    {
+        anim.SetBool("isFanning", false);
+        anim.SetBool("isChopping", false);
+        anim.SetBool("isMaking", false);
+        anim.SetBool("isFinding", false);
+        stopMove = false;
+        itemCoolTime = 0;
+        audioSource.Stop();
+        isChecking = false;
+    }
     public void UpdateCnt()
     {
         firewoodTxt.text = firewoodCnt.ToString();
@@ -344,17 +333,6 @@ public class PlayerController : MonoBehaviour
                 return; //ºÎÃ¤ÁúÀ» ÇÒ ¼ö ¾øÀ» ¶§
         }
     }
-    public void StopsOnPause()
-    {
-        anim.SetBool("isFanning", false);
-        anim.SetBool("isChopping", false);
-        anim.SetBool("isMaking", false);
-        anim.SetBool("isFinding", false);
-        stopMove = false;
-        itemCoolTime = 0;
-        audioSource.Stop();
-        isChecking = false;
-    }
     public void IsChopping()                        //ÀåÀÛ ÆÐ±â ÇÔ¼ö
     {
         if (GameManager.isPause == true) return;
@@ -502,7 +480,6 @@ public class PlayerController : MonoBehaviour
             if (hungry == true) return;
         }
     }
-
     public void IsTenting()
     {
         if (GameManager.isPause == true) return;
@@ -545,6 +522,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
     public void GetFirewood()
     {
         SoundManager.instance.PlaySound("getitem");
@@ -562,6 +540,7 @@ public class PlayerController : MonoBehaviour
     }
     public void GetItem_Windy()
     {
+        Debug.Log("Windy Item");
         int getWhat = Random.Range(1, 101);
         if (getWhat <= 25)                                      //25%ÀÇ È®·ü·Î ÀåÀÛ È¹µæ
         {
@@ -606,6 +585,7 @@ public class PlayerController : MonoBehaviour
     }
     public void GetItem_Snowy()
     {
+        Debug.Log("Snowy Item");
         int getWhat = Random.Range(1,101);
         if (getWhat <= 25)                                      //25%ÀÇ È®·ü·Î ÀåÀÛ È¹µæ
         {
@@ -650,6 +630,7 @@ public class PlayerController : MonoBehaviour
     }
     public void GetItem_Blizzard()
     {
+        Debug.Log("Blizzard Item");
         int getWhat = Random.Range(1, 101);
         if (getWhat <= 25)                                      //25%ÀÇ È®·ü·Î ÀåÀÛ È¹µæ
         {

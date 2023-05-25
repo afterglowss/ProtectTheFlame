@@ -71,7 +71,7 @@ public class DataManager : MonoBehaviour
     [YarnFunction("getDifficulty")]
     public static int GetDifficulty()
     {
-        Debug.Log(instance.data.difficulty);
+        //Debug.Log(instance.data.difficulty);
         instance.LoadData();
         return instance.data.difficulty;
     }

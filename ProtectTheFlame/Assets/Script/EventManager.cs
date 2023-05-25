@@ -64,6 +64,7 @@ public class EventManager : MonoBehaviour
     
     public void WhatEventIsIt_Windy()
     {
+        Debug.Log("Windy Event");
         int occurWhat = Random.Range(1, 101);
         if (occurWhat <= 50 && TimeController.hour < 4)             //50%의 확률로 이벤트 없음. 새벽 4시 이전.
         {
@@ -96,6 +97,7 @@ public class EventManager : MonoBehaviour
     }
     public void WhatEventIsIt_Snowy()
     {
+        Debug.Log("Snowy Event");
         int occurWhat = Random.Range(1, 101);
         if (occurWhat <= 40 && TimeController.hour < 4)             //40%의 확률로 이벤트 없음. 새벽 4시 이전.
         {
@@ -128,6 +130,7 @@ public class EventManager : MonoBehaviour
     }
     public void WhatEventIsIt_Blizzard()
     {
+        Debug.Log("Blizzard Event");
         int occurWhat = Random.Range(1, 101);
         if (occurWhat <= 30 && TimeController.hour < 4)             //30%의 확률로 이벤트 없음. 새벽 4시 이전.
         {

@@ -45,7 +45,7 @@ public class TemparatureSliderController : MonoBehaviour
         }
         else if (stopTemparatureGage)
         {
-            TemparatureGage += Time.deltaTime * 3;
+            TemparatureGage += Time.deltaTime * 3.5f;
         }
         GetComponent<Slider>().value = (int)TemparatureGage;
     }

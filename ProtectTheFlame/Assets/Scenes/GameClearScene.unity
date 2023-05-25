@@ -678,6 +678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseBtn: {fileID: 0}
+  hiddenBtn: {fileID: 0}
 --- !u!4 &495460269
 Transform:
   m_ObjectHideFlags: 0
@@ -1277,6 +1278,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e047efb2d970ea4887534330958b3f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  btn: {fileID: 367249764}
+  btn2: {fileID: 0}
 --- !u!1001 &1437977971
 PrefabInstance:
   m_ObjectHideFlags: 0

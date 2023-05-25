@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
 
     public Button pauseBtn;
 
+    public Button hiddenBtn;
+
     public static int difficulty;
 
     private void Awake()
@@ -30,9 +32,21 @@ public class GameManager : MonoBehaviour
         {
             Destroy(instance);
         }
-
+        
     }
-    
+    private void Start()
+    {
+        if (SceneManager.GetActiveScene().name == "StartScene" && 
+            DataManager.GetIsBlizzardCleared() == true)
+        {
+            if (hiddenBtn.gameObject.activeSelf == false)
+            {
+                hiddenBtn.gameObject.SetActive(true);
+            }
+        }
+        
+    }
+
 
     public void Update()
     {
