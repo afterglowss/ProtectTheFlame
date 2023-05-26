@@ -27,20 +27,23 @@ public class TimeController : MonoBehaviour
 
     public static TimeController instance;
 
+    public GameObject fogImage;
+    public GameObject blackImage;
+
     private void Awake()
     {
         instance = this;
-        hour = 5;
-        min = 0;
-        sec = 0;
-        hungryOneTime = 0;
-        clearOneTime = 0;
     }
     public void Start()
     {
         //hungryOneTime = 0;
         //clearOneTime = 0;
-        
+
+        hour = 5;
+        min = 0;
+        sec = 0;
+        hungryOneTime = 0;
+        clearOneTime = 0;
     }
 
     void Update()
@@ -62,7 +65,7 @@ public class TimeController : MonoBehaviour
             clearOneTime++;
             StopAllCoroutines();
             //if (DataManager.GetDifficulty() == 1) DataManager.SetTrueIsSnowyCleared();
-            StartCoroutine(Fade.FadeIn(EventManager.instance.blackImage));
+            StartCoroutine(Fade.FadeIn(blackImage));
             Invoke("NormalEnding", 1.5f);
         }
         else if (hour == 6 && min == 0 && sec >= 0 && clearOneTime == 0 && PlayerController.gotUnknown == true)
@@ -70,7 +73,7 @@ public class TimeController : MonoBehaviour
             clearOneTime++;
             StopAllCoroutines();
             //if (DataManager.GetDifficulty() == 1) DataManager.SetTrueIsSnowyCleared();
-            StartCoroutine(Fade.FadeIn(EventManager.instance.fogImage));
+            StartCoroutine(Fade.FadeIn(fogImage));
             Invoke("TrueEnding", 1.5f);
         }
     }

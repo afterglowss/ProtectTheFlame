@@ -20566,6 +20566,8 @@ MonoBehaviour:
   variableStorage1: {fileID: 993542088}
   dialogueRunner2: {fileID: 1271185429}
   variableStorage2: {fileID: 1271185428}
+  fogImage: {fileID: 1066622028}
+  blackImage: {fileID: 9562600}
 --- !u!114 &1717358116
 MonoBehaviour:
   m_ObjectHideFlags: 0

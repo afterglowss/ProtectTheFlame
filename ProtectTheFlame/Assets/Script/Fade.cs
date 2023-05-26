@@ -10,6 +10,7 @@ public class Fade : MonoBehaviour
 {
     public Button btn;
     public Button btn2;
+
     public void Awake()
     {
         
