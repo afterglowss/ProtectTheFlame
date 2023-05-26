@@ -35,6 +35,7 @@ public class BTN : MonoBehaviour
                 if (SceneManager.GetActiveScene().name == "GameScene")
                 {
                     if (TemparatureSliderController.TemparatureGage <= 0f) return;
+                    PlayerController.instance.StopsOnPause();
                 }
                 OptionGroupOn();
                 break;

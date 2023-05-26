@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Yarn.Unity;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -60,6 +61,7 @@ public class PlayerController : MonoBehaviour
 
     public static bool gotUnknown;
 
+    //public GameObject FlameOutline;
     public GameObject Pile1Outline;
     public GameObject Pile2Outline;
     public GameObject TableOutline;
@@ -72,6 +74,7 @@ public class PlayerController : MonoBehaviour
     public void Awake()
     {
         //Fade.FadeOut("FogImage");
+        
 
         audioSource = GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>();
         rigid = GetComponent<Rigidbody2D>();
@@ -213,6 +216,7 @@ public class PlayerController : MonoBehaviour
         {
             IsTenting();
         }
+
     }
 
     public void CheckingItemUsing()
@@ -678,7 +682,7 @@ public class PlayerController : MonoBehaviour
     {
         firewoodCnt--;
         SoundManager.instance.PlaySound("useitem");
-        PileSliderController.PileGage += 200;            //장작 게이지 +200
+        PileSliderController.PileGage += 180;            //장작 게이지 +200
         PileSliderController.goOutPile = false;
         
         if (!FlameSliderController.goOutFlame)          //불꽃이 이미 꺼지지만 않았다면
@@ -691,7 +695,7 @@ public class PlayerController : MonoBehaviour
         SoundManager.instance.PlaySound("useitem");
         if (!FlameSliderController.goOutFlame)
             FlameSliderController.FlameGage += 70;            //불꽃 게이지 +70
-        PileSliderController.PileGage += 50;
+        PileSliderController.PileGage += 40;
     }
 
     public static void UseOil()         //기름 사용
@@ -699,7 +703,7 @@ public class PlayerController : MonoBehaviour
         oilCnt--;
         SoundManager.instance.PlaySound("useitem");
         if (!FlameSliderController.goOutFlame)
-            FlameSliderController.FlameGage += 200;           //불꽃 게이지 +200
+            FlameSliderController.FlameGage += 180;           //불꽃 게이지 +200
     }
 
     public static void UseScreen()      //가림막 사용
@@ -775,6 +779,7 @@ public class PlayerController : MonoBehaviour
         {
             TemparatureSliderController.stopTemparatureGage = true;
             inFlame = true;
+            //Fade.ObjectAppear(FlameOutline);
         }
         else if (other.gameObject.CompareTag("Pile"))
         {
@@ -804,27 +809,33 @@ public class PlayerController : MonoBehaviour
         {
             TemparatureSliderController.stopTemparatureGage = false;
             inFlame = false;
+            //Fade.ObjectDisappear(FlameOutline);
+            StopsOnPause();
         }
         else if (other.gameObject.CompareTag("Pile"))
         {
             inPile = false;
             Fade.ObjectDisappear(Pile1Outline);
             Fade.ObjectDisappear(Pile2Outline);
+            StopsOnPause();
         }
         else if (other.gameObject.CompareTag("Junk"))
         {
             inJunk = false;
             Fade.ObjectDisappear(JunkOutline);
+            StopsOnPause();
         }
         else if (other.gameObject.CompareTag("Table"))
         {
             inTable = false;
             Fade.ObjectDisappear(TableOutline);
+            StopsOnPause();
         }
         else if (other.gameObject.CompareTag("Tent"))
         {
             inTent = false;
             Fade.ObjectDisappear(TentOutline);
+            StopsOnPause();
         }
     }
     
