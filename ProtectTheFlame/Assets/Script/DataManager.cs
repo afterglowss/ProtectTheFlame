@@ -10,6 +10,7 @@ public class Data
     public int tryCnt;
     public int difficulty;
     public bool isSnowyCleared;
+    public bool isBlizzardCleared;
 }
 
 public class DataManager : MonoBehaviour
@@ -70,7 +71,7 @@ public class DataManager : MonoBehaviour
     [YarnFunction("getDifficulty")]
     public static int GetDifficulty()
     {
-        Debug.Log(instance.data.difficulty);
+        //Debug.Log(instance.data.difficulty);
         instance.LoadData();
         return instance.data.difficulty;
     }
@@ -91,6 +92,18 @@ public class DataManager : MonoBehaviour
     public static void SetTrueIsSnowyCleared()
     {
         instance.data.isSnowyCleared = true;
+        instance.SaveData();
+    }
+    [YarnFunction("getIsBlizzardCleared")]
+    public static bool GetIsBlizzardCleared()
+    {
+        instance.LoadData();
+        return instance.data.isBlizzardCleared;
+    }
+    [YarnCommand("setTrueIsBlizzardCleared")]
+    public static void SetTrueIsBlizzardCleared()
+    {
+        instance.data.isBlizzardCleared = true;
         instance.SaveData();
     }
 

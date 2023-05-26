@@ -4,18 +4,24 @@ using TMPro;
 using UnityEngine;
 using Yarn.Unity;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Fade : MonoBehaviour
 {
-    Button btn;
+    public Button btn;
+    public Button btn2;
     public void Awake()
     {
-        btn = GetComponentInChildren<Button>();
+        
     }
     [YarnCommand("btnInteractable")]
     public void BtnInteractable()
     {
         btn.interactable = true;
+        if (SceneManager.GetActiveScene().name == "GameScene")
+        {
+            btn2.interactable = true;
+        }
     }
     [YarnCommand("fadeIn")]
     public static IEnumerator FadeIn(GameObject obj)

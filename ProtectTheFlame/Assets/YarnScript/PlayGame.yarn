@@ -273,6 +273,10 @@ title: GameClear
 <<playSound SoundManager helicopter>>
 <<soundFadeIn SoundManager>>
 <<wait 2>>
+//<<setDifficulty 1>>
+<<if getDifficulty() == 1>>       
+    <<setTrueIsSnowyCleared>> //Snowy 엔딩으로 저장
+<<endif>>
 ......이상한 소리가 들린다.
 이곳에 나 말고 다른 사람이 있던가?
 <<wait 1.5>>
@@ -294,6 +298,25 @@ title: TrueEnding
 <<playSound SoundManager helicopter>>
 <<soundFadeIn SoundManager>>
 <<wait 2>>
+//<<setDifficulty 2>>
+<<if getDifficulty() == 1>>       
+    <<setTrueIsSnowyCleared>> //Snowy 엔딩으로 저장
+<<endif>>
+<<if getDifficulty() == 2>>  //Blizzard 트루엔딩일 경우
+    <<setTrueIsBlizzardCleared>>        //Blizzard 트루엔딩 저장
+    ......드디어 구조대가 왔나보다.
+    나는 알고 있었다. 계속 버티면 살아나갈 수 있다는 걸.
+    <<wait 1.5>>
+    정말 고생스러운 일이었다.
+    하지만 나는 결국 {getTryCnt()}번 만에 끝을 봤다.
+    그리고 내가 찾던 것도 찾았으니......
+    <<wait 1>>
+    이제 너는 필요 없다.
+    <<applicationQuit>>                 //게임 나가기
+
+<<else>>                            //Blizzard 트루엔딩이 아닌 경우
+    <<setTrueIsSnowyCleared>>       //Snowy 트루엔딩으로 저장
+<<endif>>
 ......이상한 소리가 들린다.
 이곳에 나 말고 다른 사람이 있던가?
 <<wait 1.5>>
@@ -301,11 +324,12 @@ title: TrueEnding
 <<wait 1>>
 나는, 이곳에서 벗어날 수 있게 되었다.
 ...하지만 무엇보다 기쁜 것은 결국 원하는 걸 찾아냈다는 것이다.
-그래. 나는 이걸 얻기 위해 이 설산에 {getTryCnt()}번을 올랐는걸.
-정말 고생했어.
+그래. 나는 이걸 얻기 위해 이 설산에 {getTryCnt()}번을 올랐다.
 <<wait 1>>
 <<textFadeIn GameClearText>>
+<<textFadeIn EndingCredit>>
 <<textFadeIn ToMain>>
 <<wait 0.5>>
 <<btnInteractable FadeCanvas>>
+
 ===

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Yarn.Unity;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,10 +16,6 @@ public class PlayerController : MonoBehaviour
     public InMemoryVariableStorage variableStorage2;
 
     public static PlayerController instance;
-
-    public static FlameSliderController fsc;
-    public static PileSliderController psc;
-    public static TemparatureSliderController tsc;
     
     public Rigidbody2D rigid;
     public Animator anim;
@@ -64,6 +61,7 @@ public class PlayerController : MonoBehaviour
 
     public static bool gotUnknown;
 
+    //public GameObject FlameOutline;
     public GameObject Pile1Outline;
     public GameObject Pile2Outline;
     public GameObject TableOutline;
@@ -73,23 +71,14 @@ public class PlayerController : MonoBehaviour
     float choppingTime;
     float makingTime;
     float screenLeftTime;
-
-
-
     public void Awake()
     {
         //Fade.FadeOut("FogImage");
+        
 
         audioSource = GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>();
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-
-        //dialogueRunner1 = FindObjectOfType<DialogueRunner>();
-        //variableStorage1 = FindObjectOfType<InMemoryVariableStorage>();
-        
-        tsc = FindObjectOfType<TemparatureSliderController>();
-        fsc = FindObjectOfType<FlameSliderController>();
-        psc = FindObjectOfType<PileSliderController>();
 
         screenObj = GameObject.Find("GameObject").transform.Find("Screen").gameObject;
         instance = this;
@@ -128,16 +117,15 @@ public class PlayerController : MonoBehaviour
     {
         switch (DataManager.GetDifficulty())
         {
-
-            case 1:
-                choppingTime = 10f;
-                makingTime = 4f;
-                screenLeftTime = 13f;
-                break;
             case 0:
                 choppingTime = 3f;
                 makingTime = 4f;
                 screenLeftTime = 15f;
+                break;
+            case 1:
+                choppingTime = 4f;
+                makingTime = 4f;
+                screenLeftTime = 13f;
                 break;
             case 2:
                 choppingTime = 5f;
@@ -156,12 +144,6 @@ public class PlayerController : MonoBehaviour
     public static void StopMoveBool(bool state)     //얀 스크립트에서 stopMove bool 제어 가능
     {
         stopMove = state;
-    }
-
-    [YarnFunction("getBlockScreen")]
-    public static bool GetBlockScreen()
-    {
-        return blockScreen;
     }
 
     [YarnCommand("minusCnt")]
@@ -184,7 +166,17 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-
+    public void StopsOnPause()
+    {
+        anim.SetBool("isFanning", false);
+        anim.SetBool("isChopping", false);
+        anim.SetBool("isMaking", false);
+        anim.SetBool("isFinding", false);
+        stopMove = false;
+        itemCoolTime = 0;
+        audioSource.Stop();
+        isChecking = false;
+    }
     public void UpdateCnt()
     {
         firewoodTxt.text = firewoodCnt.ToString();
@@ -224,6 +216,7 @@ public class PlayerController : MonoBehaviour
         {
             IsTenting();
         }
+
     }
 
     public void CheckingItemUsing()
@@ -343,17 +336,6 @@ public class PlayerController : MonoBehaviour
             if (blockFanning == true || FlameSliderController.goOutFlame || PileSliderController.goOutPile || hungry == true)
                 return; //부채질을 할 수 없을 때
         }
-    }
-    public void StopsOnPause()
-    {
-        anim.SetBool("isFanning", false);
-        anim.SetBool("isChopping", false);
-        anim.SetBool("isMaking", false);
-        anim.SetBool("isFinding", false);
-        stopMove = false;
-        itemCoolTime = 0;
-        audioSource.Stop();
-        isChecking = false;
     }
     public void IsChopping()                        //장작 패기 함수
     {
@@ -502,7 +484,6 @@ public class PlayerController : MonoBehaviour
             if (hungry == true) return;
         }
     }
-
     public void IsTenting()
     {
         if (GameManager.isPause == true) return;
@@ -545,6 +526,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
     public void GetFirewood()
     {
         SoundManager.instance.PlaySound("getitem");
@@ -562,6 +544,7 @@ public class PlayerController : MonoBehaviour
     }
     public void GetItem_Windy()
     {
+        Debug.Log("Windy Item");
         int getWhat = Random.Range(1, 101);
         if (getWhat <= 25)                                      //25%의 확률로 장작 획득
         {
@@ -584,8 +567,8 @@ public class PlayerController : MonoBehaviour
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetOil");
         }
-        else if (getWhat > 85 && getWhat <= 99)                 //15%의 확률로 쓰레기 획득
-        {
+        else if (getWhat > 85 && getWhat <= 100)                 //15%의 확률로 쓰레기 획득
+        {                                                        //Windy는 히든 없음.
             SoundManager.instance.PlaySound("getitem");
             dialogueRunner1.Stop();
             dialogueRunner1.StartDialogue("GetTrash");
@@ -606,6 +589,7 @@ public class PlayerController : MonoBehaviour
     }
     public void GetItem_Snowy()
     {
+        Debug.Log("Snowy Item");
         int getWhat = Random.Range(1,101);
         if (getWhat <= 25)                                      //25%의 확률로 장작 획득
         {
@@ -650,6 +634,7 @@ public class PlayerController : MonoBehaviour
     }
     public void GetItem_Blizzard()
     {
+        Debug.Log("Blizzard Item");
         int getWhat = Random.Range(1, 101);
         if (getWhat <= 25)                                      //25%의 확률로 장작 획득
         {
@@ -697,7 +682,7 @@ public class PlayerController : MonoBehaviour
     {
         firewoodCnt--;
         SoundManager.instance.PlaySound("useitem");
-        PileSliderController.PileGage += 200;            //장작 게이지 +200
+        PileSliderController.PileGage += 180;            //장작 게이지 +200
         PileSliderController.goOutPile = false;
         
         if (!FlameSliderController.goOutFlame)          //불꽃이 이미 꺼지지만 않았다면
@@ -710,7 +695,7 @@ public class PlayerController : MonoBehaviour
         SoundManager.instance.PlaySound("useitem");
         if (!FlameSliderController.goOutFlame)
             FlameSliderController.FlameGage += 70;            //불꽃 게이지 +70
-        PileSliderController.PileGage += 50;
+        PileSliderController.PileGage += 40;
     }
 
     public static void UseOil()         //기름 사용
@@ -718,7 +703,7 @@ public class PlayerController : MonoBehaviour
         oilCnt--;
         SoundManager.instance.PlaySound("useitem");
         if (!FlameSliderController.goOutFlame)
-            FlameSliderController.FlameGage += 200;           //불꽃 게이지 +200
+            FlameSliderController.FlameGage += 180;           //불꽃 게이지 +200
     }
 
     public static void UseScreen()      //가림막 사용
@@ -794,6 +779,7 @@ public class PlayerController : MonoBehaviour
         {
             TemparatureSliderController.stopTemparatureGage = true;
             inFlame = true;
+            //Fade.ObjectAppear(FlameOutline);
         }
         else if (other.gameObject.CompareTag("Pile"))
         {
@@ -823,27 +809,33 @@ public class PlayerController : MonoBehaviour
         {
             TemparatureSliderController.stopTemparatureGage = false;
             inFlame = false;
+            //Fade.ObjectDisappear(FlameOutline);
+            StopsOnPause();
         }
         else if (other.gameObject.CompareTag("Pile"))
         {
             inPile = false;
             Fade.ObjectDisappear(Pile1Outline);
             Fade.ObjectDisappear(Pile2Outline);
+            StopsOnPause();
         }
         else if (other.gameObject.CompareTag("Junk"))
         {
             inJunk = false;
             Fade.ObjectDisappear(JunkOutline);
+            StopsOnPause();
         }
         else if (other.gameObject.CompareTag("Table"))
         {
             inTable = false;
             Fade.ObjectDisappear(TableOutline);
+            StopsOnPause();
         }
         else if (other.gameObject.CompareTag("Tent"))
         {
             inTent = false;
             Fade.ObjectDisappear(TentOutline);
+            StopsOnPause();
         }
     }
     

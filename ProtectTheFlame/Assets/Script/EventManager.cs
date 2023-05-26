@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Yarn.Unity;
 
@@ -11,8 +12,8 @@ public class EventManager : MonoBehaviour
     public ParticleSystem snowParticleSystem;
     public ParticleSystem blizzardParticleSystem;
 
-    float eventCoolTime = 0;
-    float eventContinueTime = 0;
+    float eventCoolTime;
+    float eventContinueTime;
 
     public DialogueRunner dialogueRunner1;
     public InMemoryVariableStorage variableStorage1;
@@ -25,31 +26,36 @@ public class EventManager : MonoBehaviour
     public GameObject blackImage;
 
     float eventTime;
-    
+
+    int blizzardOneTime;
 
     public void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(instance);
-        }
-        else
-        {
-            Destroy(instance);
-        }
+        
     }
     public void Start()
     {
         if (DataManager.GetDifficulty() == 0) eventTime = 70f;
         else if (DataManager.GetDifficulty() == 1) eventTime = 60f;
         else eventTime = 50f;
+
+        blizzardOneTime = 0;
+
+        eventCoolTime = 0;
+        eventContinueTime = 0;
     }
 
     public void Update()
     {
         if (TemparatureSliderController.TemparatureGage <= 0f) return;
+
         eventCoolTime += Time.deltaTime;
+
+        if (TimeController.hour >= 5 && blizzardOneTime == 0 && eventCoolTime > 48f && eventCoolTime < 49f)
+        {
+            eventCoolTime = 0;
+            Blizzard();
+        }
         
         if (eventCoolTime > eventTime)
         {
@@ -64,8 +70,9 @@ public class EventManager : MonoBehaviour
     
     public void WhatEventIsIt_Windy()
     {
+        Debug.Log("Windy Event");
         int occurWhat = Random.Range(1, 101);
-        if (occurWhat <= 50 && TimeController.hour < 4)             //50%의 확률로 이벤트 없음. 새벽 4시 이전.
+        if (occurWhat <= 40 && TimeController.hour < 4)             //50%의 확률로 이벤트 없음. 새벽 4시 이전.
         {
             NoEvent();
         }
@@ -73,15 +80,15 @@ public class EventManager : MonoBehaviour
         {
             NoEvent();
         }
-        else if (occurWhat > 20 && occurWhat <= 50 && TimeController.hour >= 4)                 //30%의 확률로 안개.
+        else if (occurWhat > 10 && occurWhat <= 40 && TimeController.hour >= 4)                 //30%의 확률로 안개.
         {
             Fog();
         }
-        else if (occurWhat > 50 && occurWhat <= 75)                 //25%의 확률로 강한 바람.
+        else if (occurWhat > 40 && occurWhat <= 70)                 //30%의 확률로 강한 바람.
         {
             StrongWind();
         }
-        else if (occurWhat > 75 && occurWhat <= 95)                 //3시 전까지는 20%의 확률로 눈. 2시 이후 15% 확률
+        else if (occurWhat > 70 && occurWhat <= 95)                 //3시 전까지는 30%의 확률로 눈. 3시 이후 25% 확률
         {
             Snow();
         }
@@ -96,6 +103,7 @@ public class EventManager : MonoBehaviour
     }
     public void WhatEventIsIt_Snowy()
     {
+        Debug.Log("Snowy Event");
         int occurWhat = Random.Range(1, 101);
         if (occurWhat <= 40 && TimeController.hour < 4)             //40%의 확률로 이벤트 없음. 새벽 4시 이전.
         {
@@ -128,6 +136,7 @@ public class EventManager : MonoBehaviour
     }
     public void WhatEventIsIt_Blizzard()
     {
+        Debug.Log("Blizzard Event");
         int occurWhat = Random.Range(1, 101);
         if (occurWhat <= 30 && TimeController.hour < 4)             //30%의 확률로 이벤트 없음. 새벽 4시 이전.
         {
@@ -180,7 +189,7 @@ public class EventManager : MonoBehaviour
         {
             if (!FlameSliderController.stopFlameGage)           //가림막으로 막혀 있지 않으면
             {
-                FlameSliderController.FlameGage -= Time.deltaTime * 20; //불꽃 게이지 1초마다 -20
+                FlameSliderController.FlameGage -= Time.deltaTime * 25; //불꽃 게이지 1초마다 -20
             }
             TemparatureSliderController.TemparatureGage -= Time.deltaTime * 1;  //체온 게이지 1초마다 -1
 
@@ -226,6 +235,7 @@ public class EventManager : MonoBehaviour
 
     public void Blizzard()
     {
+        blizzardOneTime++;
         dialogueRunner2.StartDialogue("Blizzard");
         blizzardParticleSystem.Play();
 
@@ -285,11 +295,11 @@ public class EventManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
         StartCoroutine(FadeFromTo(fogImage, 0.6f, 0.2f));
         yield return new WaitForSeconds(3f);
-        StartCoroutine(FadeFromTo(fogImage, 0.2f, 0.9f));
+        StartCoroutine(FadeFromTo(fogImage, 0.2f, 0.98f));
         yield return new WaitForSeconds(5f);
-        StartCoroutine(FadeFromTo(fogImage, 0.9f, 0.4f));
+        StartCoroutine(FadeFromTo(fogImage, 0.98f, 0.7f));
         yield return new WaitForSeconds(4f);
-        StartCoroutine(FadeFromTo(fogImage, 0.4f, 1.0f));
+        StartCoroutine(FadeFromTo(fogImage, 0.7f, 1.0f));
         yield return new WaitForSeconds(5f);
         StartCoroutine(FadeFromTo(fogImage, 1.0f, 0f));
     }

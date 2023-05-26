@@ -30,7 +30,7 @@ public class TimeController : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        hour = 0;
+        hour = 5;
         min = 0;
         sec = 0;
         hungryOneTime = 0;
@@ -60,12 +60,16 @@ public class TimeController : MonoBehaviour
         if (hour == 6 && min == 0 && sec >= 0 && clearOneTime == 0 && PlayerController.gotUnknown == false)
         {
             clearOneTime++;
+            StopAllCoroutines();
+            //if (DataManager.GetDifficulty() == 1) DataManager.SetTrueIsSnowyCleared();
             StartCoroutine(Fade.FadeIn(EventManager.instance.blackImage));
             Invoke("NormalEnding", 1.5f);
         }
         else if (hour == 6 && min == 0 && sec >= 0 && clearOneTime == 0 && PlayerController.gotUnknown == true)
         {
             clearOneTime++;
+            StopAllCoroutines();
+            //if (DataManager.GetDifficulty() == 1) DataManager.SetTrueIsSnowyCleared();
             StartCoroutine(Fade.FadeIn(EventManager.instance.fogImage));
             Invoke("TrueEnding", 1.5f);
         }

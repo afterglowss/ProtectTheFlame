@@ -13,7 +13,8 @@ public enum BTNType
     Back,
     Quit,
     GoMain,
-    Retry
+    Retry,
+    Hidden
 }
 
 public class BTN : MonoBehaviour
@@ -21,6 +22,7 @@ public class BTN : MonoBehaviour
     public BTNType currentType;
     public CanvasGroup mainGroup;
     public CanvasGroup optionGroup;
+
 
     public void OnBtnClick()
     {
@@ -33,6 +35,7 @@ public class BTN : MonoBehaviour
                 if (SceneManager.GetActiveScene().name == "GameScene")
                 {
                     if (TemparatureSliderController.TemparatureGage <= 0f) return;
+                    PlayerController.instance.StopsOnPause();
                 }
                 OptionGroupOn();
                 break;
@@ -56,6 +59,8 @@ public class BTN : MonoBehaviour
                 break;
         }
     }
+
+
 
     public void OptionGroupOn()
     {
